@@ -40,7 +40,6 @@ while not done:
     wallRec = Rectangle().byRect(wall.rect)
     collided = collision.check(wallRec, playerRec)
     if collided:
-        # print("Collided")
         pygame.draw.rect(screen, (250, 0, 0), collision.collisionRect)
 
     pygame.display.flip()
