@@ -14,8 +14,8 @@ class Collision():
         uR = None
         lL = None
 
-        for y in range(int(a.upperLeft.y), int(a.lowerLeft.y)):
-            for x in range(int(a.upperLeft.x), int(a.upperRight.x)):
+        for y in range(int(a.upperLeft.y), int(a.lowerLeft.y) + 1):
+            for x in range(int(a.upperLeft.x), int(a.upperRight.x) + 1):
                 vec = pygame.Vector2(x, y)
                 if b.contains(vec):
                     if uL == None:

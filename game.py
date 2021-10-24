@@ -27,6 +27,8 @@ wall1 = Wall()
 wall1.updatePos(pygame.Vector2(200, 100))
 wall2 = Wall()
 wall2.updatePos(pygame.Vector2(180, 125))
+wall2.color = (240, 0, 240)
+wall2.updateRect()
 wallGroup = Group[Wall]('walls', Wall).add(wall1, wall2)
 
 
@@ -50,18 +52,26 @@ while not done:
     
     wallGroup.applyOnEach(setWallToWhite)
 
-    nearest = wallGroup.colliding(player.cRect) 
-    if len(nearest) > 0:
-        nearest[0].color = (240, 0, 0)
+    # Nearest Object to player becomes highlighted 
+    #---
+    # nearest = wallGroup.nearest(player.cRect.center) 
+    # nearest.color = (240, 0, 0)
 
+    # Oject with highest intersection to player becomes highlighted
+    #---
+    # nearest = wallGroup.colliding(player.cRect.center) 
+    # if len(nearest) > 0:
+    #     nearest.color = (240, 0, 0)
+
+    
     wallGroup.draw()
 
-    # playerRec = Rectangle().byRect(player.rect)
-    # wallRec = Rectangle().byRect(wall.rect)
-    # collided = collision.check(wallRec, playerRec)
-    # if collided:
-    #     pygame.draw.rect(screen, (250, 0, 0), collision.collisionRect)
-
-
+    # Intersection from player to Walls gets drawn
+    #---
+    for o in wallGroup.objects:
+        collided = collision.check(o.cRect, player.cRect)
+        if collided:
+            pygame.draw.rect(screen, (250, 0, 0), collision.collisionRect.toPyRect())
+        
 
     pygame.display.flip()

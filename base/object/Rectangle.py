@@ -14,6 +14,8 @@ class Rectangle():
         
         self.corners = []
         self.area = 0
+        self.width = 0
+        self.height = 0
     
 
     def byRect(self, rect: pygame.Rect):
@@ -27,10 +29,12 @@ class Rectangle():
 
         self.corners = [self.upperLeft, self.upperRight, self.lowerLeft, self.lowerRight]
         self.area = self.topLine * self.leftLine
+        self.width = rect.width
+        self.height = rect.height
         return self
 
-    def toPyRect():
-        pass
+    def toPyRect(self):
+        return pygame.Rect(self.upperLeft.x, self.upperLeft.y, self.width, self.height)
 
     def onXIntervall(self, x: int):
         return self.upperLeft.x <= x <= self.upperRight.x
