@@ -1,6 +1,9 @@
 from __future__ import annotations
-from typing import Tuple;
+from typing import Tuple
+from base.object.Rectangle import Rectangle;
+from settings import screen
 import pygame
+
 class GameObject():
     def __init__(self) -> None:
 
@@ -14,12 +17,13 @@ class GameObject():
         #Internal properties
         self.solid = False
 
-    def draw(self, surface: pygame.Surface):
-        pygame.draw.rect(surface, self.color, self.rect)
+    def draw(self):
+        pygame.draw.rect(screen, self.color, self.rect)
 
     def updateRect(self):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
-    
+        self.cRect = Rectangle().byRect(self.rect)
+
     def distanceTo(self, obj: GameObject):
         return self.pos.distance_to(obj.pos)
     
@@ -41,7 +45,6 @@ class GameObject():
     def editPosBy(self, x=0, y=0):
         self.updatePos(self.getPos(x, y))
         
-            
     def collidesWith(self, obj: GameObject) -> bool:
         pass
 

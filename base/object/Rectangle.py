@@ -10,6 +10,7 @@ class Rectangle():
         self.lowerRight = default
         self.topLine = 0
         self.leftLine = 0
+        self.center = default
         
         self.corners = []
         self.area = 0
@@ -22,6 +23,7 @@ class Rectangle():
         self.lowerRight = pygame.Vector2(rect.bottomright)
         self.topLine = self.upperRight.x - self.upperLeft.x
         self.leftLine = self.lowerLeft.y - self.upperLeft.y
+        self.center = pygame.Vector2((self.upperLeft.x + self.upperRight.x) / 2, (self.lowerLeft.y + self.upperLeft.y) / 2)
 
         self.corners = [self.upperLeft, self.upperRight, self.lowerLeft, self.lowerRight]
         self.area = self.topLine * self.leftLine
