@@ -9,6 +9,6 @@ class Wall(GameObject):
         self.solid = True
         self.color = (240, 240, 240)
         self.pos = pygame.math.Vector2(random.randrange(50, 400), random.randrange(50, 200))
-        self.width = 20
-        self.height = 20
+        self.width = 50
+        self.height = 50
         self.updateRect()

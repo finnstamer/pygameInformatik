@@ -29,6 +29,9 @@ class Rectangle():
         self.area = self.topLine * self.leftLine
         return self
 
+    def toPyRect():
+        pass
+
     def onXIntervall(self, x: int):
         return self.upperLeft.x <= x <= self.upperRight.x
     

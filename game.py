@@ -24,7 +24,9 @@ keys = Keys()
 collision = Collision()
 
 wall1 = Wall()
+wall1.updatePos(pygame.Vector2(200, 100))
 wall2 = Wall()
+wall2.updatePos(pygame.Vector2(180, 125))
 wallGroup = Group[Wall]('walls', Wall).add(wall1, wall2)
 
 
@@ -46,10 +48,11 @@ while not done:
     player.move(keys)
     player.draw()
     
-    wallGroup.applyOnEach(apply=setWallToWhite)
+    wallGroup.applyOnEach(setWallToWhite)
 
-    nearest = wallGroup.nearest(player.cRect.center) 
-    nearest.color = (240, 0, 0)
+    nearest = wallGroup.colliding(player.cRect) 
+    if len(nearest) > 0:
+        nearest[0].color = (240, 0, 0)
 
     wallGroup.draw()
 

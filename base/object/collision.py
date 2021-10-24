@@ -5,7 +5,7 @@ from base.object.Rectangle import Rectangle
 class Collision():
     def __init__(self) -> None:
         self.collided = False
-        self.collisionRect = pygame.Rect(0, 0, 0, 0)
+        self.collisionRect = Rectangle()
         self.dir = 0 #top clockwise
 
     # register each pixel of a that shares its coordinates with b
@@ -26,8 +26,7 @@ class Collision():
         
         if uL != None:
             self.collided = True
-            self.collisionRect = pygame.Rect(uL.x, uL.y, uR.x - uL.x, lL.y - uL.y)
-            print(uL, uR, lL)
+            self.collisionRect = Rectangle().byRect(pygame.Rect(uL.x, uL.y, uR.x - uL.x, lL.y - uL.y))
         return self.collided
 
 

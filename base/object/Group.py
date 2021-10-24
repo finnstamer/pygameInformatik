@@ -3,6 +3,8 @@ import pygame
 from typing import Generic, List, TypeVar
 
 from base.object.GameObject import GameObject
+from base.object.Rectangle import Rectangle
+from base.object.collision import Collision
 
 O = TypeVar('O', bound=GameObject)
 
@@ -47,5 +49,16 @@ class Group(Generic[O]):
             raise pygame.error(f"Group for {self.name} cannot check for nearest object. List is empty.")
         return sorted(self.objects, key=lambda obj: obj.pos.distance_to(pos))[0]
 
-    def colliding(self, pos: pygame.Vector2) -> List[O]:
-        pass
+    # Returns a list of all objects, that collides with an rectangle, sorted by the area of intersection (descending)
+    def colliding(self, rect: Rectangle) -> List[O]:
+        colliding = []
+        for i in self.objects:
+            collision = Collision()
+            collided = collision.check(i.cRect, rect)
+            if collided:
+                colliding.append([i, collision])
+
+        return list(map(
+            lambda x: x[0],
+            sorted(colliding, key=lambda c: c[1].collisionRect.area, reverse=True)
+        ))
