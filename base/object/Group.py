@@ -54,7 +54,7 @@ class Group(Generic[O]):
         colliding = []
         for i in self.objects:
             collision = Collision()
-            collided = collision.check(i.cRect, rect)
+            collided = collision.isCollided(i.cRect, rect)
             if collided:
                 colliding.append([i, collision])
 
