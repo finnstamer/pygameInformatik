@@ -1,6 +1,6 @@
 from os import error
+from typing import Dict
 import pygame
-from pygame.sprite import collide_circle
 
 from base.object.Rectangle import Rectangle
 
@@ -14,12 +14,24 @@ class Collision():
         for i in range(1, 5):
             aC = a.corners[i - 1]
             aOC = a.corners[i % 4]
-            for i in range(1, 5):
-                bC = b.corners[i - 1]
+            for j in range(1, 5):
+                bC = b.corners[j - 1]
                 if (aC.x >= bC.x >= aOC.x) and (aC.y <= bC.y <= aOC.y):
                     return True
         return False
 
+    def getIntersection_performance(self, a: Rectangle, b: Rectangle) -> Rectangle:
+        corners: Dict[int, pygame.Vector2] = {}
+        for i in range(1, 5):
+            aC = a.corners[i - 1]
+            aOC = a.corners[i % 4]
+            for j in range(1, 5):
+                bC = b.corners[j - 1]
+                if (aC.x >= bC.x >= aOC.x) and (aC.y <= bC.y <= aOC.y):
+                    corners[j - 1] = bC
+
+        return Rectangle.byCorner(corners)
+    
     # register each pixel of a that shares its coordinates with b
     def getIntersection(self, a: Rectangle, b: Rectangle) -> Rectangle:
         uL = uR = lL = None

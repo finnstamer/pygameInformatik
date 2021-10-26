@@ -1,5 +1,7 @@
+from os import stat
 from typing import Dict, List
-import pygame;
+import pygame
+from pygame import Rect, Vector2, rect;
 
 class Rectangle():
     def __init__(self) -> None:
@@ -18,23 +20,34 @@ class Rectangle():
         self.height = 0
     
 
-    def byRect(self, rect: pygame.Rect):
-        self.upperLeft = pygame.Vector2(rect.topleft) 
-        self.upperRight = pygame.Vector2(rect.topright)
-        self.lowerLeft = pygame.Vector2(rect.bottomleft)
-        self.lowerRight = pygame.Vector2(rect.bottomright)
-        self.topLine = self.upperRight.x - self.upperLeft.x
-        self.leftLine = self.lowerLeft.y - self.upperLeft.y
-        self.center = pygame.Vector2((self.upperLeft.x + self.upperRight.x) / 2, (self.lowerLeft.y + self.upperLeft.y) / 2)
+    @staticmethod
+    def byRect(rect: pygame.Rect):
+        r = Rectangle()
 
-        self.corners = [self.upperLeft, self.upperRight, self.lowerLeft, self.lowerRight]
-        self.area = self.topLine * self.leftLine
-        self.width = rect.width
-        self.height = rect.height
-        return self
+        r.upperLeft = pygame.Vector2(rect.topleft) 
+        r.upperRight = pygame.Vector2(rect.topright)
+        r.lowerLeft = pygame.Vector2(rect.bottomleft)
+        r.lowerRight = pygame.Vector2(rect.bottomright)
+        r.topLine = r.upperRight.x - r.upperLeft.x
+        r.leftLine = r.lowerLeft.y - r.upperLeft.y
+        r.center = pygame.Vector2((r.upperLeft.x + r.upperRight.x) / 2, (r.lowerLeft.y + r.upperLeft.y) / 2)
+        r.corners = [r.upperLeft, r.upperRight, r.lowerLeft, r.lowerRight]
+        r.area = r.topLine * r.leftLine
+        r.width = rect.width
+        r.height = rect.height
+        return r
 
     def toPyRect(self):
         return pygame.Rect(self.upperLeft.x, self.upperLeft.y, self.width, self.height)
+
+    @staticmethod
+    def byCorner(c: Dict[int, pygame.Vector2]):
+        pyRect = pygame.Rect(
+            c[0].x, c[0].y, 
+            c[1].x - c[0].x,
+            c[4].y - c[0].y
+        )
+        return Rectangle.byRect(pyRect)
 
     def onXIntervall(self, x: int):
         return self.upperLeft.x <= x <= self.upperRight.x
