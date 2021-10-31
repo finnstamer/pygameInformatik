@@ -13,7 +13,7 @@ class Player(GameObject):
         self.solid = True
         self.height = 50
         self.width = 50
-        self.speed = 1
+        self.speed = 3
 
         self.updateRect()
 
