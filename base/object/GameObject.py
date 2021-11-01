@@ -1,6 +1,6 @@
 from __future__ import annotations
 from typing import Tuple
-from base.object.Rectangle import Rectangle
+from base.geometry.Rectangle import Rectangle
 from base.object.collision import Collision;
 from settings import screen
 import pygame

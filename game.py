@@ -2,7 +2,7 @@ import pygame
 import settings
 from pygame.constants import K_ESCAPE, K_LEFT, K_RIGHT
 from base.object.Group import Group
-from base.object.Rectangle import Rectangle
+from base.geometry.Rectangle import Rectangle
 from base.object.collision import Collision
 from base.player.Keys import Keys
 from base.player.Player import Player
@@ -38,7 +38,7 @@ def setWallToWhite(wall):
     return wall
 
 while not done:
-    clock.tick(60)
+    clock.tick(120)
     done = pygame.key.get_pressed()[K_ESCAPE] 
     screen.fill(pygame.Color(50, 12, 100));
 

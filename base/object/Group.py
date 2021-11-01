@@ -3,7 +3,7 @@ import pygame
 from typing import Generic, List, TypeVar
 
 from base.object.GameObject import GameObject
-from base.object.Rectangle import Rectangle
+from base.geometry.Rectangle import Rectangle
 from base.object.collision import Collision
 
 # O Ist ein Datentyp, dass aus einem GameObject (oder einer Abwandlung daraus besteht: bspw. Player)

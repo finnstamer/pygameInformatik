@@ -1,25 +1,25 @@
 from os import error
-from typing import Dict, List
+from typing import Dict
 import pygame
 
-from base.object.Rectangle import Rectangle
+from base.geometry.Rectangle import Rectangle
 
 class Collision():
     
     def __init__(self) -> None:
+        self.reset()
+    
+    def reset(self):
         self.collided = False
         self.collisionRect = Rectangle()
         self.dir = 0
-    
     # Wenn mindestens ein Eckpunkt von a innerhalb b oder andersherum liegt, liegt eine Kollision vor.
-    def isColliding(self, a: Rectangle, b: Rectangle):
+    def isColliding(self, a: Rectangle, b: Rectangle) -> bool:
         return len(Collision.cornerIntersection(a, b)) > 0 or len(Collision.cornerIntersection(b, a)) > 0
     
     # Gibt ein Rechteck der Fläche, die sich a und b teilen zurück
+    # !!! Es muss sicher sein, dass eine Kollision vorliegt, sonst sind die Werte fehlerhaft.
     def intersection(self, a: Rectangle, b: Rectangle) -> Rectangle:
-        if self.isColliding(a, b) == False:
-            return Rectangle()
-
         d = pygame.Vector2(0, 0)
         corners = [d, d, d, d]
         for i in range(0, 4):
