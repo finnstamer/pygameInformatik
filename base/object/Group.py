@@ -5,7 +5,6 @@ from base.core.Event.EventDispatcher import EventDispatcher
 
 from base.object.GameObject import GameObject
 from base.geometry.Rectangle import Rectangle
-from base.object.collision import Collision
 
 # O Ist ein Datentyp, dass aus einem GameObject (oder einer Abwandlung daraus besteht: bspw. Player)
 O = TypeVar('O', bound=GameObject)
@@ -71,14 +70,13 @@ class Group(Generic[O]):
 
     # Gibt eine Liste an Objekten zurück, die mit dem Parameter "rect" kollidieren. (In absteigender Reihenfolge nach Überschneindungsfläche)
     def colliding(self, rect: Rectangle) -> List[O]:
-        colliding = [] # [ [obj, collision] ]
+        colliding = []
         for i in self.objects:
-            collision = Collision()
-            collided = collision.check(i.cRect, rect)
-            if collided:
-                colliding.append([i, collision])
+            collided = Rectangle.byRect(i.rect.clip(rect))
+            if collided.area > 0:
+                colliding.append([i, collided])
 
         return list(map(
             lambda x: x[0],
-            sorted(colliding, key=lambda c: c[1].collisionRect.area, reverse=True)
+            sorted(colliding, key=lambda c: c[1].area, reverse=True)
         ))

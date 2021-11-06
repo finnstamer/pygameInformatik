@@ -26,18 +26,11 @@ class Player(MovableObject):
                 EventDispatcher.dispatch(Event("G_SWITCH_L", 2))
 
     def control(self, keys: Dict[str, bool]):
-        pos = None
         if keys["left"]:
-            pos = self.getPositionChange(-self.speed)
-            self.move(pos)
+            self.moveByDelta(-self.speed)
         if keys["right"]:
-            pos = self.getPositionChange(self.speed)
-            self.move(pos)
+            self.moveByDelta(self.speed)
         if keys["up"]:
-            pos = self.getPositionChange(y=-self.speed)
-            self.move(pos)
+            self.moveByDelta(-self.speed, False)
         if keys["down"]:
-            pos = self.getPositionChange(y=self.speed)
-            self.move(pos)
-        if pos != None:
-            self.move(pos)
+            self.moveByDelta(self.speed, False)

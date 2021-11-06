@@ -62,7 +62,7 @@ class Game():
     
     def allowMove(self, obj: GameObject, pos: pygame.Vector2):
         solidObjs = filter(lambda x: x != obj, self.level.allSolidObjects())
-        movedRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height))
+        movedRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
         for obj in solidObjs:
             if obj.collidesWith(movedRect):
                 return False

@@ -1,6 +1,5 @@
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
-from base.core.Game import Game
 from base.object.GameObject import GameObject
 
 class EventDispatcher():
@@ -38,7 +37,6 @@ class EventDispatcher():
         for e in EventDispatcher.subscribers:
             subscribed = EventDispatcher.subscribers[e]
             EventDispatcher.subscribers[e] = filter(lambda x: x != obj, subscribed)
-
 
     @staticmethod
     def acceptRequest(req: str, compute: Callable):

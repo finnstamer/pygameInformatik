@@ -61,7 +61,7 @@ class Rectangle():
         return Rectangle.byRect(pyRect)
 
     def onXIntervall(self, x: int):
-        return self.upperLeft.x <= x <= self.upperRight.x
+        return self.upperLeft.x < x <= self.upperRight.x
     
     def onYIntervall(self, y: int):
         return self.upperLeft.y <= y <= self.lowerLeft.y
@@ -69,8 +69,5 @@ class Rectangle():
     def contains(self, vec: pygame.Vector2):
         return self.onXIntervall(vec.x) and self.onYIntervall(vec.y)
 
-    def contains(self, vector: pygame.Vector2):
-        return self.onXIntervall(vector.x) and self.onYIntervall(vector.y)
-    
     def copy(self):
         return deepcopy(self)

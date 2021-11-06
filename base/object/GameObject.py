@@ -2,7 +2,6 @@ from __future__ import annotations
 from typing import Tuple
 from base.core.Event.Event import Event
 from base.geometry.Rectangle import Rectangle
-from base.object.collision import Collision;
 from settings import screen
 import pygame
 
@@ -65,7 +64,6 @@ class GameObject():
         self.updatePos(vec)
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
-        collision = Collision()
-        return collision.check(self.cRect, rect)
+        return Rectangle.byRect(self.rect.clip(rect)).area > 0
 
     
