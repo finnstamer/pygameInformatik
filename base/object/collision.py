@@ -13,6 +13,7 @@ class Collision():
         self.collided = False
         self.collisionRect = Rectangle()
         self.dir = 0
+        
     # Wenn mindestens ein Eckpunkt von a innerhalb b oder andersherum liegt, liegt eine Kollision vor.
     def isColliding(self, a: Rectangle, b: Rectangle) -> bool:
         return len(Collision.cornerIntersection(a, b)) > 0 or len(Collision.cornerIntersection(b, a)) > 0

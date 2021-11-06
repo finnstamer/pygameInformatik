@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import Tuple
+from base.core.Event.Event import Event
 from base.geometry.Rectangle import Rectangle
 from base.object.collision import Collision;
 from settings import screen
@@ -9,6 +10,7 @@ import pygame
 # Wenn Position geändert werden sollte, benutze .updatePos(x, y) oder .editPosBy(xD, yD)  (d = Delta = Differenz)
 class GameObject():
     def __init__(self) -> None:
+        self.active = True
         self.pos = pygame.math.Vector2(0, 0);
         self.width = 0
         self.height = 0
@@ -17,14 +19,18 @@ class GameObject():
 
         self.solid = False
 
+    def receiveEvent(self, e: Event):
+        raise NotImplementedError(f"Event '{e.name}' is not implemented in '{self.__class__.__name__}'.")
+
     def edit(self, property: str, val: any):
         self[property] = val
         self.updateRect()
         return self
-
+    
     # pygame.draw überträgt das Rechteck des Objektes auf den Bildschirm.
     def draw(self):
-        pygame.draw.rect(screen, self.color, self.rect)
+        if self.active:
+            pygame.draw.rect(screen, self.color, self.rect)
 
     def updateRect(self):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
@@ -41,16 +47,20 @@ class GameObject():
             self.getVectorPos(self.width, self.height)
         )
     
-    def getVectorPos(self):
-        return pygame.Vector2(self.pos.x, self.pos.y)
     
     def updatePos(self, pos: pygame.Vector2):
         self.pos = pos
         self.updateRect()
 
+    def getPositionChange(self, x=0, y=0):
+        vec = pygame.Vector2(self.pos.x, self.pos.y) # Cloning
+        vec.x += x
+        vec.y += y
+        return vec
+
     def editPosBy(self, x=0, y=0):
         vec = self.getVectorPos()
-        vec.x += x;
+        vec.x += x
         vec.y += y
         self.updatePos(vec)
         

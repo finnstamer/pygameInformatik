@@ -31,6 +31,16 @@ class Group(Generic[O]):
     def remove(self, obj):
         self.objects.remove(obj)
         return self
+    
+    def deactivate(self):
+        for obj in self.objects:
+            obj.active = False
+        return self
+        
+    def activate(self):
+        for obj in self.objects:
+            obj.active = True
+        return self
 
     def length(self):
         return len(self.objects)

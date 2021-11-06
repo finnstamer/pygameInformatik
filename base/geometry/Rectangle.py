@@ -1,5 +1,8 @@
 from typing import Dict, List
+from copy import deepcopy
 import pygame
+
+from base.geometry.Vec2 import Vec2
 
 # Eigene Klasse anstatt pygame.Rect, da Rect mir zu wenig wichtige Informationen und Shorthands lieferte.
 # Umwandelung in pygame.Rect und andersherum ist möglich. 
@@ -24,19 +27,23 @@ class Rectangle():
 
     @staticmethod
     def byRect(rect: pygame.Rect):
+        return Rectangle.get(Vec2.fromTuple(rect.topleft), Vec2.fromTuple(rect.bottomright))
+
+    @staticmethod
+    def get(uL: pygame.Vector2, lR: pygame.Vector2):
         r = Rectangle()
 
-        r.upperLeft = pygame.Vector2(rect.topleft) 
-        r.upperRight = pygame.Vector2(rect.topright)
-        r.lowerLeft = pygame.Vector2(rect.bottomleft)
-        r.lowerRight = pygame.Vector2(rect.bottomright)
+        r.upperLeft = uL
+        r.lowerRight = lR
+        r.upperRight = pygame.Vector2(lR.x, uL.y)
+        r.lowerLeft = pygame.Vector2(uL.x, lR.y)
         r.topLine = r.upperRight.x - r.upperLeft.x
         r.leftLine = r.lowerLeft.y - r.upperLeft.y
         r.center = pygame.Vector2((r.upperLeft.x + r.upperRight.x) / 2, (r.lowerLeft.y + r.upperLeft.y) / 2)
         r.corners = [r.upperLeft, r.upperRight, r.lowerRight, r.lowerLeft]
         r.area = r.topLine * r.leftLine
-        r.width = rect.width
-        r.height = rect.height
+        r.width = lR.x - uL.x
+        r.height = lR.y - uL.y
         r.y = r.upperLeft.y
         r.x = r.upperLeft.x
         return r
@@ -64,3 +71,6 @@ class Rectangle():
 
     def contains(self, vector: pygame.Vector2):
         return self.onXIntervall(vector.x) and self.onYIntervall(vector.y)
+    
+    def copy(self):
+        return deepcopy(self)
