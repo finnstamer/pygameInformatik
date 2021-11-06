@@ -12,17 +12,17 @@ from settings import screen
 class Game():
     def __init__(self) -> None:
         self.active = True
-        self.notesotes: Dict[str, Any] = {}
+        self.notes: Dict[str, Any] = {}
         self.levels: Dict[int, Level] = {}
         self.level = {}
         EventDispatcher.subscribe(self, "G_STOP", "G_SWITCH_L", "G_REM", "G_SETN", "G_GETN")
         EventDispatcher.acceptRequest("G_ALLOW_MOVE", self.allowMove)
 
     def receiveEvent(self, event: Event):
-        n = event.name
-        if n == "G_STOP":
+        name = event.name
+        if name == "G_STOP":
             self.active = False
-        if n == "G_SWITCH_L":
+        if name == "G_SWITCH_L":
             self.setLevel(event.value)
         pass
         
@@ -58,7 +58,7 @@ class Game():
             self.level = self.levels[id]
             self.level.activate()
             return
-        raise LookupError()    
+        raise LookupError(f"Level {id} not found.")    
     
     def allowMove(self, obj: GameObject, pos: pygame.Vector2):
         solidObjs = filter(lambda x: x != obj, self.level.allSolidObjects())
