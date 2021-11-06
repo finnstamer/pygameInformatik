@@ -66,3 +66,6 @@ Game
 
 KI
    subscribes to object (e.g player) events 
+
+TODO:
+needing factory for object id's

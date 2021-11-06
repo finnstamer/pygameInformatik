@@ -1,3 +1,4 @@
+from functools import reduce
 from typing import List
 
 from pygame.sprite import groupcollide
@@ -16,3 +17,9 @@ class Level():
     def activate(self):
         for g in self.groups:
             g.activate()
+    
+    def allObjects(self):
+        return reduce(lambda x,y:x+y, map(lambda x:x.objects, self.groups))
+    
+    def allSolidObjects(self):
+        return filter(lambda x: x.solid, self.allObjects()) 

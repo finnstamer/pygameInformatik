@@ -64,8 +64,8 @@ class GameObject():
         vec.y += y
         self.updatePos(vec)
         
-    def collidesWith(self, obj: GameObject) -> bool:
+    def collidesWith(self, rect: pygame.Rect) -> bool:
         collision = Collision()
-        return collision.check(self.cRect, obj.cRect)
+        return collision.check(self.cRect, rect)
 
     

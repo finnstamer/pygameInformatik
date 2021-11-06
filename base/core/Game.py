@@ -6,6 +6,7 @@ from base.core.Event.Event import Event
 
 from base.core.Event.EventDispatcher import EventDispatcher
 from base.core.Level.Level import Level
+from base.object.GameObject import GameObject
 from settings import screen
 
 class Game():
@@ -15,7 +16,7 @@ class Game():
         self.levels: Dict[int, Level] = {}
         self.level = {}
         EventDispatcher.subscribe(self, "G_STOP", "G_SWITCH_L", "G_REM", "G_SETN", "G_GETN")
-
+        EventDispatcher.acceptRequest("G_ALLOW_MOVE", self.allowMove)
 
     def receiveEvent(self, event: Event):
         n = event.name
@@ -46,17 +47,23 @@ class Game():
 
     def addLevel(self, *level: Level):
         for l in list(level):
+            l.deactivate()
             self.levels[l.id] = l
     
     def setLevel(self, id: int):
         if isinstance(self.level, Level):
-            print("5")
             self.level.deactivate()
 
         if id in self.levels:
             self.level = self.levels[id]
             self.level.activate()
             return
-        raise LookupError()
-        
+        raise LookupError()    
     
+    def allowMove(self, obj: GameObject, pos: pygame.Vector2):
+        solidObjs = filter(lambda x: x != obj, self.level.allSolidObjects())
+        movedRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height))
+        for obj in solidObjs:
+            if obj.collidesWith(movedRect):
+                return False
+        return True

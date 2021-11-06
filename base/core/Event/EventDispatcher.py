@@ -1,10 +1,10 @@
-from typing import Dict, List
+from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
 from base.object.GameObject import GameObject
 
-
 class EventDispatcher():
     subscribers: Dict[str, List[GameObject]] = {}
+    requests: Dict[str, Callable] = {}
 
     @staticmethod
     def dispatch(event: Event):
@@ -22,3 +22,14 @@ class EventDispatcher():
                 subscribed = EventDispatcher.subscribers[e]
                 return subscribed.append(obj)
             EventDispatcher.subscribers[e] = [obj]
+
+    @staticmethod
+    def acceptRequest(req: str, compute: Callable):
+        EventDispatcher.requests[req] = compute
+        
+    # Während ein Event ausschließlich ausgehend ist, gibt eine Request einen Wert zurück und ist aktiv vom Caller ausgehend.
+    @staticmethod
+    def request(req: str, *args: Any) -> Any:
+        if req in EventDispatcher.requests:
+            return EventDispatcher.requests[req](*args)
+        raise NotImplementedError(f"Request '{req}' is not accepted.")
