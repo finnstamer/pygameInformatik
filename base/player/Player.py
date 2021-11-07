@@ -12,7 +12,7 @@ class Player(MovableObject):
         self.color = (50, 50, 50)
         self.solid = True
         self.height = 50
-        self.width = 50
+        self.width = 75
         self.speed = 3
 
         self.updateRect()

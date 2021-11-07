@@ -10,6 +10,7 @@ import pygame
 class GameObject():
     def __init__(self) -> None:
         self.active = True
+        self.image = None
         self.pos = pygame.math.Vector2(0, 0);
         self.width = 0
         self.height = 0
@@ -26,10 +27,19 @@ class GameObject():
         self.updateRect()
         return self
     
+    def setImage(self, image: str):
+        self.image = pygame.image.load(image)
+        self.image = pygame.transform.scale(self.image, (self.width, self.height)).convert()
+        return self
+    
     # pygame.draw überträgt das Rechteck des Objektes auf den Bildschirm.
     def draw(self):
         if self.active:
-            pygame.draw.rect(screen, self.color, self.rect)
+            if self.image:
+                screen.blit(self.image, self.rect)
+                pass
+            else:
+                pygame.draw.rect(screen, self.color, self.rect)
 
     def updateRect(self):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
