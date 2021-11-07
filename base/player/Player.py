@@ -16,10 +16,11 @@ class Player(MovableObject):
         self.speed = 3
 
         self.updateRect()
-        EventDispatcher.subscribe(self, "CONTROLS")
+        EventDispatcher.subscribe(self, "G_CONTROLS")
+
     
     def receiveEvent(self, event: Event):
-        if event.name == "CONTROLS":
+        if event.name == "G_CONTROLS":
             keys = event.value
             self.control(keys)
             if keys["space"]:

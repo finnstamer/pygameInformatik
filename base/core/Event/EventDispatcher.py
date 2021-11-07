@@ -11,8 +11,7 @@ class EventDispatcher():
         if event.name in EventDispatcher.subscribers:
             subscribed = EventDispatcher.subscribers[event.name]
             for s in subscribed:
-                if s.active:
-                    s.receiveEvent(event) 
+                s.receiveEvent(event) 
 
     @staticmethod
     def subscribe(obj: GameObject, *events: str):
