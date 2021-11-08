@@ -1,9 +1,6 @@
-from os import error, stat
 from typing import Dict
 
 from base.core.DependencyException import DependencyException
-from base.core.Event.Event import Event
-from base.core.Event.EventDispatcher import EventDispatcher
 import pygame
 
 class Sounds:
@@ -19,7 +16,6 @@ class Sounds:
     def load(id, path):
         if Sounds.mixer is None:
             raise DependencyException(Sounds)
-            # raise error(f"Sound '{id}' cannot be loaded before dependency Sound is initialized; Load on 'game.start' Event.")
         Sounds.loaded[id] = Sounds.mixer.Sound(path)
     @staticmethod
     def play(id):

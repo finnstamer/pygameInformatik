@@ -1,4 +1,3 @@
-from settings import screen
 from levels import levels 
 from base.core.Game import Game
 

@@ -1,7 +1,6 @@
 import typing
 import pygame
 from typing import Generic, List, TypeVar
-from base.core.Event.EventDispatcher import EventDispatcher
 
 from base.object.GameObject import GameObject
 from base.geometry.Rectangle import Rectangle
