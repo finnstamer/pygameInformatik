@@ -2,6 +2,8 @@ from typing import Dict
 import pygame
 from base.core.Event.Event import Event
 from base.core.Event.EventDispatcher import EventDispatcher
+from base.core.Game import Game
+from base.core.Sounds.Sounds import Sounds
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
@@ -12,19 +14,20 @@ class Player(MovableObject):
         self.color = (50, 50, 50)
         self.solid = True
         self.height = 50
-        self.width = 75
+        self.width = 50
         self.speed = 3
-
         self.updateRect()
-        EventDispatcher.subscribe(self, "G_CONTROLS")
+        EventDispatcher.subscribe(self, "game.start", "G_CONTROLS")
+        Game.use(Sounds)
+        Sounds.load("test", "s.wav")
 
-    
     def receiveEvent(self, event: Event):
         if event.name == "G_CONTROLS":
             keys = event.value
             self.control(keys)
             if keys["space"]:
-                EventDispatcher.dispatch(Event("G_SWITCH_L", 2))
+                Sounds.play("test")
+                # EventDispatcher.dispatch("game.level.switch", 2)
 
     def control(self, keys: Dict[str, bool]):
         if keys["left"]:

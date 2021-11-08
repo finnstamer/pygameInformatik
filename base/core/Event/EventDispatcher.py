@@ -7,11 +7,11 @@ class EventDispatcher():
     requests: Dict[str, Callable] = {}
 
     @staticmethod
-    def dispatch(event: Event):
-        if event.name in EventDispatcher.subscribers:
-            subscribed = EventDispatcher.subscribers[event.name]
+    def dispatch(name: str="", value: Any=""):
+        if name in EventDispatcher.subscribers:
+            subscribed = EventDispatcher.subscribers[name]
             for s in subscribed:
-                s.receiveEvent(event) 
+                s.receiveEvent(Event(name, value)) 
 
     @staticmethod
     def subscribe(obj: GameObject, *events: str):

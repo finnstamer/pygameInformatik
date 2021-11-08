@@ -1,6 +1,5 @@
 import inspect
 import pygame
-from base.core.Sounds.Sounds import Sounds
 from typing import Any, Dict, List
 from base.core.Controls.Controls import Controls
 from base.core.Event.Event import Event
@@ -11,22 +10,34 @@ from base.object.GameObject import GameObject
 from settings import screen
 
 class Game():
+    dependencies: List[Any] = []
     def __init__(self) -> None:
         self.active = True
         self.notes: Dict[str, Any] = {}
         self.levels: Dict[int, Level] = {}
         self.level = {}
-        EventDispatcher.subscribe(self, "G_STOP", "G_SWITCH_L", "G_REM", "G_SETN", "G_GETN")
+        EventDispatcher.subscribe(self, "game.stop", "game.level.switch", "G_REM", "G_SETN", "G_GETN")
         EventDispatcher.acceptRequest("G_ALLOW_MOVE", self.allowMove)
-        Sounds.start()
 
     def receiveEvent(self, event: Event):
         name = event.name
-        if name == "G_STOP":
+        if name == "game.stop":
             self.active = False
-        if name == "G_SWITCH_L":
+        if name == "game.level.switch":
             self.setLevel(event.value)
         pass
+
+    # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
+    # Diese werden vor dem game.start Event geladen.
+    @staticmethod
+    def use(dependency: object):
+        if dependency not in Game.dependencies:
+            Game.dependencies.append(dependency)
+
+    @staticmethod
+    def initDependencies():
+        for dependency in Game.dependencies:
+            dependency()
         
     def draw(self):
         if isinstance(self.level, Level):
@@ -36,14 +47,15 @@ class Game():
     def start(self):
         pygame.init()
         clock = pygame.time.Clock()
-        EventDispatcher.dispatch(Event("G_START"))
+        Game.initDependencies()
+        EventDispatcher.dispatch("game.start")
         while self.active:
             clock.tick(120)
             
             screen.fill(pygame.Color(50, 12, 100));
 
             Controls.update()
-            EventDispatcher.dispatch(Event("G_CONTROLS", Controls.controls))
+            EventDispatcher.dispatch("G_CONTROLS", Controls.controls)
 
             self.draw()
             pygame.display.flip()
