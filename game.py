@@ -3,7 +3,7 @@ from base.core.Game import Game
 
 game = Game()
 game.addLevel(*levels)
-game.setLevel(2)
+game.setLevel(1)
 game.start()
 
 # while not done:
