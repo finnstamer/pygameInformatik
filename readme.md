@@ -1,15 +1,16 @@
 # Pacman Framework Documentation
 Für diese Dokumentation sind einige Definitionen wichtig. Dafür eine kleine Auflistungen, wobei alles nur Platzhalter sind.
 - Wenn eine Klasse mit "()" Klammern steht, handelt es sich um eine Instanz, sonst um die statische Klasse 
+  - Der Unterschied liegt ist darin, dass die Instanz eigenständig und unabhängig zu anderen Instanzen (auch Objekten von mir genannt) ist; Die statische Klasse ist global identisch. Verschieden Wände beispielsweise, die alle dieselbe Klasse sind, müssen demnach alle eine Instanz sein, denn sonst würden alle exakt mit allen Parametern identisch sein. Wichtig ist auch, dass statische Klasse nicht von Instanzen erben können, denn ihnen fehlt eine __init__ Funktion => logischerweise, da init nämlich eine Instanz erstellt, um erben zu können.    
+- "Deprecated" heißt, dass dies nicht mehr lange in dieser Weise funktioniert, da es optimiert wird. Möglichst umgehen.
+- Ich verwende öfters Parameter statt Argument, da dass m.M.n besser verständlich ist, eine Variabel, die Einfluss auf eine Funktion, zu benennen.
 
-## Event
-Events sind Objekte aus einem Namen und einem zugehörigen Wert, der jeden Datentyp annehmen kann.
 ## Events
-Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch überall aus) zu allen Objekten, die dieses bestimmte Event abonniert haben.
+Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch überall aus) zu allen Objekten, die dieses bestimmte Event abonniert haben. Die Klasse Event beinhaltet
 #### Referenzen 
 - ###### Events.subscribe(obj: object, *events: str) -> None
   - Verbindet ein Objekt (i.d.R sich selbst, also "self") zu bestimmten Events
-  - Wenn ein abonniertes Event 'fired', wird die Methode obj.receiveEvent() aufgerufen.
+  - Wenn ein abonniertes Event 'fired', wird die Methode obj.receiveEvent() mit einem Event als Parameter aufgerufen.
   - Das Objekt muss demnach diese Methode beinhalten, sonst wird ein Error ausgegeben.
 - ###### Events.dispatch(event: str, value: Any) -> None:
   - Löst ein bestimmtes Event aus. Alle abonnierten Objekte können dieses auf ihre Weise verarbeiten.
@@ -19,11 +20,11 @@ Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch übera
   - Eine Anfrage wird an einen Empfänger mit Parametern gestellt, dieser gibt eine Antwort zurück. 
 ## Game
 #### Referenzen
-- ###### Game().addLevel(level: *Level)
+- ###### Game().addLevel(level: *Level) -> None
   - Deaktiviert und fügt Level hinzu. Überschreibungen möglich.
-- ###### Game().setLevel(id: int)
+- ###### Game().setLevel(id: int) -> None
   - Aktiviert das Level mit zugehöriger
-- ###### Game().start()
+- ###### Game().start() -> None
   - Startet alle wichtige Abhängikeiten
     - pygame.init
     - Dependencies werden geladen
@@ -32,11 +33,10 @@ Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch übera
     - "game.tick" wird versendet
     - "game.controls" wird versendet (deprecated => wird in unabhängige Dependency umgewandelt)
     - .draw Methode aller Objekte im Level wird ausgeführt
-- ###### Game.use(dependency: object)
+- ###### Game.use(dependency: object) -> None
   - Beigefügtes Objekt wird vor dem ersten Frame als Dependency geladen.
   - Damit werden unabhängige Klassen ermöglicht. Bpsw: Sounds
   - Dafür muss der Ort in dem die Funktion aufgerufen wird, bereits durchgeführt sein. 
-- ###### Start Game
 
 
 Was für ein Spiel:
