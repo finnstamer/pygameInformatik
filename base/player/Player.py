@@ -1,7 +1,9 @@
 from typing import Dict
 import pygame
+from base.core.Dependencies.Controls import Controls
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
+from base.core.Game import Game
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
@@ -15,11 +17,12 @@ class Player(MovableObject):
         self.width = 50
         self.speed = 3
         self.updateRect()
-        Events.subscribe(self, "game.start", "G_CONTROLS")
+        Game.use(Controls)
+        Events.subscribe(self, "game.tick")
 
     def receiveEvent(self, event: Event):
-        if event.name == "G_CONTROLS":
-            keys = event.value
+        if event.name == "game.tick":
+            keys = Controls.keys
             self.control(keys)
             if keys["space"]:
                 Events.dispatch("game.level.switch", 2)

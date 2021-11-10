@@ -1,15 +1,15 @@
 from typing import Dict
 
-from base.core.DependencyException import DependencyException
+from base.core.Dependencies.DependencyException import DependencyException
 import pygame
 
+# pygame.mixer is only available after pygame.init; therefore add Sounds as dependency
 class Sounds:
     loaded: Dict[str, pygame.mixer.Sound] = {}
     currentlyPlaying: pygame.mixer.Sound = None
     mixer = None
 
     def __init__(self) -> None:
-        # pygame.mixer is only available after pygame.init; therefore add Sounds as dependency
         Sounds.mixer = pygame.mixer
     
     @staticmethod

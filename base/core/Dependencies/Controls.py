@@ -1,8 +1,18 @@
 import pygame
 from pygame.constants import K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN
-class Controls():
-    controls = {"left": False, "right": False, "up": False, "down": False, "space": False}
+from base.core.Event.Event import Event
 
+from base.core.Event.Events import Events
+class Controls():
+    keys = {"left": False, "right": False, "up": False, "down": False, "space": False}
+
+    def __init__(self) -> None:
+        Events.subscribe(self, "game.dependency.tick")
+
+    def receiveEvent(self, event: Event):
+        if event.name == "game.dependency.tick":
+            Controls.update()
+        
     @staticmethod
     def update():
         for event in pygame.event.get():
@@ -14,25 +24,25 @@ class Controls():
     @staticmethod
     def updateControlsPressed(pressed):
         if pressed == K_LEFT:
-            Controls.controls["left"] = True
+            Controls.keys["left"] = True
         if pressed == K_RIGHT:
-            Controls.controls["right"] = True
+            Controls.keys["right"] = True
         if pressed == K_UP:
-            Controls.controls["up"] = True
+            Controls.keys["up"] = True
         if pressed == K_DOWN:
-            Controls.controls["down"] = True
+            Controls.keys["down"] = True
         if pressed == K_SPACE:
-            Controls.controls["space"] = True
+            Controls.keys["space"] = True
 
     @staticmethod
     def updateControlsReleased(released):
         if released == K_LEFT:
-            Controls.controls["left"] = False
+            Controls.keys["left"] = False
         if released == K_RIGHT:
-            Controls.controls["right"] = False
+            Controls.keys["right"] = False
         if released == K_UP:
-            Controls.controls["up"] = False
+            Controls.keys["up"] = False
         if released == K_DOWN:
-            Controls.controls["down"] = False
+            Controls.keys["down"] = False
         if released == K_SPACE:
-            Controls.controls["space"] = False
+            Controls.keys["space"] = False

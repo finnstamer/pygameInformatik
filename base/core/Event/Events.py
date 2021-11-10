@@ -38,8 +38,8 @@ class Events():
             Events.subscribers[e] = filter(lambda x: x != obj, subscribed)
 
     @staticmethod
-    def acceptRequest(req: str, compute: Callable):
-        Events.requests[req] = compute
+    def acceptRequest(req: str, func: Callable):
+        Events.requests[req] = func
         
     # Während ein Event ausschließlich ausgehend ist, gibt eine Request einen Wert zurück und ist aktiv vom Caller ausgehend.
     @staticmethod

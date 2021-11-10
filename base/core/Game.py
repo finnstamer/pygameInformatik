@@ -1,6 +1,6 @@
 import pygame
 from typing import Any, Dict, List
-from base.core.Controls.Controls import Controls
+from base.core.Dependencies.Controls import Controls
 from base.core.Event.Event import Event
 
 from base.core.Event.Events import Events
@@ -50,14 +50,12 @@ class Game():
         Events.dispatch("game.start")
         while self.active:
             clock.tick(120)
+            Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
-            
+
             screen.fill(pygame.Color(50, 12, 100));
-
-            Controls.update()
-            Events.dispatch("G_CONTROLS", Controls.controls)
-
             self.draw()
+            
             pygame.display.flip()
 
     def addLevel(self, *level: Level):
