@@ -9,7 +9,9 @@ from base.object.GameObject import GameObject
 from settings import screen
 
 class Game():
+    tickDelta = 0
     dependencies: List[Any] = []
+
     def __init__(self) -> None:
         self.active = True
         self.notes: Dict[str, Any] = {}
@@ -49,7 +51,7 @@ class Game():
         Game.initDependencies()
         Events.dispatch("game.start")
         while self.active:
-            clock.tick(120)
+            Game.tickDelta = clock.tick(60) / 1000
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
 

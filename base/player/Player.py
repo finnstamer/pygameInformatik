@@ -15,7 +15,7 @@ class Player(MovableObject):
         self.solid = True
         self.height = 50
         self.width = 50
-        self.speed = 3
+        self.speed = 150
         Game.use(Controls)
         Events.subscribe(self, "game.tick")
 

@@ -9,7 +9,7 @@ import pygame
 # Wenn Position geändert werden sollte, benutze .updatePos(x, y) oder .editPosBy(xD, yD)  (d = Delta = Differenz)
 class GameObject():
     def __init__(self) -> None:
-        self.active = True
+        self._active = True
         self.image = None
         self._pos = pygame.math.Vector2(0, 0);
         self._width = 0
@@ -18,6 +18,15 @@ class GameObject():
         self.updateRect()
 
         self.solid = False
+
+    @property
+    def active(self) -> bool:
+        return self._active
+
+    @active.setter
+    def active(self, value: bool):
+        self._active = value
+        self.onActivation()
 
     @property
     def width(self) -> int:
@@ -45,14 +54,13 @@ class GameObject():
     def pos(self, value: pygame.Vector2):
         self._pos = value
         self.updateRect()
+    
+    # Overrideable Function that runs whenever the object is activated
+    def onActivation(self):
+        pass
 
     def receiveEvent(self, e: Event):
-        raise NotImplementedError(f"Event '{e.name}' is not implemented in '{self.__class__.__name__}'.")
-
-    def edit(self, property: str, val: any):
-        self[property] = val
-        self.updateRect()
-        return self
+        raise NotImplementedError(f"Event '{e.name}' is subscribed but not implemented in '{self.__class__.__name__}'. Remove subscription or add the 'receiveEvent' function.")
     
     def setImage(self, image: str):
         self.image = pygame.image.load(image)
@@ -64,7 +72,6 @@ class GameObject():
         if self.active:
             if self.image:
                 screen.blit(self.image, self.rect)
-                pass
             else:
                 pygame.draw.rect(screen, self.color, self.rect)
 
@@ -82,7 +89,6 @@ class GameObject():
             self.getVectorPos(self._width), 
             self.getVectorPos(self._width, self._height)
         )
-    
     
     def updatePos(self, pos: pygame.Vector2):
         self._pos = pos

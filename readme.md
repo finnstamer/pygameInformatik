@@ -6,7 +6,7 @@ Für diese Dokumentation sind einige Definitionen wichtig. Dafür eine kleine Au
 - Ich verwende öfters "Parameter" statt "Argument", da dass m.M.n besser verständlich ist, eine Variabel, die Einfluss auf eine Funktion, Parameter zu benennen.
 
 ## Events
-Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch überall aus) zu allen Objekten, die dieses bestimmte Event abonniert haben.
+Die Events Klasse ermöglicht das Versenden eines Events zu allen Objekten, die dieses abonniert haben.
 ### Referenzen 
 #### Events
 - ###### Events.subscribe(obj: object, *events: str) -> None
@@ -14,9 +14,9 @@ Die Events Klasse ermöglicht das Versenden eines Events (von theoretisch übera
   - Wenn ein abonniertes Event 'fired', wird die Methode obj.receiveEvent() mit einem Event als Parameter aufgerufen.
   - Das Objekt muss demnach diese Methode beinhalten, sonst wird ein Error ausgegeben.
 - ###### Events.dispatch(event: str, value: Any) -> None:
-  - Löst ein bestimmtes Event aus. Alle abonnierten Objekte können dieses auf ihre Weise verarbeiten.
+  - Löst ein bestimmtes Event aus. Die 'receiveEvent' Methode wird bei allen abonnierten Objekten mit einem Event() als Parameter ausgelöst.
 #### Requests
-Requests ermöglichen einen Datenaustausch zwischen zwei unabhängig initierten Objekten, wobei beide ihre Aufgabenbereiche nicht verlassen. Im Gegensatz zu Events können Empfänger einer Request eine Antwort zu dem aufrufenden Objekt geben. Ebenfalls kann nur ein Objekt die Request annehmen 
+Requests ermöglichen einen Datenaustausch zwischen zwei unabhängig initierten Objekten, wobei beide ihre Aufgabenbereiche nicht verlassen. Im Gegensatz zu Events können Empfänger einer Request eine Antwort zu dem aufrufenden Objekt geben. Ebenfalls kann nur ein Objekt die Request annehmen.
 - ###### Events.acceptRequest(req: str, func: Callable) -> None:
   - Gibt dem System Bescheid, dass eine bestimme Request mit dem Namen jeweiligen Namen für req einer bestimmten Funktion (func) zugeordnet ist.
 - ###### Events.request(req: str, *args: Any) -> Any:
