@@ -15,7 +15,7 @@ class Player(MovableObject):
         self.solid = True
         self.height = 50
         self.width = 50
-        self.speed = 150
+        self.speed = 10
         Game.use(Controls)
         Events.subscribe(self, "game.tick")
 
@@ -25,6 +25,8 @@ class Player(MovableObject):
             self.control(keys)
             if keys["space"]:
                 Events.dispatch("game.level.switch", 2)
+            if keys["escape"]:
+                Events.disconnect("game.stop")
 
     def control(self, keys: Dict[str, bool]):
         if keys["left"]:

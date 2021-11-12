@@ -1,10 +1,10 @@
 import pygame
-from pygame.constants import K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN
+from pygame.constants import K_ESCAPE, K_LEFT, K_RIGHT, K_SPACE, K_UP, K_DOWN
 from base.core.Event.Event import Event
 
 from base.core.Event.Events import Events
 class Controls():
-    keys = {"left": False, "right": False, "up": False, "down": False, "space": False}
+    keys = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False}
 
     def __init__(self) -> None:
         Events.subscribe(self, "game.dependency.tick")
@@ -33,6 +33,8 @@ class Controls():
             Controls.keys["down"] = True
         if pressed == K_SPACE:
             Controls.keys["space"] = True
+        if pressed == K_ESCAPE:
+            Controls.keys["escape"] = True
 
     @staticmethod
     def updateControlsReleased(released):
@@ -46,3 +48,5 @@ class Controls():
             Controls.keys["down"] = False
         if released == K_SPACE:
             Controls.keys["space"] = False
+        if released == K_ESCAPE:
+            Controls.keys["escape"] = False
