@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Tuple
+from typing import Any, Dict, Tuple
 from base.core.Event.Event import Event
 from base.geometry.Rectangle import Rectangle
 from settings import screen
@@ -9,6 +9,7 @@ import pygame
 # Wenn Position geändert werden sollte, benutze .updatePos(x, y) oder .editPosBy(xD, yD)  (d = Delta = Differenz)
 class GameObject():
     def __init__(self) -> None:
+        self.id = 0
         self._active = True
         self.image = None
         self._pos = pygame.math.Vector2(0, 0);
@@ -54,6 +55,7 @@ class GameObject():
     def pos(self, value: pygame.Vector2):
         self._pos = value
         self.updateRect()
+    
     
     # Overrideable Function that runs whenever the object is activated
     def onActivation(self):

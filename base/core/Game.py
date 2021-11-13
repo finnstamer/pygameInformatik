@@ -1,6 +1,8 @@
 import pygame
 import sys
 from typing import Any, Dict, List
+
+from pygame.constants import KEYDOWN, KEYUP
 from base.core.Dependencies.Controls import Controls
 from base.core.Event.Event import Event
 
@@ -13,6 +15,7 @@ class Game():
     tickDelta = 0
     dependencies: List[Any] = []
     level: Level = Level(-1, [])
+    notes: Dict[str, Any] = {}
 
     def __init__(self) -> None:
         self.active = True
@@ -49,11 +52,12 @@ class Game():
 
     def start(self):
         pygame.init()
+        pygame.event.set_allowed([KEYDOWN, KEYUP])
         clock = pygame.time.Clock()
         Game.initDependencies()
         Events.dispatch("game.start")
         while self.active:
-            Game.tickDelta = clock.tick(60) / 1000
+            clock.tick(60)
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
 
@@ -68,7 +72,7 @@ class Game():
             self.levels[l.id] = l
     
     def setLevel(self, id: int):
-        if isinstance(self.level, Level):
+        if isinstance(Game.level, Level):
             Game.level.deactivate()
 
         if id in self.levels:

@@ -53,16 +53,16 @@ class Group(Generic[O]):
         
     # Wende eine Funktion auf alle Objekte an
     # Bsp: WallGroup.applyOnEach(lambda w: w.set('color', (0, 0, 0)); Dies würde die Farbe aller Wände schwarz machen. 
-    def applyOnEach(self, apply: typing.Callable):
+    def applyOnEach(self, apply: typing.Callable[[GameObject], None]):
         for i in range(self.length()):
-            self.objects[i] = apply(self.objects[i])
+            apply(self.objects[i])
         return self
 
     def indexOf(self, obj: O):
         return self.objects.index(obj)
     
     # Berechnet das nächste Objekt aus der Gruppe zu einem Punkt
-    def nearest(self, pos: pygame.math.Vector2) -> O:
+    def nearest(self, pos: pygame.math.Vector2) -> GameObject:
         if self.length() == 0:
             raise pygame.error(f"Group for {self.name} cannot check for nearest object. List is empty.")
         return sorted(self.objects, key=lambda obj: obj.pos.distance_to(pos))[0]
@@ -71,11 +71,14 @@ class Group(Generic[O]):
     def colliding(self, rect: Rectangle) -> List[O]:
         colliding = []
         for i in self.objects:
-            collided = Rectangle.byRect(i.rect.clip(rect))
-            if collided.area > 0:
-                colliding.append([i, collided])
+            print(i.rect)
+            # collided = Rectangle.byRect(i.rect.clip(rect))
+            collided = i.collidesWith(rect)
+            if collided:
+                colliding.append(i)
 
-        return list(map(
-            lambda x: x[0],
-            sorted(colliding, key=lambda c: c[1].area, reverse=True)
-        ))
+        # return list(map(
+        #     lambda x: x[0],
+        #     sorted(colliding, key=lambda c: c[1].area, reverse=True)
+        # ))
+        return colliding

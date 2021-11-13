@@ -5,6 +5,7 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 class Controls():
     keys = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False}
+    pressed = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False}
 
     def __init__(self) -> None:
         Events.subscribe(self, "game.dependency.tick")

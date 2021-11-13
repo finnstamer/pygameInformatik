@@ -112,8 +112,38 @@ Game
    f: getNode(note) -> value
       gets a note
 
-KI
-   subscribes to object (e.g player) events 
+KI{
+   Event driven
+   has different independent or dependent (on each other) Routines
+
+   Action{
+      bPos: Vec2
+      aPos: Vec2
+      speed: int
+   }
+
+   ActionList{
+      actions: [Action]
+      len = int
+      xLen = int
+      yLen = int
+
+      actionsAwayFrom(pos) -> int
+   }
+
+   Routine{
+      actions: [Action] #Next actions to perform on each tick
+
+      pv: onTick():
+         actionList = PathFinder.find(a, b)
+   }
+
+   PathFinder{
+      findPath(a: Vec2, b: Vec2) -> [Action]
+   }
+}
 
 TODO:
+ReDraw Queue in Game. So only changed Objects become drawn again
 needing factory for object id's
+reset values in Gameobjects via Dependency

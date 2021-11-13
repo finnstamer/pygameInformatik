@@ -1,4 +1,6 @@
 import pygame
 
 global screen
-screen = pygame.display.set_mode((480, 260))
+# screenRes = (480, 260)
+screenRes = (1080, 720)
+screen = pygame.display.set_mode(screenRes)
