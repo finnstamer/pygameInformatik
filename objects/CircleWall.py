@@ -10,3 +10,4 @@ class CircleWall (GameObject):
         self.pos = pygame.math.Vector2(2,8)
         self.altRect = pygame.draw.circle(100,100,255,15)
 
+
