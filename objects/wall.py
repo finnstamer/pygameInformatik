@@ -11,4 +11,3 @@ class Wall(GameObject):
         self.pos = pygame.math.Vector2(random.randrange(50, 400), random.randrange(50, 200))
         self.width = 50
         self.height = 50
-        self.updateRect()

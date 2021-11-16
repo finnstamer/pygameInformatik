@@ -12,12 +12,11 @@ class GameObject():
         self.id = 0
         self._active = True
         self.image = None
+        self.altRect = None
         self._pos = pygame.math.Vector2(0, 0);
         self._width = 0
         self._height = 0
         self.color = None
-        self.updateRect()
-
         self.solid = False
 
     @property
@@ -77,8 +76,11 @@ class GameObject():
             else:
                 pygame.draw.rect(screen, self.color, self.rect)
 
-    def updateRect(self):
-        self.rect = pygame.Rect(self._pos.x, self._pos.y, self._width, self._height)
+    def buildRect(self):
+        return pygame.Rect(self._pos.x, self._pos.y, self._width, self._height)
+
+    def updateRect(self):            
+        self.rect = self.buildRect()
         self.cRect = Rectangle().byRect(self.rect)
 
     def distanceTo(self, obj: GameObject):

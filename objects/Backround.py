@@ -6,5 +6,4 @@ class Backround(GameObject):
         super().__init__()
         self.width = screenRes[0]
         self.height = screenRes[1]
-        self.updateRect()
         self.setImage(image)

@@ -56,7 +56,7 @@ class Game():
         clock = pygame.time.Clock()
         Game.initDependencies()
         Events.dispatch("game.start")
-        while self.active:
+        while self.active:  
             clock.tick(60)
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
