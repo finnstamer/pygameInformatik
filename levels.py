@@ -3,6 +3,7 @@
 #--------------------#--------------------#--------------------
 import pygame
 from base.core.Level.Level import Level
+from base.object.CircleBorderObject import CircleBorderObject
 from base.object.Group import Group
 from base.player.Player import Player
 from objects.Backround import Backround
@@ -16,13 +17,16 @@ playerGroup = Group[Player]("player", Player).add(player)
 #--------------------
 wall11 = Wall()
 wall12= Wall()
+border = CircleBorderObject(50)
+border.pos = pygame.Vector2(100, 100)
+border.color = (150, 0, 150)
 
 bg = Backround("images/Dschungel.png")
 backgroundGroup = Group("bg", Backround).add(bg)
 
 wall11.updatePos(pygame.Vector2(200, 100))
 wall12.updatePos(pygame.Vector2(275, 150))
-wallGroup1 = Group[Wall]('walls', Wall).add(wall11, wall12)
+wallGroup1 = Group[Wall]('walls', Wall).add(wall11, wall12, border)
 level1 = Level(1, [backgroundGroup, playerGroup, wallGroup1])
 # Level2
 #-------------------

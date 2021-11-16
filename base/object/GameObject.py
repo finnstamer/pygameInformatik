@@ -12,11 +12,10 @@ class GameObject():
         self.id = 0
         self._active = True
         self.image = None
-        self.altRect = None
         self._pos = pygame.math.Vector2(0, 0);
         self._width = 0
         self._height = 0
-        self.color = None
+        self.color = (0, 0, 0)
         self.solid = False
 
     @property
@@ -35,7 +34,7 @@ class GameObject():
     @width.setter
     def width(self, value: int):
         self._width = value
-        self.updateRect()
+        self.buildRect()
     
     @property
     def height(self) -> int:
@@ -44,7 +43,7 @@ class GameObject():
     @height.setter
     def height(self, value: int):
         self._height = value
-        self.updateRect()
+        self.buildRect()
     
     @property
     def pos(self) -> int:
@@ -53,7 +52,7 @@ class GameObject():
     @pos.setter
     def pos(self, value: pygame.Vector2):
         self._pos = value
-        self.updateRect()
+        self.buildRect()
     
     
     # Overrideable Function that runs whenever the object is activated
@@ -74,14 +73,18 @@ class GameObject():
             if self.image:
                 screen.blit(self.image, self.rect)
             else:
-                pygame.draw.rect(screen, self.color, self.rect)
+                self.drawRect()
 
-    def buildRect(self):
-        return pygame.Rect(self._pos.x, self._pos.y, self._width, self._height)
+    def drawRect(self):
+        pygame.draw.rect(screen, self.color, self.rect)
+
+    def buildRect(self) -> pygame.Rect:
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
+        self.cRect = Rectangle().byRect(self.rect)
+        return self.rect
 
     def updateRect(self):            
         self.rect = self.buildRect()
-        self.cRect = Rectangle().byRect(self.rect)
 
     def distanceTo(self, obj: GameObject):
         return self._pos.distance_to(obj._pos)

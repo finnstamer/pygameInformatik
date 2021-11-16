@@ -1,14 +1,11 @@
 import pygame
-import sys
 from typing import Any, Dict, List
 
 from pygame.constants import KEYDOWN, KEYUP
-from base.core.Dependencies.Controls import Controls
 from base.core.Event.Event import Event
 
 from base.core.Event.Events import Events
 from base.core.Level.Level import Level
-from base.object.GameObject import GameObject
 from settings import screen
 
 class Game():
@@ -22,7 +19,6 @@ class Game():
         self.notes: Dict[str, Any] = {}
         self.levels: Dict[int, Level] = {}
         Events.subscribe(self, "game.stop", "game.level.switch")
-        # Events.acceptRequest("game.level.movement.allow", lambda o,p: self.level.allowMove(o, p))
 
     def receiveEvent(self, event: Event):
         name = event.name
