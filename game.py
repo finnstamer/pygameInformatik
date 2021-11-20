@@ -19,7 +19,7 @@ def nodeToObject(node: Node, id: int):
 
 player = Game.level.getGroup("player").objects[0]
 
-nodes = PathFinder.optimizeNodes(player, screenRes)
+nodes = PathFinder.generateNodes(player, screenRes)
 nodeObjects = []
 for n in range(len(nodes)):
     nodeObjects.append(nodeToObject(nodes[n], n))
@@ -28,7 +28,7 @@ nodeGroup = Group("nodes", Node).add(*nodeObjects)
 
 rootNodeObj: Node = nodeGroup.nearest(player.pos)
 rootNode: Node = Game.notes[rootNodeObj.id]
-targetNode = rootNode.right
+targetNode = rootNode.higher.right.down.right
 
 path = PathFinder.find(rootNode, targetNode)
 print(path)

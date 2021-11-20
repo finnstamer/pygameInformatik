@@ -30,7 +30,7 @@ class Player(MovableObject):
     
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
-            nodes = PathFinder.optimizeNodes(self, screenRes)
+            nodes = PathFinder.generateNodes(self, screenRes)
 
             objNodes = []
             for i in range(len(nodes)):
