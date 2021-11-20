@@ -63,6 +63,7 @@ class Player(MovableObject):
             
             nearest = Game.level.getGroup("nodes").nearest(self.cRect.center)
             node = Game.notes[nearest.id]
+            Game.level.getObject(node.down.down.down.right.id).color = (250, 100, 250)
             Game.level.getObject(node.id).color = (50, 250, 50)
             # upperNode = node.higher
             # upperNodeObj = Game.level.getObject(upperNode.id)

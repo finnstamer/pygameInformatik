@@ -2,7 +2,7 @@ import pygame
 
 from base.object.GameObject import GameObject
 from settings import screen
-class CircleBorderObject(GameObject):
+class CircleOutlineObject(GameObject):
     def __init__(self, radius: int, border: int) -> None:
         super().__init__()
         self.radius = radius

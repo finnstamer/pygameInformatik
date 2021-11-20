@@ -1,5 +1,6 @@
-from typing import List, Tuple
+from typing import Dict, List, Tuple
 import pygame
+from pygame.constants import MULTIGESTURE
 
 from base.core.Game import Game
 from base.object.GameObject import GameObject
@@ -7,11 +8,8 @@ from base.object.KI.Node import Node
 
 class PathFinder():
 
-    @staticmethod
-    def find(a: pygame.Vector2, b: pygame.Vector2):
-        nodes: List[Node] = []
-        solids = Game.level.allSolidObjects()
-        
+    minSteps = 5000
+    walkedNodes = []
     @staticmethod
     def createNodes(screen: Tuple[int, int], idStart=0, mod=1) -> List[Node]:
         nodes: List[Node] = []
@@ -35,6 +33,7 @@ class PathFinder():
     
     # Optimiert nodes für ein bestimmtes GameObject. Damit werden die Anzahl an Nodes stark reduziert.
     # Merges all nodes which area is the given object to one node
+    @staticmethod
     def optimizeNodes(obj: GameObject, screen: Tuple[int, int]) -> List[Node]:
         nodes: List[Node] = []
         modx = obj.width
@@ -68,3 +67,78 @@ class PathFinder():
         #     ] # Down Up Right Left
         return nodes
 
+    @staticmethod
+    def find(start: Node, dest: Node) -> List[Node]:
+        PathFinder.minSteps = 750
+        paths = PathFinder.walkPath(start, dest, [], 0, 10, super=True)
+
+        formatted = PathFinder.formatId(paths)
+        simplePath = PathFinder.breakDown(formatted)
+
+
+        print("-------------------")
+        print(formatted)
+        print("-------------------")
+        print(simplePath)
+        pList = []
+        # for p in simplePath:
+        #     [pList.append(n.id) for n in p]
+        # return pList
+
+    def walkPath(node: Node, dest: Node, recPath=[], steps=0, depth=5, super=False) -> Dict[int, List[Node]]:            
+        paths: List[List[Node]] = []
+        neighbors = node.neighborsToList()
+        PathFinder.walkedNodes.append(node)
+        for i in range(len(neighbors)):
+            n = neighbors[i]
+            path = recPath + [n]
+            if steps > depth: #or n in PathFinder.walkedNodes:
+                return paths
+            steps += 1
+
+            if n == dest:
+                print("FOUND")
+                paths.append(path)
+                return paths
+
+            walked = PathFinder.walkPath(n, dest, path, steps, depth)
+            if len(walked) > 0:
+                paths.append(walked)
+        return paths
+    
+    def formatId(nodeList):
+        formatted = []
+        for n in nodeList:
+            if type(n) is list:
+                formatted.append(PathFinder.formatId(n))
+            else:
+                formatted.append(n.id)
+        return formatted
+
+    def breakDown(nodeList, path=[]) -> List[List[Node]]:
+        # [
+        #   [0, 14, [25, 2], [25, 3, 5]], 
+        # ] 
+        # 
+        # => [
+        #       [0, 14, 25, 2],
+        #       [0, 14, 25, 3, 5]
+        # ]
+        paths: List[List[Node]] = []
+        #[14, [28, [29]]
+        for i in nodeList:
+            allLists = list(filter(lambda x: type(x) is list, i))
+            if len(allLists) == 0:
+                paths.append(i)
+            else:
+                paths += (PathFinder.breakDown(i))
+        return paths
+        # final = []
+        # for f in paths:
+        #     final.append(path + [f])
+        # return final
+
+        # final = []
+        # for l in listPath:
+        #     final.append(paths + PathFinder.breakDown(l))
+        # return final

@@ -1,8 +1,5 @@
 import pygame
-from base.object.CircleBorderObject import CircleBorderObject
 from base.object.CircleObject import CircleObject
-from base.object.GameObject import GameObject
-
 
 class CircleWall(CircleObject):
       def __init__(self, radius: int) -> None:

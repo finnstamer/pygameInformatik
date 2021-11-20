@@ -1,10 +1,43 @@
+from base.object.GameObject import GameObject
+from base.object.Group import Group
+from base.object.KI.Node import Node
+from base.object.KI.PathFinder import PathFinder
 from levels import levels 
 from base.core.Game import Game
-
+from settings import screenRes
 game = Game()
 game.addLevel(*levels)
 game.setLevel(1)
-game.start()
+# game.start()
+
+def nodeToObject(node: Node, id: int):
+    obj = GameObject()
+    obj.pos = node.pos
+    obj.id = id
+    Game.notes[id] = node
+    return obj
+
+player = Game.level.getGroup("player").objects[0]
+
+nodes = PathFinder.optimizeNodes(player, screenRes)
+nodeObjects = []
+for n in range(len(nodes)):
+    nodeObjects.append(nodeToObject(nodes[n], n))
+    nodes[n].id = n
+nodeGroup = Group("nodes", Node).add(*nodeObjects)
+
+rootNodeObj: Node = nodeGroup.nearest(player.pos)
+rootNode: Node = Game.notes[rootNodeObj.id]
+targetNode = rootNode.right
+
+path = PathFinder.find(rootNode, targetNode)
+print(path)
+print(f"root:{rootNode.id}; target:{targetNode.id}")
+# print(rootNode.down.down.down.id)
+
+# rootNode: Node = Game.notes["nodes"][0]
+# print(PathFinder.find(rootNode, rootNode.lower.lower.lower))
+
 
 # while not done:
 #     clock.tick(120)
