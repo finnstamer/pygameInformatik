@@ -27,6 +27,7 @@ for n in range(len(nodes)):
 nodeGroup = Group("nodes", Node).add(*nodeObjects)
 
 rootNodeObj: Node = nodeGroup.nearest(player.pos)
+
 rootNode: Node = Game.notes[rootNodeObj.id]
 targetNode = rootNode.higher.right.down.right
 

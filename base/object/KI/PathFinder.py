@@ -40,11 +40,10 @@ class PathFinder():
     @staticmethod
     def find(start: Node, dest: Node) -> List[Node]:
         PathFinder.minActions = 750
-        paths = PathFinder.findPath(start, dest, maxDepth=5)
+        paths = PathFinder.findPaths(start, dest, maxDepth=5)
 
-        formatted = PathFinder.formatId(paths)
-        simplified = PathFinder.simplifyNodePath(formatted)
-        sortedPath = sorted(simplified, key=lambda obj: len(obj))
+        formatted = PathFinder.formatId(paths) # For testing
+        sortedPath = sorted(formatted, key=lambda obj: len(obj))
 
         print("-------------------")
         print(formatted)
@@ -52,7 +51,7 @@ class PathFinder():
         print(sortedPath)
 
 
-    def findPath(node: Node, dest: Node, recPath=[], depth=0, maxDepth=5, super=False) -> Dict[int, List[Node]]:            
+    def findPaths(node: Node, dest: Node, recPath=[], depth=0, maxDepth=5) -> List[List[Node]]:            
         paths: List[List[Node]] = []
         neighbors = node.neighborsToList()
         PathFinder.walkedNodes.append(node)
@@ -68,9 +67,9 @@ class PathFinder():
                 paths.append(path)
                 return paths
 
-            rec = PathFinder.findPath(n, dest, path, depth, maxDepth)
+            rec = PathFinder.findPaths(n, dest, path, depth, maxDepth)
             if len(rec) > 0:
-                paths.append(rec)
+                paths += rec
         return paths
     
     def formatId(nodeList):
@@ -81,13 +80,3 @@ class PathFinder():
             else:
                 formatted.append(n.id)
         return formatted
-
-    def simplifyNodePath(nodeList, path=[]) -> List[List[Node]]:
-        paths: List[List[Node]] = []
-        for i in nodeList:
-            allLists = list(filter(lambda x: type(x) is list, i))
-            if len(allLists) == 0:
-                paths.append(i)
-            else:
-                paths += (PathFinder.simplifyNodePath(i))
-        return paths
