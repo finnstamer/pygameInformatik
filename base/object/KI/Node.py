@@ -12,14 +12,5 @@ class Node():
         self.left: Node = left
         self.right: Node = right
     
-    def neighborsToList(self) -> List:
-        nList = []
-        if self.higher is not None:
-            nList.append(self.higher)
-        if self.right is not None:
-            nList.append(self.right)
-        if self.down is not None:
-            nList.append(self.down)
-        if self.left is not None:
-            nList.append(self.left)
-        return nList
+    def neighborsToList(self) -> Dict[int, object]:
+        return {0: self.higher, 1: self.right, 2: self.down, 3: self.left}

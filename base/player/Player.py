@@ -9,7 +9,6 @@ from base.object.Group import Group
 from base.object.KI.Node import Node
 from base.object.KI.PathFinder import PathFinder
 from base.object.MovableObject import MovableObject
-from settings import screenRes
 
 class Player(MovableObject):
     def __init__(self) -> None:
@@ -30,7 +29,7 @@ class Player(MovableObject):
     
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
-            nodes = PathFinder.generateNodes(self, screenRes)
+            nodes = PathFinder.generateNodes(self)
 
             objNodes = []
             for i in range(len(nodes)):
@@ -46,32 +45,32 @@ class Player(MovableObject):
                 objNodes.append(obj)
             
             g = Group("nodes", Node).add(*objNodes)
-            print(g.length())
             Game.level.addGroup(g)
 
-        # basically mimicking the defaultValues Dependenccy
+        # basically mimicking the defaultValues Dependency TODO
         if event.name == "game.dependency.tick":
-            Game.level.getGroup("nodes").applyOnEach(self.default)
+            # Game.level.getGroup("nodes").applyOnEach(self.default)
+            pass
 
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
+
+            nodes = Game.level.getGroup("nodes")
+            nearest = nodes.nearest(self.cRect.center)
+            node = Game.notes[nearest.id]
             if keys["space"]:
-                Events.dispatch("game.level.switch", 2 if Game.level.id != 2 else 1)
+                Game.level.getGroup("nodes").applyOnEach(self.default)
+                # Events.dispatch("game.level.switch", 2 if Game.level.id != 2 else 1)
+                paths = PathFinder.find(node, Game.notes[16], 40)
+                if len(paths) > 0:
+                    path = paths[0]
+                    for n in path:
+                        Game.level.getObject(n.id).color = (235, 232, 52)
             if keys["escape"]:
                 Events.dispatch("game.stop")
             
-            nearest = Game.level.getGroup("nodes").nearest(self.cRect.center)
-            node = Game.notes[nearest.id]
-            Game.level.getObject(node.down.down.down.right.id).color = (250, 100, 250)
-            Game.level.getObject(node.id).color = (50, 250, 50)
-            # upperNode = node.higher
-            # upperNodeObj = Game.level.getObject(upperNode.id)
-            # upperNodeObj.color = (250, 0, 0)
-            Game.level.getObject(node.higher.id if node.higher else 0).color = (250, 0, 0)
-            Game.level.getObject(node.down.id if node.down else 0).color = (250, 0, 0)
-            Game.level.getObject(node.right.id if node.right else 0).color = (250, 0, 0)
-            Game.level.getObject(node.left.id if node.left else 0).color = (250, 0, 0)
+
 
     def control(self, keys: Dict[str, bool]):
         if keys["left"]:

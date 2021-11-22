@@ -1,25 +1,58 @@
-from typing import Dict, List, Tuple
 import pygame
-from pygame.constants import MULTIGESTURE
-
+from typing import Dict, List
+from base.core.Dependencies.DependencyException import DependencyException
+from base.core.Event.Event import Event
 from base.core.Game import Game
 from base.object.GameObject import GameObject
 from base.object.KI.Node import Node
+from settings import screenRes
 
 class PathFinder():
-
+    solidObjects: List[GameObject] = None
     minActions = 5000
     walkedNodes = []
     
     # Optimiert nodes für ein bestimmtes GameObject. Damit werden die Anzahl an Nodes stark reduziert.
     # Merges all nodes which area is the given object to one node
+
+    def receiveEvent(event: Event):
+        if event.name == "game.start":
+            PathFinder.solidObjects = Game.level.allSolidObjects()  #TODO Add a one time method to become solidObjects on all changes
+    
     @staticmethod
-    def generateNodes(obj: GameObject, screen: Tuple[int, int]) -> List[Node]:
+    def generateStaticNodes(obj: GameObject) -> List[Node]:
         nodes: List[Node] = []
         modx = obj.width
         mody = obj.height
-        sx = int(screen[0] / modx)
-        sy = int(screen[1] / mody)
+        sx = int(screenRes[0] / modx)
+        sy = int(screenRes[1] / mody)
+        for x in range(sx):
+            for y in range(sy):
+                vec = pygame.Vector2(x * modx, y * mody)
+                n = Node(vec)
+                
+                if y > 0:
+                    higherNode = nodes[-1]
+                    higherNode.down = n
+                    n.higher = higherNode
+
+                if x > 0:
+                    leftNode = nodes[-sy]
+                    leftNode.right = n
+                    n.left = leftNode
+                nodes.append(n)
+        return nodes
+    
+    # TODO
+    def generateDynamicNodes(obj: GameObject):
+        if PathFinder.solidObjects is None:
+            raise DependencyException(PathFinder)
+        
+        nodes: List[Node] = []
+        modx = obj.width
+        mody = obj.height
+        sx = int(screenRes[0] / modx)
+        sy = int(screenRes[1] / mody)
         for x in range(sx):
             for y in range(sy):
                 vec = pygame.Vector2(x * modx, y * mody)
@@ -38,32 +71,38 @@ class PathFinder():
         return nodes
 
     @staticmethod
-    def find(start: Node, dest: Node) -> List[Node]:
+    def find(start: Node, dest: Node, depth: int=5) -> List[Node]:
         PathFinder.minActions = 750
-        paths = PathFinder.findPaths(start, dest, maxDepth=5)
+        paths = PathFinder.findPaths(start, dest, depth=-1, maxDepth=depth, recPath=[start])
 
-        formatted = PathFinder.formatId(paths) # For testing
-        sortedPath = sorted(formatted, key=lambda obj: len(obj))
+        # paths = PathFinder.nodesToIds(paths) # For testing
+        sortedPath = sorted(paths, key=lambda obj: len(obj))
 
-        print("-------------------")
-        print(formatted)
-        print("-------------------")
+        print("------------------- ------------------ -------------------")
+        print("------------------- PATH FINDER RESULT -------------------")
+        print(f"------------------- root: {start.id} - dest: {dest.id} -------------------")
         print(sortedPath)
+        print("------------------- ------------------ -------------------")
+        return sortedPath
 
 
     def findPaths(node: Node, dest: Node, recPath=[], depth=0, maxDepth=5) -> List[List[Node]]:            
         paths: List[List[Node]] = []
-        neighbors = node.neighborsToList()
+        neighbors = PathFinder.bestNeighbors(node, dest)
         PathFinder.walkedNodes.append(node)
         depth += 1
         for i in range(len(neighbors)):
             n = neighbors[i]
+            print(n)
+            if n == None:
+                continue
+        
             path = recPath + [n]
             if depth > maxDepth or depth > PathFinder.minActions: #or n in PathFinder.walkedNodes:
                 return paths
 
             if n == dest:
-                PathFinder.minActions = depth
+                PathFinder.minActions = 0
                 paths.append(path)
                 return paths
 
@@ -72,11 +111,24 @@ class PathFinder():
                 paths += rec
         return paths
     
-    def formatId(nodeList):
+    def nodesToIds(nodeList):
         formatted = []
         for n in nodeList:
             if type(n) is list:
-                formatted.append(PathFinder.formatId(n))
+                formatted.append(PathFinder.nodesToIds(n))
             else:
                 formatted.append(n.id)
         return formatted
+
+    # Optimiert die Nachbarliste an Nodes einer root Node so, dass relativ zur Position, die nächsten Nodes in Richtung Ziel als als erstes in der Liste stehen.
+    def bestNeighbors(node: Node, dest: Node) -> List[Node]:
+        nList = node.neighborsToList()
+
+        mapped = [
+            [node.pos.y - dest.pos.y, nList[0]], 
+            [dest.pos.x - node.pos.x, nList[1]],
+            [dest.pos.y - node.pos.y, nList[2]],
+            [node.pos.x - dest.pos.x, nList[3]]
+        ]
+        order = sorted(mapped, key=lambda y: y[0], reverse=True)
+        return [v[1] for v in order]

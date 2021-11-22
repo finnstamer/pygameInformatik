@@ -8,7 +8,8 @@ from settings import screenRes
 game = Game()
 game.addLevel(*levels)
 game.setLevel(1)
-# game.start()
+game.start()
+exit()
 
 def nodeToObject(node: Node, id: int):
     obj = GameObject()
@@ -19,7 +20,7 @@ def nodeToObject(node: Node, id: int):
 
 player = Game.level.getGroup("player").objects[0]
 
-nodes = PathFinder.generateNodes(player, screenRes)
+nodes = PathFinder.generateNodes(player)
 nodeObjects = []
 for n in range(len(nodes)):
     nodeObjects.append(nodeToObject(nodes[n], n))
@@ -29,15 +30,28 @@ nodeGroup = Group("nodes", Node).add(*nodeObjects)
 rootNodeObj: Node = nodeGroup.nearest(player.pos)
 
 rootNode: Node = Game.notes[rootNodeObj.id]
-targetNode = rootNode.higher.right.down.right
+targetNode = rootNode.right
 
-path = PathFinder.find(rootNode, targetNode)
-print(path)
-print(f"root:{rootNode.id}; target:{targetNode.id}")
-# print(rootNode.down.down.down.id)
+# nList = list(rootNode.neighborsToList().values())
 
-# rootNode: Node = Game.notes["nodes"][0]
-# print(PathFinder.find(rootNode, rootNode.lower.lower.lower))
+print(rootNode.pos)
+print(targetNode.pos)
+print("----------------")
+print(PathFinder.nodesToIds(rootNode.neighborsToList().values()))
+nList = PathFinder.bestNeighbors(rootNode, targetNode)
+print(PathFinder.nodesToIds(nList))
+
+# path = PathFinder.find(rootNode, targetNode, 15)
+
+# Tasks:
+    # Finn: 
+    #   KI > NodeList to Actions => Actions to Routines => Routines to KI
+    # Leon: 
+    #   Übertragung von Map Concepts ins Game > (Wand-)Klassen für Grundformen erstellen => Sprites entwickeln und implementieren. 
+    #   Game Concept weiterentwickeln
+    # Aryan: 
+    #   Erstellung von Sounds 
+    #   Game Concept weiterenwtickeln
 
 
 # while not done:
