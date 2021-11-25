@@ -5,20 +5,15 @@ from base.core.Event.Event import Event
 from base.core.Game import Game
 from base.object.GameObject import GameObject
 from base.object.KI.Node import Node
+from base.object.MovableObject import MovableObject
 from settings import screenRes
 
 class PathFinder():
-    solidObjects: List[GameObject] = None
     minActions = 5000
     walkedNodes = []
     
     # Optimiert nodes für ein bestimmtes GameObject. Damit werden die Anzahl an Nodes stark reduziert.
-    # Merges all nodes which area is the given object to one node
-
-    def receiveEvent(event: Event):
-        if event.name == "game.start":
-            PathFinder.solidObjects = Game.level.allSolidObjects()  #TODO Add a one time method to become solidObjects on all changes
-    
+    # Merges all nodes which area is the given object to one node    
     @staticmethod
     def generateStaticNodes(obj: GameObject) -> List[Node]:
         nodes: List[Node] = []
@@ -45,7 +40,7 @@ class PathFinder():
     
     # TODO
     def generateDynamicNodes(obj: GameObject):
-        if PathFinder.solidObjects is None:
+        if Game.level is None:
             raise DependencyException(PathFinder)
         
         nodes: List[Node] = []
@@ -53,21 +48,34 @@ class PathFinder():
         mody = obj.height
         sx = int(screenRes[0] / modx)
         sy = int(screenRes[1] / mody)
+
+        testObj = MovableObject()
+        testObj.rect = obj.cRect.get(obj.pos, obj.cRect.lowerRight)
+        testObj.speed = 1
         for x in range(sx):
             for y in range(sy):
-                vec = pygame.Vector2(x * modx, y * mody)
-                n = Node(vec)
-                
                 if y > 0:
+                    vec = pygame.Vector2(x * modx, y * mody)
+                    vec = testObj.furthestMove(vec, x=False)
+                    n = Node(vec)
                     higherNode = nodes[-1]
                     higherNode.down = n
                     n.higher = higherNode
+                    # if Game.level.allowMove(testObj, vec):
+                    #     higherNode.down = n
+                    #     n.higher = higherNode
+                    # else:
+
 
                 if x > 0:
                     leftNode = nodes[-sy]
                     leftNode.right = n
                     n.left = leftNode
+                
                 nodes.append(n)
+
+                testRec = obj.cRect.get(vec, (vec.x + obj.width, vec.y + obj.height))
+                testObj.rect = testRec
         return nodes
 
     @staticmethod
