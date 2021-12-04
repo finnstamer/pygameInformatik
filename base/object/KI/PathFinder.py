@@ -1,6 +1,9 @@
 import pygame
 from typing import Dict, List
+
+from math import ceil as ceil
 from base.core.Dependencies.DependencyException import DependencyException
+from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Game import Game
 from base.object.GameObject import GameObject
@@ -19,8 +22,8 @@ class PathFinder():
         nodes: List[Node] = []
         modx = obj.width
         mody = obj.height
-        sx = int(screenRes[0] / modx)
-        sy = int(screenRes[1] / mody)
+        sx = ceil(screenRes[0] / modx)
+        sy = ceil(screenRes[1] / mody)
         for x in range(sx):
             for y in range(sy):
                 vec = pygame.Vector2(x * modx, y * mody)
@@ -39,43 +42,44 @@ class PathFinder():
         return nodes
     
     # TODO
+    # Dynamische Nodes passen sich im Gegensatz zu statischen an ihre Umgebung an. Also berücksichtigen solide NPOs
+    # Berechnet Nodes danach, ob zwischen der vorherigen Position und der "estimated Position" der jetzigen Iteration kein solides Objektes liegt
     def generateDynamicNodes(obj: GameObject):
         if Game.level is None:
             raise DependencyException(PathFinder)
         
         nodes: List[Node] = []
-        modx = obj.width
-        mody = obj.height
-        sx = int(screenRes[0] / modx)
-        sy = int(screenRes[1] / mody)
-
-        testObj = MovableObject()
-        testObj.rect = obj.cRect.get(obj.pos, obj.cRect.lowerRight)
-        testObj.speed = 1
+        sx = ceil(screenRes[0] / obj.width)
+        sy = ceil(screenRes[1] / obj.height)
+        
+        solidObjects = list(filter(lambda x: x is not obj, Game.level.allSolidObjects()))
+        skipped: Dict[int, int] = {}
         for x in range(sx):
+            pos = pygame.Vector2(x * obj.width, 0)
+            skipped[x] = 0
             for y in range(sy):
-                if y > 0:
-                    vec = pygame.Vector2(x * modx, y * mody)
-                    vec = testObj.furthestMove(vec, x=False)
-                    n = Node(vec)
-                    higherNode = nodes[-1]
-                    higherNode.down = n
-                    n.higher = higherNode
-                    # if Game.level.allowMove(testObj, vec):
-                    #     higherNode.down = n
-                    #     n.higher = higherNode
-                    # else:
-
-
-                if x > 0:
-                    leftNode = nodes[-sy]
-                    leftNode.right = n
-                    n.left = leftNode
+                # Estimated Node Position
+                estPos = pygame.Vector2(x * obj.width, y * obj.height)
                 
-                nodes.append(n)
+                # Von vorheriger Node zur estPos
+                furthestDown = Movement.furthestMove(obj, estPos, solidObjects, pos)
+                # Wenn unsere Startposition (pos) bereits kollidiert, frage nach der erst-möglichen Position und setzte sie als neue Node
+                if furthestDown is None:
+                    firstDownPos = Movement.firstMove(obj, pygame.Vector2(pos.x, screenRes[1]), solidObjects, pos)
+                    downNode = Node(firstDownPos)
+                    pos = downNode.pos
+                else:
+                    downNode = Node(furthestDown)
+                    if y != 0:
+                        nodes[-1].down = downNode
+                        downNode.higher = nodes[-1]
+                    if x != 0:
+                        nodes[-sy].right = downNode
+                        downNode.left = nodes[-sy]
+                    pos = estPos
 
-                testRec = obj.cRect.get(vec, (vec.x + obj.width, vec.y + obj.height))
-                testObj.rect = testRec
+                nodes.append(downNode)
+                continue
         return nodes
 
     @staticmethod
@@ -102,7 +106,7 @@ class PathFinder():
         for i in range(len(neighbors)):
             n = neighbors[i]
             print(n)
-            if n == None:
+            if n == None or n in recPath: # Dont search double on paths, already gone by the other "instances"
                 continue
         
             path = recPath + [n]

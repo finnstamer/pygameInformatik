@@ -37,10 +37,10 @@ class Level():
         return reduce(lambda x,y:x+y, map(lambda x:x.objects, self.groups), [])
     
     def allSolidObjects(self):
-        return filter(lambda x: x.solid, self.objects) 
+        return list(filter(lambda x: x.solid, self.objects))
 
     def negativeObjects(self, objs: List[GameObject]) -> GameObject:
-        return filter(lambda x: x not in objs, self.objects)
+        return list(filter(lambda x: x not in objs, self.objects))
     
     def allowMove(self, obj: GameObject, pos: pygame.Vector2) -> bool:
         solidObjs = filter(lambda x: x != obj, self.allSolidObjects())

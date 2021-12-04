@@ -32,9 +32,10 @@ class Game():
     # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
     # Diese werden vor dem game.start Event geladen.
     @staticmethod
-    def use(dependency: object):
-        if dependency not in Game.dependencies:
-            Game.dependencies.append(dependency)
+    def use(*dependency: object):
+        for d in list(dependency):
+            if d not in Game.dependencies:
+                Game.dependencies.append(d)
 
     @staticmethod
     def initDependencies():
@@ -57,7 +58,7 @@ class Game():
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
 
-            screen.fill(pygame.Color(50, 12, 100));
+            screen.fill(pygame.Color(0, 0, 0));
             self.draw()
             
             pygame.display.flip()

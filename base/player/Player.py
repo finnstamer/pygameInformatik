@@ -1,6 +1,7 @@
 from typing import Dict
 import pygame
 from base.core.Dependencies.Controls import Controls
+from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
@@ -16,7 +17,7 @@ class Player(MovableObject):
 
         self.pos = pygame.math.Vector2((50, 50));
         self.color = (50, 50, 50)
-        self.solid = True
+        self.solid = False
         self.height = 50
         self.width = 50
         self.speed = 10
@@ -24,12 +25,12 @@ class Player(MovableObject):
         Events.subscribe(self, "game.tick", "game.start", "game.dependency.tick")
 
     def default(self, obj):
-        obj.color = (0, 0, 250)
+        obj.color = (0, 250, 250)
         return obj
     
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
-            nodes = PathFinder.generateStaticNodes(self)
+            nodes = PathFinder.generateDynamicNodes(self)
 
             objNodes = []
             for i in range(len(nodes)):
@@ -40,7 +41,7 @@ class Player(MovableObject):
                 obj.pos = node.pos
                 obj.width = 5
                 obj.height = 5
-                obj.color = (0, 0, 250)
+                obj.color = (0, 250, 250)
                 Game.notes[i] = node
                 objNodes.append(obj)
             
@@ -74,10 +75,10 @@ class Player(MovableObject):
 
     def control(self, keys: Dict[str, bool]):
         if keys["left"]:
-            self.moveByDelta(-self.speed)
+            self.moveBySteps(-self.speed)
         if keys["right"]:
-            self.moveByDelta(self.speed)
+            self.moveBySteps(self.speed)
         if keys["up"]:
-            self.moveByDelta(-self.speed, False)
+            self.moveBySteps(-self.speed, False)
         if keys["down"]:
-            self.moveByDelta(self.speed, False)
+            self.moveBySteps(self.speed, False)

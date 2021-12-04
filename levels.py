@@ -24,10 +24,10 @@ border.pos = pygame.Vector2(250, 250)
 bg = Backround("images/Dschungel.png")
 backgroundGroup = Group("bg", Backround).add(bg)
 
-wall11.updatePos(pygame.Vector2(200, 100))
+wall11.updatePos(pygame.Vector2(175, 75))
 wall12.updatePos(pygame.Vector2(275, 150))
-wallGroup1 = Group[Wall]('walls', Wall).add(wall11, wall12, border)
-level1 = Level(1, [backgroundGroup, playerGroup, wallGroup1])
+wallGroup1 = Group[Wall]('walls', Wall).add(wall11, wall12)
+level1 = Level(1, [playerGroup, wallGroup1])
 # Level2
 #-------------------
 wall21 = Wall()

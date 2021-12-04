@@ -46,7 +46,7 @@ class GameObject():
         self.buildRect()
     
     @property
-    def pos(self) -> int:
+    def pos(self) -> pygame.Vector2:
         return self._pos
 
     @pos.setter
@@ -54,6 +54,14 @@ class GameObject():
         self._pos = value
         self.buildRect()
     
+    @property
+    def rect(self) -> pygame.Rect:
+        return self._rect
+    
+    @rect.setter
+    def rect(self, rect: pygame.Rect):
+        self._rect = rect
+        self.cRect = Rectangle.byRect(rect)
     
     # Overrideable Function that runs whenever the object is activated
     def onActivation(self):
