@@ -30,12 +30,12 @@ class Player(MovableObject):
     
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
-            nodes = PathFinder.generateDynamicNodes(self)
+            nodes = PathFinder.generateDynamicNodes(self, 1)
 
             objNodes = []
             for i in range(len(nodes)):
                 node = nodes[i]
-                node.id = i
+                node.id = i 
                 obj = GameObject()
                 obj.id = i
                 obj.pos = node.pos
@@ -58,8 +58,8 @@ class Player(MovableObject):
             self.control(keys)
 
             nodes = Game.level.getGroup("nodes")
-            nearest = nodes.nearest(self.cRect.center)
-            node = Game.notes[nearest.id]
+            nearest = nodes.nearest(self.pos)
+            node: Node = Game.notes[nearest.id]
             if keys["space"]:
                 Game.level.getGroup("nodes").applyOnEach(self.default)
                 # Events.dispatch("game.level.switch", 2 if Game.level.id != 2 else 1)
@@ -68,6 +68,17 @@ class Player(MovableObject):
                     path = paths[0]
                     for n in path:
                         Game.level.getObject(n.id).color = (235, 232, 52)
+            if keys["lShift"]:
+                Game.level.getGroup("nodes").applyOnEach(self.default)
+                neighbors = list(node.neighborsToList().values())
+                print("---------------------------")
+                print(neighbors)
+                for n in neighbors:
+                    if n is None:
+                        continue
+                    Game.level.getObject(n.id).color = (19, 242, 53)
+                    
+
             if keys["escape"]:
                 Events.dispatch("game.stop")
             

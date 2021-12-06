@@ -44,22 +44,24 @@ class PathFinder():
     # TODO
     # Dynamische Nodes passen sich im Gegensatz zu statischen an ihre Umgebung an. Also berücksichtigen solide NPOs
     # Berechnet Nodes danach, ob zwischen der vorherigen Position und der "estimated Position" der jetzigen Iteration kein solides Objektes liegt
-    def generateDynamicNodes(obj: GameObject):
+
+    def generateDynamicNodes(obj: GameObject, mod=1):
         if Game.level is None:
             raise DependencyException(PathFinder)
         
         nodes: List[Node] = []
-        sx = ceil(screenRes[0] / obj.width)
-        sy = ceil(screenRes[1] / obj.height)
+        sx = ceil(screenRes[0] / obj.width * mod)
+        sy = ceil(screenRes[1] / obj.height * mod)
         
         solidObjects = list(filter(lambda x: x is not obj, Game.level.allSolidObjects()))
-        skipped: Dict[int, int] = {}
+        skipped = []
         for x in range(sx):
-            pos = pygame.Vector2(x * obj.width, 0)
-            skipped[x] = 0
+            pos = pygame.Vector2(x * obj.width / mod, 0)
+            skipped.append([])
             for y in range(sy):
+                skipped[x].append(skipped[x][y - 1] if y > 0 else 0)
                 # Estimated Node Position
-                estPos = pygame.Vector2(x * obj.width, y * obj.height)
+                estPos = pygame.Vector2(x * obj.width / mod, y * obj.height / mod)
                 
                 # Von vorheriger Node zur estPos
                 furthestDown = Movement.furthestMove(obj, estPos, solidObjects, pos)
@@ -71,16 +73,24 @@ class PathFinder():
                 else:
                     downNode = Node(furthestDown)
                     if y != 0:
+                        if nodes[-1].pos == downNode.pos:
+                            # Um später von rechts nach links nachvollziehen zu können, ob Nodes geskipped worden, und ab welchen y-Value wird das in skipped festgehalten.
+                            skipped[x][y] += 1
+                            pos = estPos
+                            continue
                         nodes[-1].down = downNode
                         downNode.higher = nodes[-1]
                     if x != 0:
-                        nodes[-sy].right = downNode
-                        downNode.left = nodes[-sy]
+                        # Die Anzahl der geskippten Nodes der gesamten letzen Col  -  die Nodes in der letzten Col, die noch vorher geskippt worden   +    die geskippten der aktuellen Col
+                        skippedFromLastCol = skipped[x - 1][-1] - skipped[x - 1][y] + skipped[x][y]
+                        nodes[-sy + skippedFromLastCol].right = downNode
+                        downNode.left = nodes[-sy + skippedFromLastCol] # Problem: Skipped Values of the last col are only correct if the skip is in the the section of nodes to the left side
                     pos = estPos
 
                 nodes.append(downNode)
-                continue
         return nodes
+
+    # TODO Add "diagonal Node block" => Add nodes in a triangle "block" to allow diagonal movement in a collision checked space 
 
     @staticmethod
     def find(start: Node, dest: Node, depth: int=5) -> List[Node]:

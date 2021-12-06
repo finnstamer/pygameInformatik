@@ -9,12 +9,13 @@ class MovableObject(GameObject):
     def __init__(self) -> None:
         super().__init__()
         self.speed = 1
+        self.allowMovement = True
     
 
     # Bewegt das Objekt direkt zu einer Position, wenn es dort nicht blockiert wird.
     def move(self, pos: pygame.Vector2):
         # if Game.level.allowMove(self, pos):
-        if Movement.allowPosition(self, pos, Game.level.allSolidObjects()): 
+        if self.allowMovement and Movement.allowPosition(self, pos, Game.level.allSolidObjects()): 
             self.updatePos(pos)
     
     # Bewegt das Objekt bis zu den weitesten Step, der das Objekt mit keinem anderen solidem Objekt kollidieren lässt.
