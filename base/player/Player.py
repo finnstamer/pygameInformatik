@@ -1,14 +1,9 @@
 from typing import Dict
 import pygame
 from base.core.Dependencies.Controls import Controls
-from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
-from base.object.GameObject import GameObject
-from base.object.Group import Group
-from base.object.KI.Node import Node
-from base.object.KI.PathFinder import PathFinder
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
@@ -29,60 +24,12 @@ class Player(MovableObject):
         return obj
     
     def receiveEvent(self, event: Event):
-        if event.name == "game.start":
-            nodes = PathFinder.generateDynamicNodes(self, 1)
-
-            objNodes = []
-            for i in range(len(nodes)):
-                node = nodes[i]
-                node.id = i 
-                obj = GameObject()
-                obj.id = i
-                obj.pos = node.pos
-                obj.width = 5
-                obj.height = 5
-                obj.color = (0, 250, 250)
-                Game.notes[i] = node
-                objNodes.append(obj)
-            
-            g = Group("nodes", Node).add(*objNodes)
-            Game.level.addGroup(g)
-
-        # basically mimicking the defaultValues Dependency TODO
-        if event.name == "game.dependency.tick":
-            # Game.level.getGroup("nodes").applyOnEach(self.default)
-            pass
-
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
-
-            nodes = Game.level.getGroup("nodes")
-            nearest = nodes.nearest(self.pos)
-            node: Node = Game.notes[nearest.id]
-            if keys["space"]:
-                Game.level.getGroup("nodes").applyOnEach(self.default)
-                # Events.dispatch("game.level.switch", 2 if Game.level.id != 2 else 1)
-                paths = PathFinder.find(node, Game.notes[16], 40)
-                if len(paths) > 0:
-                    path = paths[0]
-                    for n in path:
-                        Game.level.getObject(n.id).color = (235, 232, 52)
-            if keys["lShift"]:
-                Game.level.getGroup("nodes").applyOnEach(self.default)
-                neighbors = list(node.neighborsToList().values())
-                print("---------------------------")
-                print(neighbors)
-                for n in neighbors:
-                    if n is None:
-                        continue
-                    Game.level.getObject(n.id).color = (19, 242, 53)
-                    
-
             if keys["escape"]:
                 Events.dispatch("game.stop")
-            
-
+        
 
     def control(self, keys: Dict[str, bool]):
         if keys["left"]:

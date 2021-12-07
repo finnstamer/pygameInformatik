@@ -20,6 +20,7 @@ wall12= Wall()
 
 border = CircleOutlineObject(50, 2)
 border.pos = pygame.Vector2(250, 250)
+border.color = (250, 250, 250)
 
 bg = Backround("images/Dschungel.png")
 backgroundGroup = Group("bg", Backround).add(bg)

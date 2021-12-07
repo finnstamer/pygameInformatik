@@ -143,6 +143,20 @@ KI{
    }
 }
 
+Weltraum setting; 
+Gegner: Ufos / Alien
+Spieler: Raumschiffe
+Collectables: Ektoplasma
+
+Ektoplasma als Energie/Materialquelle der Aliens sollen gesammelt werden, damit die Alien sich damit sich verstärken. 
+
+Mauern: Asteriodengürtel
+
+# Aufgaben
+Sprites: Feo
+Maps: Leon
+Movement & Collectables: Finn
+
 TODO:
 ReDraw Queue in Game. So only changed Objects become drawn again
 needing factory for object id's
