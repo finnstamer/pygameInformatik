@@ -2,11 +2,11 @@ from base.object.GameObject import GameObject
 from base.object.Group import Group
 from base.object.KI.Node import Node
 from base.object.KI.PathFinder import PathFinder
-from levels import levels 
 from base.core.Game import Game
 from settings import screenRes
+
 game = Game()
-game.addLevel(*levels)
+game.addLevel()
 game.setLevel(1)
 game.start()
 exit()
