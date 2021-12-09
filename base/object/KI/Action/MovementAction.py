@@ -10,7 +10,7 @@ class MovementAction(Action):
         xDiff = abs(self.startState.pos.x) - abs(self.endState.pos.x)
         yDiff = abs(self.endState.pos.y) - abs(self.endState.pos.y)
         xMovement = xDiff > yDiff
-        self.startState.moveBySteps(xDiff if xMovement else yDiff, xMovement)
+        self.startState.move(xDiff if xMovement else yDiff)
 
     def isFinished(self) -> bool:
         return self.startState.pos == self.endState.pos

@@ -1,4 +1,3 @@
-import pygame
 from base.core.Event.Event import Event
 
 from base.object.GameObject import GameObject
@@ -27,5 +26,3 @@ class Action():
 
     def isFinished(self) -> bool:
         raise NotImplementedError(f"isFinished method in {self.__class__.__name__} is missing.")
-
-

@@ -15,7 +15,10 @@ class Player(MovableObject):
         self.solid = False
         self.height = 50
         self.width = 50
+
         self.speed = 10
+        self.direction = 1 # Right
+
         Game.use(Controls)
         Events.subscribe(self, "game.tick", "game.start", "game.dependency.tick")
 
@@ -27,16 +30,25 @@ class Player(MovableObject):
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
+            self.move(self.nextPos())
+
             if keys["escape"]:
                 Events.dispatch("game.stop")
-        
+ 
+    def nextPos(self) -> pygame.Vector2:
+        return {
+            0: lambda: pygame.Vector2(self.pos.x, self.pos.y - self.speed),
+            1: lambda: pygame.Vector2(self.pos.x + self.speed, self.pos.y),
+            2: lambda: pygame.Vector2(self.pos.x, self.pos.y + self.speed),
+            3: lambda: pygame.Vector2(self.pos.x - self.speed, self.pos.y)
+        }[self.direction]()
 
     def control(self, keys: Dict[str, bool]):
-        if keys["left"]:
-            self.moveBySteps(-self.speed)
-        if keys["right"]:
-            self.moveBySteps(self.speed)
         if keys["up"]:
-            self.moveBySteps(-self.speed, False)
+            self.direction = 0
+        if keys["right"]:
+            self.direction = 1
         if keys["down"]:
-            self.moveBySteps(self.speed, False)
+            self.direction = 2
+        if keys["left"]:
+            self.direction = 3

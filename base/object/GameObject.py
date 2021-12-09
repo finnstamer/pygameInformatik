@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Any, Dict, Tuple
+from typing import Tuple
 from base.core.Event.Event import Event
 from base.geometry.Rectangle import Rectangle
 from settings import screen
@@ -109,13 +109,7 @@ class GameObject():
         self._pos = pos
         self.updateRect()
 
-    def getPositionChange(self, x=0, y=0):
-        vec = pygame.Vector2(self._pos.x, self._pos.y) # Cloning
-        vec.x += x
-        vec.y += y
-        return vec
-
-    def editPosBy(self, x=0, y=0):
+    def updatePosBy(self, x=0, y=0):
         vec = self.getVectorPos()
         vec.x += x
         vec.y += y

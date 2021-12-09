@@ -11,21 +11,13 @@ class MovableObject(GameObject):
         self.speed = 1
         self.allowMovement = True
     
-
-    # Bewegt das Objekt direkt zu einer Position, wenn es dort nicht blockiert wird.
+    # Bewegt das Objekt zur weitest möglichen Position in Richtung pos
     def move(self, pos: pygame.Vector2):
         # if Game.level.allowMove(self, pos):
-        if self.allowMovement and Movement.allowPosition(self, pos, Game.level.allSolidObjects()): 
-            self.updatePos(pos)
-    
-    # Bewegt das Objekt bis zu den weitesten Step, der das Objekt mit keinem anderen solidem Objekt kollidieren lässt.
-    def moveBySteps(self, steps=0, x=True):
-        xDelta = steps if x else 0
-        yDelta = steps if not x else 0
-        vec = pygame.Vector2(self.pos.x + xDelta, self.pos.y + yDelta)
-        pos = Movement.furthestMove(self, vec, Game.level.allSolidObjects())
-        self.updatePos(pos)
-            
+        xMov = self.pos.y == pos.y
+        furthestPos = self.furthestMove(pos, xMov)
+        if furthestPos is not None:
+            self.updatePos(furthestPos)            
         
     # Überarbietung per Errechnung der Distanz zum nearest solid Object in eine bestimmte Richtung. TODO
     def furthestMove(self, vec: pygame.Vector2, x=True) -> pygame.Vector2 or None:
