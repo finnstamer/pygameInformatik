@@ -4,11 +4,13 @@ from base.core.Dependencies.Controls import Controls
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
+from base.object.Factory.Factory import Factory
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
     def __init__(self) -> None:
         MovableObject.__init__(self)
+        Factory.setAlias(self, "player")
 
         self.pos = pygame.math.Vector2((50, 50));
         self.color = (50, 50, 50)
@@ -27,6 +29,9 @@ class Player(MovableObject):
         return obj
     
     def receiveEvent(self, event: Event):
+        if event.name == "game.start":
+            print(Factory.get("player"))
+
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)

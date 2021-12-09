@@ -1,22 +1,26 @@
 from __future__ import annotations
 from typing import Tuple
 from base.core.Event.Event import Event
+from base.core.Event.Events import Events
 from base.geometry.Rectangle import Rectangle
+from base.object.Factory.Factory import Factory
 from settings import screen
 import pygame
 
 # Ein Objekt, welchem eine Position im Raum, sowie eine eigenes Rechteck gehört.
 # Wenn Position geändert werden sollte, benutze .updatePos(x, y) oder .editPosBy(xD, yD)  (d = Delta = Differenz)
 class GameObject():
-    def __init__(self) -> None:
-        self.id = 0
+    def __init__(self, pos: pygame.Vector2 = pygame.math.Vector2(0, 0), width: int = 0, height: int = 0, color: Tuple = (0, 0, 0)) -> None:
+        self.id = -1
         self._active = True
         self.image = None
-        self._pos = pygame.math.Vector2(0, 0);
-        self._width = 0
-        self._height = 0
-        self.color = (0, 0, 0)
+        self._pos = pos
+        self._width = width
+        self._height = height
+        self.color = color
         self.solid = False
+        self.buildRect()
+        Factory.append(self)
 
     @property
     def active(self) -> bool:
@@ -82,9 +86,11 @@ class GameObject():
                 screen.blit(self.image, self.rect)
             else:
                 self.drawRect()
+        return self
 
     def drawRect(self):
         pygame.draw.rect(screen, self.color, self.rect)
+        return self
 
     def buildRect(self) -> pygame.Rect:
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
@@ -93,6 +99,7 @@ class GameObject():
 
     def updateRect(self):            
         self.rect = self.buildRect()
+        return self
 
     def distanceTo(self, obj: GameObject):
         return self._pos.distance_to(obj._pos)
@@ -108,12 +115,14 @@ class GameObject():
     def updatePos(self, pos: pygame.Vector2):
         self._pos = pos
         self.updateRect()
+        Events.dispatch(f"{self.id}.moved", {"obj": self, "pos": self.pos})
+        return self
 
     def updatePosBy(self, x=0, y=0):
         vec = self.getVectorPos()
         vec.x += x
         vec.y += y
-        self.updatePos(vec)
+        return self.updatePos(vec)
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0

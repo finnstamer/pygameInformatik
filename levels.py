@@ -5,6 +5,7 @@ import pygame
 from base.core.Level.Level import Level
 from base.object.CircleOutlineObject import CircleOutlineObject
 from base.object.Group import Group
+from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.Backround import Backround
 from objects.wall import Wall
@@ -17,17 +18,9 @@ playerGroup = Group[Player]("player").add(player)
 #--------------------
 wall11 = Wall()
 wall12= Wall()
+ektoplasma = Ektoplasma().updatePos(pygame.Vector2(250, 250))
 
-border = CircleOutlineObject(50, 2)
-border.pos = pygame.Vector2(250, 250)
-border.color = (250, 250, 250)
-
-bg = Backround("images/Dschungel.png")
-backgroundGroup = Group("bg").add(bg)
-
-wall11.updatePos(pygame.Vector2(175, 75))
-wall12.updatePos(pygame.Vector2(275, 150))
-wallGroup1 = Group[Wall]('walls').add(wall11, wall12)
+wallGroup1 = Group[Wall]('walls').add(wall11, wall12, ektoplasma)
 level1 = Level(1, [playerGroup, wallGroup1])
 # Level2
 #-------------------

@@ -1,0 +1,23 @@
+from base.core.Dependencies.CollisionWatcher import CollisionWatcher
+from base.core.Event.Event import Event
+from base.core.Event.Events import Events
+from base.object.Factory.Factory import Factory
+from base.object.GameObject import GameObject
+
+
+class Ektoplasma(GameObject):
+    collected = 0
+    def __init__(self) -> None:
+        super().__init__(width=3, height=3, color=(3, 173, 63))
+        self.collisionEvent = ""
+        Events.subscribe(self, "game.start")
+
+    def receiveEvent(self, e: Event):
+        if e.name == "game.start":
+            collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
+            self.collisionEvent = collisionEvent
+            Events.subscribe(self, self.collisionEvent)
+
+        if e.name == self.collisionEvent:
+            Ektoplasma.collected += 1
+            self.active = False        

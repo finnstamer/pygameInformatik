@@ -1,9 +1,8 @@
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
-from base.object.GameObject import GameObject
 
 class Events():
-    subscribers: Dict[str, List[GameObject]] = {}
+    subscribers: Dict[str, List[object]] = {}
     requests: Dict[str, Callable] = {}
 
     @staticmethod
@@ -14,7 +13,7 @@ class Events():
                 s.receiveEvent(Event(name, value)) 
 
     @staticmethod
-    def subscribe(obj: GameObject, *events: str):
+    def subscribe(obj: object, *events: str):
         events = list(events)
         for e in events:
             if e in Events.subscribers:
@@ -23,7 +22,7 @@ class Events():
             Events.subscribers[e] = [obj]
 
     @staticmethod
-    def unsubscribe(obj: GameObject, *events: str):
+    def unsubscribe(obj: object, *events: str):
         events = list(events)
         for e in events:
             if e in Events.subscribers:
@@ -32,7 +31,7 @@ class Events():
 
     # Unsubscribes object from all events
     @staticmethod
-    def disconnect(obj: GameObject):
+    def disconnect(obj: object):
         for e in Events.subscribers:
             subscribed = Events.subscribers[e]
             Events.subscribers[e] = filter(lambda x: x != obj, subscribed)
