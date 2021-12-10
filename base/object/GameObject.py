@@ -29,7 +29,7 @@ class GameObject():
     @active.setter
     def active(self, value: bool):
         self._active = value
-        self.onActivation()
+        Events.dispatch(f"{self.id}.active")
 
     @property
     def width(self) -> int:
@@ -67,10 +67,6 @@ class GameObject():
         self._rect = rect
         self.cRect = Rectangle.byRect(rect)
     
-    # Overrideable Function that runs whenever the object is activated
-    def onActivation(self):
-        pass
-
     def receiveEvent(self, e: Event):
         raise NotImplementedError(f"Event '{e.name}' is subscribed but not implemented in '{self.__class__.__name__}'. Remove subscription or add the 'receiveEvent' function.")
     
@@ -91,26 +87,19 @@ class GameObject():
     def drawRect(self):
         pygame.draw.rect(screen, self.color, self.rect)
         return self
+    
+    def updateRect(self):            
+        self.rect = self.buildRect()
+        return self
 
+    # Overridable Method for custom rect creating methods
     def buildRect(self) -> pygame.Rect:
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
         self.cRect = Rectangle().byRect(self.rect)
         return self.rect
 
-    def updateRect(self):            
-        self.rect = self.buildRect()
-        return self
-
     def distanceTo(self, obj: GameObject):
         return self._pos.distance_to(obj._pos)
-    
-    def rectCorners(self) -> Tuple(pygame.Vector2):
-        return (
-            self._pos, 
-            self.getVectorPos(y=self._height), 
-            self.getVectorPos(self._width), 
-            self.getVectorPos(self._width, self._height)
-        )
     
     def updatePos(self, pos: pygame.Vector2):
         self._pos = pos
@@ -126,5 +115,3 @@ class GameObject():
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0
-
-    

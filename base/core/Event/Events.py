@@ -16,10 +16,9 @@ class Events():
     def subscribe(obj: object, *events: str):
         events = list(events)
         for e in events:
-            if e in Events.subscribers:
-                subscribed = Events.subscribers[e]
-                return subscribed.append(obj)
-            Events.subscribers[e] = [obj]
+            if e not in Events.subscribers:
+                Events.subscribers[e] = [obj]
+            Events.subscribers[e].append(obj)
 
     @staticmethod
     def unsubscribe(obj: object, *events: str):
@@ -27,7 +26,7 @@ class Events():
         for e in events:
             if e in Events.subscribers:
                 subscribed = Events.subscribers[e]
-                Events.subscribers[e] = filter(lambda x: x != obj, subscribed)
+                Events.subscribers[e] = list(filter(lambda x: x != obj, subscribed))
 
     # Unsubscribes object from all events
     @staticmethod

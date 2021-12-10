@@ -71,7 +71,6 @@ class Group(Generic[O]):
     def colliding(self, rect: Rectangle) -> List[O]:
         colliding = []
         for i in self.objects:
-            print(i.rect)
             # collided = Rectangle.byRect(i.rect.clip(rect))
             collided = i.collidesWith(rect)
             if collided:

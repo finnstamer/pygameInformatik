@@ -1,13 +1,12 @@
+from typing import Tuple
 import pygame
-from base.core.Dependencies.Movement import Movement
-from base.core.Event.Events import Events
 from base.core.Game import Game
 
 from base.object.GameObject import GameObject
  
 class MovableObject(GameObject):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, pos: pygame.Vector2 = pygame.math.Vector2(0, 0), width: int = 0, height: int = 0, color: Tuple = (0, 0, 0)) -> None:
+        super().__init__(pos=pos, width=width, height=height, color=color)
         self.speed = 1
         self.allowMovement = True
     
@@ -19,7 +18,7 @@ class MovableObject(GameObject):
         if furthestPos is not None:
             self.updatePos(furthestPos)            
         
-    # Überarbietung per Errechnung der Distanz zum nearest solid Object in eine bestimmte Richtung. TODO
+    # Überarbeitung per Errechnung der Distanz zum nearest solid Object in eine bestimmte Richtung. TODO
     def furthestMove(self, vec: pygame.Vector2, x=True) -> pygame.Vector2 or None:
         steps = int(vec.x - self.pos.x if x else vec.y - self.pos.y)
         if steps == 0:

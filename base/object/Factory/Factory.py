@@ -1,6 +1,5 @@
 from typing import Dict
 
-
 class Factory():
     objects: Dict[int, object] = {}
     alias: Dict[str, int] = {}
@@ -11,8 +10,9 @@ class Factory():
         Factory.objects[objID] = obj
     
     def setAlias(obj: object, alias: str):
-        if alias not in Factory.alias:
-            Factory.alias[alias] = obj.id
+        if alias in Factory.alias:
+            raise LookupError(f"Factory: Alias {id} already set.")
+        Factory.alias[alias] = obj.id
 
     def get(id: int or str):
         if type(id) == int:

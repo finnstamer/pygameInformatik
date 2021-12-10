@@ -5,6 +5,7 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.object.Factory.Factory import Factory
+from base.object.KI.Routines.SimpleMovementRoutine import SimpleMovementRoutine
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
@@ -18,7 +19,7 @@ class Player(MovableObject):
         self.height = 50
         self.width = 50
 
-        self.speed = 10
+        self.speed = 5
         self.direction = 1 # Right
 
         Game.use(Controls)
@@ -29,16 +30,15 @@ class Player(MovableObject):
         return obj
     
     def receiveEvent(self, event: Event):
-        if event.name == "game.start":
-            print(Factory.get("player"))
-
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
             self.move(self.nextPos())
 
             if keys["escape"]:
-                Events.dispatch("game.stop")
+                routine = SimpleMovementRoutine(Factory.get("ekto1"), pygame.Vector2(0, 300))
+                routine.start()
+                # Events.dispatch("game.stop")
  
     def nextPos(self) -> pygame.Vector2:
         return {

@@ -103,7 +103,7 @@ class PathFinder():
         print("------------------- ------------------ -------------------")
         print("------------------- PATH FINDER RESULT -------------------")
         print(f"------------------- root: {start.id} - dest: {dest.id} -------------------")
-        print(sortedPath)
+        # print(sortedPath)
         print("------------------- ------------------ -------------------")
         return sortedPath
 
@@ -115,7 +115,6 @@ class PathFinder():
         depth += 1
         for i in range(len(neighbors)):
             n = neighbors[i]
-            print(n)
             if n == None or n in recPath: # Dont search double on paths, already gone by the other "instances"
                 continue
         
@@ -154,3 +153,8 @@ class PathFinder():
         ]
         order = sorted(mapped, key=lambda y: y[0], reverse=True)
         return [v[1] for v in order]
+    
+    #TODO
+    def nearestNode(nodes: List[Node], pos: pygame.Vector2) -> Node:
+        mapped = map(lambda x: (x.pos.distance_to(pos), x), nodes)
+        return sorted(mapped, key=lambda x:x[0])[0][1]
