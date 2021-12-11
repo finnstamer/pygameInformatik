@@ -23,30 +23,31 @@ class Player(MovableObject):
         self.direction = 1 # Right
 
         Game.use(Controls)
-        Events.subscribe(self, "game.tick", "game.start", "game.dependency.tick")
+        Events.subscribe(self, "game.tick", "game.start")
 
     def default(self, obj):
         obj.color = (0, 250, 250)
         return obj
     
     def receiveEvent(self, event: Event):
+        if event.name == "game.start":
+            self.routine = SimpleMovementRoutine(Factory.get("ekto1"))
+
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
             self.move(self.nextPos())
 
             if keys["escape"]:
-                routine = SimpleMovementRoutine(Factory.get("ekto1"), pygame.Vector2(0, 300))
-                routine.start()
-                # Events.dispatch("game.stop")
+                self.routine.stop().start(self.pos)
  
     def nextPos(self) -> pygame.Vector2:
         return {
-            0: lambda: pygame.Vector2(self.pos.x, self.pos.y - self.speed),
-            1: lambda: pygame.Vector2(self.pos.x + self.speed, self.pos.y),
-            2: lambda: pygame.Vector2(self.pos.x, self.pos.y + self.speed),
-            3: lambda: pygame.Vector2(self.pos.x - self.speed, self.pos.y)
-        }[self.direction]()
+            0: pygame.Vector2(self.pos.x, self.pos.y - self.speed),
+            1: pygame.Vector2(self.pos.x + self.speed, self.pos.y),
+            2: pygame.Vector2(self.pos.x, self.pos.y + self.speed),
+            3: pygame.Vector2(self.pos.x - self.speed, self.pos.y)
+        }[self.direction]
 
     def control(self, keys: Dict[str, bool]):
         if keys["up"]:

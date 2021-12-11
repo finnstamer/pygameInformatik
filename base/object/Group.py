@@ -31,6 +31,11 @@ class Group(Generic[O]):
         self.objects.remove(obj)
         return self
     
+    # Removes all elements and inserts the given
+    def clear(self, obj: List[GameObject] = []):
+        self.objects = obj
+        return self
+    
     def deactivate(self):
         for obj in self.objects:
             obj.active = False

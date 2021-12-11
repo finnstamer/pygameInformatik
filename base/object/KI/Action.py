@@ -1,8 +1,6 @@
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 
-from base.object.GameObject import GameObject
-
 class Action():
     def __init__(self, start=None, end=None) -> None:
         self.startState = start
@@ -22,6 +20,9 @@ class Action():
     def run(self) -> bool:
         raise NotImplementedError(f"Run method in {self.__class__.__name__} is missing.")
     
+    def isFinished(self) -> bool:
+        raise NotImplementedError(f"isFinished method in {self.__class__.__name__} is missing.")
+
     def receiveEvent(self, event: Event):
         if event.name == "game.tick" and self.state == 1:
             if self.isFinished():
@@ -29,6 +30,3 @@ class Action():
                 self.state = 2
             else:
                 self.run()
-
-    def isFinished(self) -> bool:
-        raise NotImplementedError(f"isFinished method in {self.__class__.__name__} is missing.")

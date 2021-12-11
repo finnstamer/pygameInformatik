@@ -18,7 +18,8 @@ class Events():
         for e in events:
             if e not in Events.subscribers:
                 Events.subscribers[e] = [obj]
-            Events.subscribers[e].append(obj)
+            if obj not in Events.subscribers[e]:
+                Events.subscribers[e].append(obj)
 
     @staticmethod
     def unsubscribe(obj: object, *events: str):

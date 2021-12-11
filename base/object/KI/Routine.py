@@ -10,8 +10,19 @@ class Routine():
         self.object = obj
         self.actions: List[Action] = []
         self.pendingAction: Action = None
+    
+    def setActions(self, actions: List[Action]):
+        self.stopActions()
+        self.pendingAction = None
+        self.actions = actions
+        return self
+    
+    def stopActions(self):
+        for a in self.actions:
+            Events.unsubscribe(a, "game.tick")
 
     def run(self):
+        print(len(self.actions))
         if self.pendingAction is None:
             if len(self.actions) == 0:
                 return
@@ -19,5 +30,5 @@ class Routine():
             self.pendingAction.start()
         
         if self.pendingAction.state == 2:
-            self.actions.remove(self.pendingAction)
+            self.actions.pop(0)
             self.pendingAction = None

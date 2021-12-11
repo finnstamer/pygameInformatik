@@ -24,4 +24,4 @@ class Ektoplasma(MovableObject):
 
         if e.name == self.collisionEvent:
             Ektoplasma.collected += 1
-            self.active = False
+            # self.active = False

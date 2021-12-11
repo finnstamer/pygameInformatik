@@ -93,19 +93,19 @@ class PathFinder():
     # TODO Add "diagonal Node block" => Add nodes in a triangle "block" to allow diagonal movement in a collision checked space 
 
     @staticmethod
-    def find(start: Node, dest: Node, depth: int=5) -> List[Node]:
+    def find(start: Node, dest: Node, depth: int=5) -> List[List[Node]]:
         PathFinder.minActions = 750
         paths = PathFinder.findPaths(start, dest, depth=-1, maxDepth=depth, recPath=[start])
 
         # paths = PathFinder.nodesToIds(paths) # For testing
-        sortedPath = sorted(paths, key=lambda obj: len(obj))
+        sortedPaths = sorted(paths, key=lambda obj: len(obj))
 
-        print("------------------- ------------------ -------------------")
-        print("------------------- PATH FINDER RESULT -------------------")
-        print(f"------------------- root: {start.id} - dest: {dest.id} -------------------")
+        # print("------------------- ------------------ -------------------")
+        # print("------------------- PATH FINDER RESULT -------------------")
+        # print(f"------------------- root: {start.id} - dest: {dest.id} -------------------")
         # print(sortedPath)
-        print("------------------- ------------------ -------------------")
-        return sortedPath
+        # print("------------------- ------------------ -------------------")
+        return sortedPaths
 
 
     def findPaths(node: Node, dest: Node, recPath=[], depth=0, maxDepth=5) -> List[List[Node]]:            

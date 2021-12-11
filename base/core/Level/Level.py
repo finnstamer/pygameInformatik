@@ -21,8 +21,9 @@ class Level():
         return f[0] if len(f) > 0 else None
 
     def addGroup(self, group: Group):
-        self.groups.append(group)
-        self.objects = self.allObjects()
+        if group not in self.groups:
+            self.groups.append(group)
+            self.objects = self.allObjects()
     
     def deactivate(self):
         for g in self.groups:
