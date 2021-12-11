@@ -1,0 +1,13 @@
+Kreis in der Mitte: 
+                    → Geister mit gesammelten Items (z.b. Handschellen) in der Mitte gefangen nehmen
+                    → bei einer bestimmten Anzahl von Geistern, die man gefangen nimmt kann 
+                    man die Mitte sprengen, mithilfe von einer bestimmten Anzahl von gesammelten Sprengstoff
+                    → aus der Mitte resultiert ein Boss, welcher dich über die Map jagd
+Eigenschaften Endboss:             
+                    → kann durch Wände gehen
+                    → muss 2-3 Sekunden an dir stehen, um dich zu sprengen
+Eigenschaften Spieler:
+                    →
+                    →
+                    →
+                    →

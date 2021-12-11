@@ -4,9 +4,10 @@ from base.object.KI.Node import Node
 from base.object.KI.PathFinder import PathFinder
 from base.core.Game import Game
 from settings import screenRes
+from Maps.Map1 import level1
 
 game = Game()
-game.addLevel()
+game.addLevel(level1)
 game.setLevel(1)
 game.start()
 exit()
