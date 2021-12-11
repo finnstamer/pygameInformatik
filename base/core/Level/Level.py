@@ -2,7 +2,6 @@ from functools import reduce
 from typing import List
 import pygame
 
-from pygame.sprite import groupcollide
 from base.object.GameObject import GameObject
 from base.object.Group import Group
 
@@ -22,8 +21,9 @@ class Level():
         return f[0] if len(f) > 0 else None
 
     def addGroup(self, group: Group):
-        self.groups.append(group)
-        self.objects = self.allObjects()
+        if group not in self.groups:
+            self.groups.append(group)
+            self.objects = self.allObjects()
     
     def deactivate(self):
         for g in self.groups:

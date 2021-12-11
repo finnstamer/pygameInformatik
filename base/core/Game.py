@@ -43,15 +43,15 @@ class Game():
             dependency()
         
     def draw(self):
-        if isinstance(self.level, Level):
-            for g in self.level.groups:
-                g.draw()
+        for g in self.level.groups:
+            g.draw()
 
     def start(self):
         pygame.init()
         pygame.event.set_allowed([KEYDOWN, KEYUP])
         clock = pygame.time.Clock()
         Game.initDependencies()
+
         Events.dispatch("game.start")
         while self.active:  
             clock.tick(60)
@@ -63,10 +63,10 @@ class Game():
             
             pygame.display.flip()
 
-    def addLevel(self, *level: Level):
-        for l in list(level):
-            l.deactivate()
-            self.levels[l.id] = l
+    def addLevel(self, *levels: Level):
+        for level in list(levels):
+            level.deactivate()
+            self.levels[level.id] = level
     
     def setLevel(self, id: int):
         if isinstance(Game.level, Level):

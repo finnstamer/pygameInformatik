@@ -31,6 +31,11 @@ class Group(Generic[O]):
         self.objects.remove(obj)
         return self
     
+    # Removes all elements and inserts the given
+    def clear(self, obj: List[GameObject] = []):
+        self.objects = obj
+        return self
+    
     def deactivate(self):
         for obj in self.objects:
             obj.active = False
@@ -64,21 +69,15 @@ class Group(Generic[O]):
     # Berechnet das nächste Objekt aus der Gruppe zu einem Punkt
     def nearest(self, pos: pygame.math.Vector2) -> GameObject:
         if self.length() == 0:
-            raise pygame.error(f"Group for {self.name} cannot check for nearest object. List is empty.")
+            raise pygame.error(f"Group for {self.__class__.__name__} cannot check for nearest object. List is empty.")
         return sorted(self.objects, key=lambda obj: obj.pos.distance_to(pos))[0]
 
     # Gibt eine Liste an Objekten zurück, die mit dem Parameter "rect" kollidieren. (In absteigender Reihenfolge nach Überschneindungsfläche)
     def colliding(self, rect: Rectangle) -> List[O]:
         colliding = []
         for i in self.objects:
-            print(i.rect)
             # collided = Rectangle.byRect(i.rect.clip(rect))
             collided = i.collidesWith(rect)
             if collided:
                 colliding.append(i)
-
-        # return list(map(
-        #     lambda x: x[0],
-        #     sorted(colliding, key=lambda c: c[1].area, reverse=True)
-        # ))
         return colliding
