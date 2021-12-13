@@ -20,6 +20,10 @@ class Level():
         f = list(filter(lambda g: g.id == id, self.objects))
         return f[0] if len(f) > 0 else None
 
+    def draw(self):
+        for g in self.groups:
+            g.draw()
+
     def addGroup(self, group: Group):
         if group not in self.groups:
             self.groups.append(group)

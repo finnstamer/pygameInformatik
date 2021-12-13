@@ -106,12 +106,6 @@ class GameObject():
         self.updateRect()
         Events.dispatch(f"{self.id}.moved", {"obj": self, "pos": self.pos})
         return self
-
-    def updatePosBy(self, x=0, y=0):
-        vec = self.getVectorPos()
-        vec.x += x
-        vec.y += y
-        return self.updatePos(vec)
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0

@@ -41,10 +41,6 @@ class Game():
     def initDependencies():
         for dependency in Game.dependencies:
             dependency()
-        
-    def draw(self):
-        for g in self.level.groups:
-            g.draw()
 
     def start(self):
         pygame.init()
@@ -59,7 +55,7 @@ class Game():
             Events.dispatch("game.tick")
 
             screen.fill(pygame.Color(0, 0, 0));
-            self.draw()
+            self.level.draw()
             
             pygame.display.flip()
 
