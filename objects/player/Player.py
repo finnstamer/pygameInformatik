@@ -1,10 +1,13 @@
 from typing import Dict
 import pygame
 from base.core.Dependencies.Controls import Controls
+from base.core.Dependencies.NodeVisualizer import NodeVisualizer
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.object.Factory.Factory import Factory
+from base.object.Group import Group
+from base.object.KI.PathFinder import PathFinder
 from base.object.KI.Routines.SimpleMovementRoutine import SimpleMovementRoutine
 from base.object.MovableObject import MovableObject
 
@@ -22,6 +25,8 @@ class Player(MovableObject):
         self.speed = 5
         self.direction = 1 # Right
 
+        self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
+
         Game.use(Controls)
         Events.subscribe(self, "game.tick", "game.start")
 
@@ -36,10 +41,15 @@ class Player(MovableObject):
         if event.name == "game.tick":
             keys = Controls.keys
             self.control(keys)
-            self.move(self.nextPos())
+            # self.move(self.nextPos())
+            self.oldMovement()
 
             if keys["escape"]:
                 self.routine.stop().start(self.pos)
+            
+            if keys["space"]:
+                root = PathFinder.nearestNode(self.routine.grid, self.pos)
+                self.neighborVisualizer.setNodes(list(root.neighborsToList().values())).start()
  
     def nextPos(self) -> pygame.Vector2:
         return {
@@ -58,3 +68,14 @@ class Player(MovableObject):
             self.direction = 2
         if keys["left"]:
             self.direction = 3
+        
+    def oldMovement(self):
+        keys = Controls.keys
+        if keys["up"]:
+            self.move(pygame.Vector2(self.pos.x, self.pos.y - self.speed))
+        if keys["right"]:
+            self.move(pygame.Vector2(self.pos.x + self.speed, self.pos.y))
+        if keys["down"]:
+            self.move(pygame.Vector2(self.pos.x, self.pos.y + self.speed))
+        if keys["left"]:
+            self.move(pygame.Vector2(self.pos.x - self.speed, self.pos.y))

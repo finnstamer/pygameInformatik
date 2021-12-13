@@ -17,6 +17,7 @@ class Sounds:
         if Sounds.mixer is None:
             raise DependencyException(Sounds)
         Sounds.loaded[id] = Sounds.mixer.Sound(path)
+        
     @staticmethod
     def play(id):
         if id not in Sounds.loaded:

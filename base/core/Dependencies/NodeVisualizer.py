@@ -26,5 +26,7 @@ class NodeVisualizer():
             Game.level.addGroup(self.group)        
 
     def toObject(self, node: Node) -> GameObject:
+        if node is None:
+            return GameObject()
         return GameObject(node.pos, width=5, height=5, color=self.color)
     

@@ -1,27 +1,31 @@
 
 # LEVEL
 #--------------------#--------------------#--------------------
+from random import randrange
 import pygame
 from base.core.Level.Level import Level
-from base.object.CircleOutlineObject import CircleOutlineObject
 from base.object.Factory.Factory import Factory
 from base.object.Group import Group
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.Backround import Backround
 from objects.wall import Wall
-
-
+from settings import screenRes
 player = Player()
 playerGroup = Group[Player]("player").add(player)
 
 # Level1
 #--------------------
-wall11 = Wall().updatePos(pygame.Vector2(200, 200))
-wall12= Wall().updatePos(pygame.Vector2(400, 200))
+wallGroup1 = Group('walls')
+for w in range(10):
+    wallGroup1.add(Wall().updatePos(pygame.Vector2(randrange(51, screenRes[0]), randrange(51, screenRes[1]))))
+# wall11 = Wall().updatePos(pygame.Vector2(180, 200))
+# wall12= Wall().updatePos(pygame.Vector2(400, 200))
+    
 ektoplasma = Ektoplasma().updatePos(pygame.Vector2(0, 0))
 Factory.setAlias(ektoplasma, "ekto1")
-wallGroup1 = Group[Wall]('walls').add(wall11, wall12, ektoplasma)
+
+wallGroup1.add(ektoplasma)
 level1 = Level(1, [playerGroup, wallGroup1])
 # Level2
 #-------------------

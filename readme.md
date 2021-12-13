@@ -154,10 +154,10 @@ Mauern: Asteriodengürtel
 
 # Aufgaben
 Sprites: Feo
-Maps: Leon
+Maps: Leon, Aryan
 Movement & Collectables: Finn
 
-TODO:
-ReDraw Queue in Game. So only changed Objects become drawn again
-needing factory for object id's
-reset values in Gameobjects via Dependency
+Grundgerüst (GameObject, Group, Level, Game, Events): Finn
+Konzept: Leon, Aryan, Feo
+Movement, CollisionWatcher => Ektoplasma: Leon, Aryan
+KI: Finn
