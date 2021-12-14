@@ -92,8 +92,6 @@ class PathFinder():
                 # nodes.append(nX)
                 # nodes.append(nY)
         return nodes
-                
-
     # TODO
     # Dynamische Nodes passen sich im Gegensatz zu statischen an ihre Umgebung an. Also berücksichtigen solide NPOs
     # Berechnet Nodes danach, ob zwischen der vorherigen Position und der "estimated Position" der jetzigen Iteration kein solides Objektes liegt

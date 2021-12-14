@@ -1,4 +1,6 @@
 from typing import List
+
+from pygame import Vector2
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
@@ -26,7 +28,7 @@ class NodeVisualizer():
             Game.level.addGroup(self.group)        
 
     def toObject(self, node: Node) -> GameObject:
-        if node is None:
+        if node is None or node.pos == Vector2(-1, -1):
             return GameObject()
         return GameObject(node.pos, width=5, height=5, color=self.color)
     
