@@ -1,5 +1,6 @@
 from typing import Tuple
 import pygame
+from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
 
 from base.object.GameObject import GameObject
@@ -14,7 +15,7 @@ class MovableObject(GameObject):
     def move(self, pos: pygame.Vector2):
         # if Game.level.allowMove(self, pos):
         xMov = self.pos.y == pos.y
-        furthestPos = self.furthestMove(pos, xMov)
+        furthestPos = Movement.furthestMove(self, pos)
         if furthestPos is not None:
             self.updatePos(furthestPos)            
         

@@ -40,7 +40,7 @@ class Events():
     def acceptRequest(req: str, func: Callable):
         Events.requests[req] = func
         
-    # Während ein Event ausschließlich ausgehend ist, gibt eine Request einen Wert zurück und ist aktiv vom Caller ausgehend.
+    # Objekte die eine Request ausgeben, erwarten eine Antwort 
     @staticmethod
     def request(req: str, *args: Any) -> Any:
         if req in Events.requests:

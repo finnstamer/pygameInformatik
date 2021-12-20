@@ -14,7 +14,6 @@ class PathFinder():
     walkedNodes = []
     
     # Optimiert nodes für ein bestimmtes GameObject. Damit werden die Anzahl an Nodes stark reduziert.
-    # Merges all nodes which area is the given object to one node    
     @staticmethod
     def generateStaticNodes(obj: GameObject) -> List[Node]:
         nodes: List[Node] = []
@@ -39,59 +38,6 @@ class PathFinder():
                 nodes.append(n)
         return nodes
 
-
-    def semiStaticNodes(obj: GameObject, solids: List[GameObject]):
-        nodes: List[Node] = []
-        modx = obj.width
-        mody = obj.height
-        sx = ceil(screenRes[0] / modx)
-        sy = ceil(screenRes[1] / mody)
-        skipped = []
-        for x in range(sx):
-            skipped.append([])
-            for y in range(sy):
-                skipped[x].append(skipped[x][y - 1] if y > 0 else 0)
-
-                vec = pygame.Vector2(x * modx, y * mody)
-                if not Movement.allowPosition(obj, vec, solids):
-                    nodes.append(Node(pygame.Vector2(-1, -1)))
-                    skipped[x][y] += 1
-                    continue
-                
-                n = Node(vec)
-                if y > 0 and skipped[x][y - 1] == skipped[x][y - 2]:
-                    higherNode = nodes[-1]
-                    higherNode.down = n
-                    n.higher = higherNode
-
-                if x > 0:
-                    leftNode = nodes[-sy]
-                    leftNode.right = n
-                    n.left = leftNode
-                nodes.append(n)
-        print(skipped)
-        return nodes
-    
-    def new_generateDynamicNodes(obj: GameObject):
-        solids = Game.level.allSolidObjects()
-        nodes = PathFinder.semiStaticNodes(obj, solids)
-
-        for obj in solids:
-            for i, c in enumerate(obj.cRect.corners):
-                if i < 2: # Top Corners
-                    xMovement = Movement.firstMove(obj, pygame.Vector2(0, c.y), solids, c)
-                else: # Bottom Corners
-                    xMovement = Movement.firstMove(obj, pygame.Vector2(screenRes[0], c.y), solids, c)
-                if i % 2 == 1: # Right Corners
-                    yMovement = Movement.firstMove(obj, pygame.Vector2(c.x, 0), solids, c)
-                else: # Left Corners
-                    yMovement = Movement.firstMove(obj, pygame.Vector2(c.x, screenRes[1]), solids, c)
-                
-                nX = Node(xMovement)
-                nY = Node(yMovement)
-                # nodes.append(nX)
-                # nodes.append(nY)
-        return nodes
     # TODO
     # Dynamische Nodes passen sich im Gegensatz zu statischen an ihre Umgebung an. Also berücksichtigen solide NPOs
     # Berechnet Nodes danach, ob zwischen der vorherigen Position und der "estimated Position" der jetzigen Iteration kein solides Objektes liegt
@@ -114,7 +60,7 @@ class PathFinder():
                 estPos = pygame.Vector2(x * obj.width / mod, y * obj.height / mod)
                 
                 # Von vorheriger Node zur estPos
-                furthestDown = Movement.furthestMove(obj, estPos, solidObjects, pos)
+                furthestDown = Movement.furthestMove(obj, estPos, pos)
                 # Wenn unsere Startposition (pos) bereits kollidiert, frage nach der erst-möglichen Position und setzte sie als neue Node
                 if furthestDown is None:
                     firstDownPos = Movement.firstMove(obj, pygame.Vector2(pos.x, screenRes[1]), solidObjects, pos)

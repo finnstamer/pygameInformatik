@@ -30,5 +30,5 @@ class NodeVisualizer():
     def toObject(self, node: Node) -> GameObject:
         if node is None or node.pos == Vector2(-1, -1):
             return GameObject()
-        return GameObject(node.pos, width=5, height=5, color=self.color)
+        return GameObject(node.pos, width=5, height=5, color=self.color if node.color is None else node.color)
     

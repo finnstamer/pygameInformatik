@@ -17,9 +17,10 @@ playerGroup = Group[Player]("player").add(player)
 # Level1
 #--------------------
 wallGroup1 = Group('walls')
-for w in range(10):
-    wallGroup1.add(Wall().updatePos(pygame.Vector2(randrange(51, screenRes[0]), randrange(51, screenRes[1]))))
-# wall11 = Wall().updatePos(pygame.Vector2(180, 200))
+# for w in range(10):
+#     wallGroup1.add(Wall().updatePos(pygame.Vector2(randrange(51, screenRes[0]), randrange(51, screenRes[1]))))
+wall11 = Wall().updatePos(pygame.Vector2(217, 205))
+wallGroup1.add(wall11)
 # wall12= Wall().updatePos(pygame.Vector2(400, 200))
     
 ektoplasma = Ektoplasma().updatePos(pygame.Vector2(0, 0))

@@ -13,6 +13,7 @@ class Node():
         self.down: Node = lower
         self.left: Node = left
         self.right: Node = right
+        self.color = None
         Factory.append(self)
     
     def neighborsToList(self) -> Dict[int, object]:
