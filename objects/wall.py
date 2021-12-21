@@ -5,7 +5,7 @@ import random;
 
 
 class Wall(GameObject):
-    def __init__(self, pos: Vector2, width: int=1, height: int=1) -> None:
+    def __init__(self, pos: Vector2=Vector2(0, 0), width: int=1, height: int=1) -> None:
         super().__init__(
             color=(240, 240, 240), 
             pos=pos,
