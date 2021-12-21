@@ -29,12 +29,12 @@ class Events():
                 subscribed = Events.subscribers[e]
                 Events.subscribers[e] = list(filter(lambda x: x != obj, subscribed))
 
-    # Unsubscribes object from all events
+    # Unsubscribes object from all its events
     @staticmethod
     def disconnect(obj: object):
         for e in Events.subscribers:
             subscribed = Events.subscribers[e]
-            Events.subscribers[e] = filter(lambda x: x != obj, subscribed)
+            Events.subscribers[e] = list(filter(lambda x: x != obj, subscribed))
 
     @staticmethod
     def acceptRequest(req: str, func: Callable):

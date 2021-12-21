@@ -10,11 +10,19 @@ class Teleporter():
         self.obj = obj
         self.dest = dest
         self.collision = ""
-        Events.subscribe(self, "game.start")
     
+    def stop(self):
+        Events.disconnect(self)
+        return self
+    
+    def start(self):
+        Events.subscribe(self, "game.start", self.collision)
+        return self
+
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
             self.collision = CollisionWatcher.watch(self.teleporter, self.obj)
+            Events.subscribe(self, self.collision)
 
         if event.name == self.collision:
             self.obj.updatePos(self.dest)
