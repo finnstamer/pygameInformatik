@@ -10,10 +10,9 @@ O = TypeVar('O', bound=GameObject)
 
 # Mit dieser Klasse werden mehrere am besten sehr ähnliche Objekte zusammengefasst und unter anderem verglichen.
 class Group(Generic[O]):
-    def __init__(self, name: str) -> None:
-        self.name = name
+    def __init__(self, *obj: GameObject) -> None:
         self.constructor = None
-        self.objects: List[O] = []
+        self.objects: List[O] = list(obj)
     
     # Das * for einem Parameter bedeutet, dass man von da an unendlich objekte anhängen kann. Der Paramter obj ist dann eine List aus Objekten
     # bspw: Group().add(obj1, obj2, obj3, obj4, ...)
