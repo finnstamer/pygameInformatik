@@ -14,7 +14,7 @@ class SimpleMovementRoutine(Routine):
         self.grid = NodeStorage.findGrid(obj)
         self.target = None
 
-        self.gridVisualizer = NodeVisualizer(self.grid, color=(255, 255, 255)).start()
+        self.gridVisualizer = NodeVisualizer(self.grid, color=(255, 255, 255))
         self.pathVisualizer = NodeVisualizer([])
         
     def createActions(self):

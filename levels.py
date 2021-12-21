@@ -11,12 +11,11 @@ from objects.player.Player import Player
 from objects.Backround import Backround
 from objects.wall import Wall
 from settings import screenRes
-player = Player()
-playerGroup = Group[Player]("player").add(player)
+playerGroup = Group(Player())
 
 # Level1
 #--------------------
-wallGroup1 = Group('walls')
+wallGroup1 = Group()
 # for w in range(10):
 #     wallGroup1.add(Wall().updatePos(pygame.Vector2(randrange(51, screenRes[0]), randrange(51, screenRes[1]))))
 wall11 = Wall(pygame.Vector2(217, 205), 50, 75)

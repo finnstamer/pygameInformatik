@@ -41,15 +41,17 @@ class NodeGenerator():
                 nodes.append(n)
         return (nodes, skipped)
 
-    def nodeFiller(grid, obj) -> List[Node]:
-        for node in grid:
+    def nodeFiller(grid: List[Node], obj) -> List[Node]:
+        for node  in grid:
             diffX = node.pos.x % obj.width
             diffY = node.pos.y % obj.height
 
             x = diffX > 0
             diff = diffX if x else diffY
             if x:
-                
+                up = Movement.furthestMove(obj, Vector2(node.pos.x, node.pos.y - diff), node.pos)
+                up = Movement.furthestMove(obj, Vector2(node.pos.x, node.pos.y - diff + obj.height), node.pos)
+                down = Movement
                 pass
             else:
                 pass
