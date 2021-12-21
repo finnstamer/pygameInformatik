@@ -1,55 +1,41 @@
-from functools import reduce
 from typing import List
-import pygame
-
 from base.object.GameObject import GameObject
 from base.object.Group import Group
 
 
 class Level():
-    def __init__(self, id: int, groups: List[Group]) -> None:
+    def __init__(self, id: int, *objects: GameObject) -> None:
         self.id = id
-        self.groups = groups
-        self.objects = self.allObjects()
-
-    def getGroup(self, id: str) -> Group:
-        f = list(filter(lambda g: g.name == id, self.groups))
-        return f[0] if len(f) > 0 else None
+        self.objects = list(objects)
 
     def getObject(self, id: int):
         f = list(filter(lambda g: g.id == id, self.objects))
         return f[0] if len(f) > 0 else None
 
     def draw(self):
-        for g in self.groups:
-            g.draw()
+        for obj in self.objects:
+            obj.draw()
 
-    def addGroup(self, group: Group):
-        if group not in self.groups:
-            self.groups.append(group)
-            self.objects = self.allObjects()
+    def add(self, *objs: GameObject):
+        for obj in list(objs):
+            if obj not in self.objects:
+                self.objects.append(obj)
+    
+    def remove(self, *objs: GameObject):
+        for obj in list(objs):
+            if obj in self.objects:
+                self.objects.remove(obj)
     
     def deactivate(self):
-        for g in self.groups:
-            g.deactivate()
+        for obj in self.objects:
+            obj.active = False
 
     def activate(self):
-        for g in self.groups:
-            g.activate()
-    
-    def allObjects(self):
-        return reduce(lambda x,y:x+y, map(lambda x:x.objects, self.groups), [])
-    
+        for obj in self.objects:
+            obj.active = True
+        
     def allSolidObjects(self):
         return list(filter(lambda x: x.solid, self.objects))
 
     def negativeObjects(self, objs: List[GameObject]) -> GameObject:
         return list(filter(lambda x: x not in objs, self.objects))
-    
-    def allowMove(self, obj: GameObject, pos: pygame.Vector2) -> bool:
-        solidObjs = filter(lambda x: x != obj, self.allSolidObjects())
-        movedRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
-        for obj in solidObjs:
-            if obj.collidesWith(movedRect):
-                return False
-        return True

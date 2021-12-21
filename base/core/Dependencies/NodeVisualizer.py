@@ -14,7 +14,7 @@ class NodeVisualizer():
     def __init__(self, nodes: List[Node], color=(250, 0, 250)) -> None:
         self.nodes = nodes
         self.objects = []
-        self.group = Group("nodes")
+        self.nodeObjects = []
         self.color = color
 
     def setNodes(self, nodes: List[Node]):
@@ -22,10 +22,10 @@ class NodeVisualizer():
         return self
 
     def start(self):
-        objs = list(map(lambda x: self.toObject(x), self.nodes))
-        self.group.clear(objs)
+        Game.level.remove(*self.nodeObjects)
+        self.nodeObjects = list(map(lambda x: self.toObject(x), self.nodes))
         if Game.level is not None:  
-            Game.level.addGroup(self.group)        
+            Game.level.add(*self.nodeObjects)        
 
     def toObject(self, node: Node) -> GameObject:
         if node is None or node.pos == Vector2(-1, -1):

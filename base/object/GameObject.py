@@ -109,3 +109,7 @@ class GameObject():
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0
+    
+    def setAlias(self, alias: str):
+        Factory.setAlias(self, alias)
+        return self

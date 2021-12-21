@@ -21,13 +21,13 @@ class Movement:
 
         steps = int(pos.x - startPos.x if x else pos.y - startPos.y)
         if steps == 0:
-            return pos if Game.level.allowMove(obj, pos) else None
+            return pos if Movement.allowPosition(obj, pos) else None
         
         stepsRange = list(range(0, steps + 1 if steps > 0 else steps - 1, 1 if steps > 0 else -1))
         for s in stepsRange:
             i = abs(s)
             pos = pygame.Vector2(startPos.x + s if x else startPos.x, startPos.y + s if not x else startPos.y)
-            if Game.level.allowMove(obj, pos) == False:
+            if Movement.allowPosition(obj, pos) == False:
                 if i == 0:
                     return None
                 return stepsRange[i - 1]

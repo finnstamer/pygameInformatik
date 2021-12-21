@@ -11,7 +11,7 @@ from settings import screen
 class Game():
     tickDelta = 0
     dependencies: List[Any] = []
-    level: Level = Level(-1, [])
+    level: Level = Level(-1)
     notes: Dict[str, Any] = {}
 
     def __init__(self) -> None:
