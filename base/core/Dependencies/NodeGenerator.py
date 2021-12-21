@@ -41,7 +41,6 @@ class NodeGenerator():
                 nodes.append(n)
         return (nodes, skipped)
 
-    # signum indicates if this generated Node is left or right
     def nodeFiller(grid, obj) -> List[Node]:
         for node in grid:
             diffX = node.pos.x % obj.width
@@ -49,6 +48,11 @@ class NodeGenerator():
 
             x = diffX > 0
             diff = diffX if x else diffY
+            if x:
+                
+                pass
+            else:
+                pass
         return grid
 
     
