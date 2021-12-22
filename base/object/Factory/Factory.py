@@ -1,4 +1,7 @@
 from typing import Dict
+from base.core.Event.Events import Events
+
+from copy import deepcopy
 
 class Factory():
     objects: Dict[int, object] = {}
@@ -23,3 +26,10 @@ class Factory():
         if id not in Factory.alias:
             raise LookupError(f"Factory: Alias '{id}' not found.")
         return Factory.objects[Factory.alias[id]]
+
+    def clone(obj: object, disconnect=False):
+        cloned = deepcopy(obj)
+        if disconnect:
+            Events.disconnect(cloned)
+        Factory.append(cloned)
+        return cloned

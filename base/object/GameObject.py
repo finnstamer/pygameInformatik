@@ -100,10 +100,14 @@ class GameObject():
 
     def distanceTo(self, obj: GameObject):
         return self._pos.distance_to(obj._pos)
-    
-    def updatePos(self, pos: pygame.Vector2):
+
+    def updatePos_hidden(self, pos: pygame.Vector2):
         self._pos = pos
         self.updateRect()
+        return self
+
+    def updatePos(self, pos: pygame.Vector2):
+        self.updatePos_hidden(pos)
         Events.dispatch(f"{self.id}.moved", {"obj": self, "pos": self.pos})
         return self
         
