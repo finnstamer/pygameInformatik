@@ -1,4 +1,5 @@
 from pygame import Vector2
+from base.core.Event.Events import Events
 from base.core.Level.Level import Level
 from base.core.Level.MapBuilder import MapBuilder
 from objects.collectables.Ektoplasma import Ektoplasma
@@ -25,6 +26,7 @@ mB.nextTo(player, ektoplasma, 2, 1, marginX=0)
 
 mB.pointMirror(player.cRect.corners[2], player, ektoplasma)
 # mB.axisMirror(player.pos.x, -1, player, ektoplasma)
+print(Events.allSubscribedEvents(player))
 level1 = Level(1, *mB.objects)
 
 

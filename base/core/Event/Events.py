@@ -46,3 +46,10 @@ class Events():
         if req in Events.requests:
             return Events.requests[req](*args)
         raise NotImplementedError(f"Request '{req}' is not accepted.")
+
+    def allSubscribedEvents(obj: object):
+        events = []
+        for e in Events.subscribers.items():
+            if obj in e[1]:
+                events.append(e[0])
+        return events

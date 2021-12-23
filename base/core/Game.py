@@ -59,17 +59,15 @@ class Game():
             
             pygame.display.flip()
 
-    def addLevel(self, *levels: Level):
+    def addLevel(self, *levels: Level) -> None:
         for level in list(levels):
             level.deactivate()
             self.levels[level.id] = level
     
-    def setLevel(self, id: int):
-        if isinstance(Game.level, Level):
-            Game.level.deactivate()
+    def setLevel(self, levelId: int) -> None:
+        Game.level.deactivate()
 
-        if id in self.levels:
-            Game.level = self.levels[id]
-            Game.level.activate()
-            return
-        raise LookupError(f"Level {id} not found.")
+        if levelId in self.levels:
+            Game.level = self.levels[levelId]
+            return Game.level.activate()
+        raise LookupError(f"Level '{levelId}' not found.")
