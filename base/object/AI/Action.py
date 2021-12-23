@@ -8,10 +8,10 @@ class Action():
         raise NotImplementedError(f"'onStart' Method on {self.__class__.__name__} not implemented.")
 
     def onRun(self):
-        raise NotImplementedError(f"'_run' Method on {self.__class__.__name__} not implemented.")
+        raise NotImplementedError(f"'onRun' Method on {self.__class__.__name__} not implemented.")
     
     def onStop(self):
-        raise NotImplementedError(f"'_stop' Method on {self.__class__.__name__} not implemented.")
+        raise NotImplementedError(f"'onStop' Method on {self.__class__.__name__} not implemented.")
     
     def isFinished(self):
         raise NotImplementedError(f"'isFinished' Method on {self.__class__.__name__} not implemented.")

@@ -1,5 +1,5 @@
 from typing import List
-from base.object.KI.Action import Action
+from base.object.AI.Action import Action
 from copy import deepcopy
 
 class Routine(Action):
@@ -12,7 +12,7 @@ class Routine(Action):
         raise NotImplementedError(f"'onStart' Method on {self.__class__.__name__} not implemented.")
     
     def onStop(self):
-        raise NotImplementedError(f"'_stop' Method on {self.__class__.__name__} not implemented.")
+        raise NotImplementedError(f"'onStop' Method on {self.__class__.__name__} not implemented.")
     
     def createActions(self):
         raise NotImplementedError(f"'createActions' Method on {self.__class__.__name__} not implemented.")

@@ -3,6 +3,7 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.GameObject import GameObject
 
+# FIXME .unwatch führt zu einer Aufheben des Beobachtens. Zwei Module die auf dieselben Objekte beobachten und eines davon stoppt, unwatched es und macht die Aufgabe des anderen Moduls unmöglich
 # CollisionWatcher beobachtet die Kollision zweier Objekte. Sobald die Kollision stattfindet wird ein von der watch Methode zurückgegebenes Event gefired.
 class CollisionWatcher():
     watchList: Dict[GameObject, List[GameObject]] = {}

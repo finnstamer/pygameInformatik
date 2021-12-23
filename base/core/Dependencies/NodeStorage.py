@@ -2,7 +2,7 @@ from typing import Dict, List
 from base.core.Dependencies.NodeGenerator import NodeGenerator
 from base.object.GameObject import GameObject
 
-from base.object.KI.Node import Node
+from base.object.AI.Node import Node
 
 class NodeStorage():
     grids: Dict[int, List[Node]] = {}
@@ -17,7 +17,6 @@ class NodeStorage():
     def findGrid(obj: GameObject) -> List[Node]:
         if obj.id in NodeStorage.grids:
             return NodeStorage.grids[obj.id]
-        # return PathFinder.generateDynamicNodes(obj)
         return NodeGenerator.new_generateDynamicNodes(obj)
     
     def removeGrid(obj: GameObject):

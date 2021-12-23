@@ -6,8 +6,8 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.object.Factory.Factory import Factory
-from base.object.KI.PathFinder import PathFinder
-from base.object.KI.Routines.MovementRoutine import MovementRoutine
+from base.object.AI.PathFinder import PathFinder
+from base.object.AI.Routines.MovementRoutine import MovementRoutine
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):

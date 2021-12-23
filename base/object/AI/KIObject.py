@@ -1,5 +1,5 @@
 from typing import Dict
-from base.object.KI.Routine import Routine
+from base.object.AI.Routine import Routine
 from base.object.MovableObject import MovableObject
 
 

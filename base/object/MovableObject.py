@@ -19,7 +19,6 @@ class MovableObject(GameObject):
         if furthestPos is not None:
             self.updatePos(furthestPos)            
         
-    # Überarbeitung per Errechnung der Distanz zum nearest solid Object in eine bestimmte Richtung. TODO
     def furthestMove(self, vec: pygame.Vector2, x=True) -> pygame.Vector2 or None:
         steps = int(vec.x - self.pos.x if x else vec.y - self.pos.y)
         if steps == 0:

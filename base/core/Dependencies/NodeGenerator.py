@@ -5,7 +5,7 @@ from pygame import Vector2
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
 from base.object.GameObject import GameObject
-from base.object.KI.Node import Node
+from base.object.AI.Node import Node
 from settings import screenRes
 
 class NodeGenerator():

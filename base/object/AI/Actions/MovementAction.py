@@ -1,6 +1,6 @@
 from pygame import Vector2
 from base.object.GameObject import GameObject
-from base.object.KI.Action import Action
+from base.object.AI.Action import Action
 from base.object.MovableObject import MovableObject
 
 

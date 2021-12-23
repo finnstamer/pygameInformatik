@@ -1,7 +1,7 @@
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.GameObject import GameObject
-from base.object.KI.Action import Action
+from base.object.AI.Action import Action
 from pygame import Vector2
 
 class MovementAction2(Action):
