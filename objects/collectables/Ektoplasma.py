@@ -3,7 +3,6 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.Factory.Factory import Factory
 from base.object.GameObject import GameObject
-from base.object.KI.Routines.SimpleMovementRoutine import SimpleMovementRoutine
 from base.object.MovableObject import MovableObject
 
 class Ektoplasma(MovableObject):

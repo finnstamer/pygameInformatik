@@ -1,32 +1,51 @@
 from typing import List
-from base.core.Event.Events import Events
-from base.object.GameObject import GameObject
-
 from base.object.KI.Action import Action
+from copy import deepcopy
 
-
-class Routine():
-    def __init__(self, obj: GameObject) -> None:
-        self.object = obj
+class Routine(Action):
+    def __init__(self) -> None:
+        super().__init__(False, True)
         self.actions: List[Action] = []
-        self.pendingAction: Action = None
-        self.pending = False
-    
-    def setActions(self, actions: List[Action]):
         self.pendingAction = None
-        self.actions = actions
-        return self
-    
-    def run(self):
-        self.pending = True
-        print(len(self.actions))
-        if self.pendingAction is None:
-            if len(self.actions) == 0:
-                self.pending = False
-                return
-            self.pendingAction = self.actions[0]
-            self.pendingAction.start()
         
-        if self.pendingAction.state == 2:
+    def onStart(self):
+        raise NotImplementedError(f"'onStart' Method on {self.__class__.__name__} not implemented.")
+    
+    def onStop(self):
+        raise NotImplementedError(f"'_stop' Method on {self.__class__.__name__} not implemented.")
+    
+    def createActions(self):
+        raise NotImplementedError(f"'createActions' Method on {self.__class__.__name__} not implemented.")
+    
+    def onRun(self):
+        if self.progress == 0 or self.progress == 2:
+            return
+        if self.isFinished():
+            self.progress = 2
+            return
+        
+        if self.pendingAction is None:
+            self.pendingAction = self.actions[0]
+            return self.pendingAction.start()
+
+        if self.pendingAction.progress == 2:
             self.actions.pop(0)
             self.pendingAction = None
+            
+    def isFinished(self):
+        return len(self.actions) == 0
+    
+    def create(self, startState, endState):
+        self.stop()
+        self.startState = startState
+        self.endState = endState
+        self.createActions()
+        return self
+
+    def setActions(self, actions: List[Action]):
+        self.actions = actions
+        self.pendingAction = None
+    
+    def stopActions(self):
+        for a in self.actions:
+            a.stop()

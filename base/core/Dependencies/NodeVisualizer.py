@@ -1,11 +1,8 @@
 from typing import List
 
 from pygame import Vector2
-from base.core.Event.Event import Event
-from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.object.GameObject import GameObject
-from base.object.Group import Group
 
 from base.object.KI.Node import Node
 

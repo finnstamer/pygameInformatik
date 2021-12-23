@@ -1,7 +1,5 @@
 from typing import List
 from base.object.GameObject import GameObject
-from base.object.Group import Group
-
 
 class Level():
     def __init__(self, id: int, *objects: GameObject) -> None:

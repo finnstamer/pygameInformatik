@@ -6,9 +6,8 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.object.Factory.Factory import Factory
-from base.object.Group import Group
 from base.object.KI.PathFinder import PathFinder
-from base.object.KI.Routines.SimpleMovementRoutine import SimpleMovementRoutine
+from base.object.KI.Routines.MovementRoutine import MovementRoutine
 from base.object.MovableObject import MovableObject
 
 class Player(MovableObject):
@@ -36,7 +35,7 @@ class Player(MovableObject):
     
     def receiveEvent(self, event: Event):
         if event.name == "game.start":
-            self.routine = SimpleMovementRoutine(Factory.get("ekto1"))
+            self.routine = MovementRoutine(Factory.get("ekto1"))
 
         if event.name == "game.tick":
             keys = Controls.keys
@@ -45,7 +44,7 @@ class Player(MovableObject):
             self.oldMovement()
 
             if keys["escape"]:
-                self.routine.stop().start(self.pos)
+                self.routine.create(Factory.get("ekto1").pos, self.pos).start()
             
             if keys["space"]:
                 root = PathFinder.nearestNode(self.routine.grid, self.pos)

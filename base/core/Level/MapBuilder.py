@@ -26,7 +26,7 @@ class MapBuilder():
     # Platziert ein Objekt neben ein Referenz-Objekt anhand ihrer sich "berührende" Ecken. Zahl entspricht Ecke im Uhrzeigersinn von oben links mit 0 beginnend
     # Beispiel: Will man ein Objekt exakt rechts neben ein ReferenzObjekt platzieren und sich die obere Rechte mit der oberen Linken berühren soll: nextTo(ref, obj, 1, 0)
     # margin(X/Y) ermöglicht noch einen zusätlichen Abstand
-    def nextTo(self, reference: GameObject, obj: GameObject, refC=1, objC=1, marginX: int = 0, marginY: int = 0):
+    def nextTo(self, reference: GameObject, obj: GameObject, refC=0, objC=0, marginX: int = 0, marginY: int = 0):
         refCorner = reference.cRect.corners[refC]
         objCorner = obj.cRect.corners[objC]
         diffX = objCorner.x - refCorner.x 
@@ -41,9 +41,7 @@ class MapBuilder():
         for obj in list(objs):
             clonedObj = Factory.clone(obj)
             diff = obj.pos.x - x if xAxis else obj.pos.y - y
-            print(diff)
             newPos = Vector2(x - diff - obj.width if xAxis else obj.pos.x, y - diff - obj.height if not xAxis else obj.pos.y)
-            print(obj.pos, newPos)
             clonedObj.updatePos(newPos)
             self.addObject(clonedObj)
         return self

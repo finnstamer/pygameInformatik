@@ -6,7 +6,7 @@ from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.wall import Wall
 
-#### Vorgehensweise mit Beispiele:
+#### Vorgehensweise mit Beispielen:
 # 1. Erstelle einen MapBuilder und deine Objekte. 
 #   mB = MapBuilder()
 #   wall = Wall(Vector2(x, y), 50, 50)
@@ -26,7 +26,6 @@ mB.nextTo(player, ektoplasma, 2, 1, marginX=0)
 
 mB.pointMirror(player.cRect.corners[2], player, ektoplasma)
 # mB.axisMirror(player.pos.x, -1, player, ektoplasma)
-print(Events.allSubscribedEvents(player))
 level1 = Level(1, *mB.objects)
 
 
