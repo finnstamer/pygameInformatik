@@ -9,7 +9,9 @@ class MapBuilder():
         self.objects = objects
 
     def addObject(self, *objects: GameObject):
-        self.objects += list(objects)
+        for obj in list(objects):
+            if obj not in self.objects:
+                self.objects.append(obj)
         return self
     
     def centerVec(self):
@@ -21,14 +23,15 @@ class MapBuilder():
         self.addObject(obj)
         return self
     
-    # Platziert ein Objekt neben ein Referenz-Objekt anhand ihrer sich "berührende" Ecken. Jeweils im Uhrzeigersinn von oben links mit 0 beginnend
-    # Will man ein Objekt exakt rechts neben ein ReferenzObjekt platzieren, will man die obere Rechte mit der oberen Linken berühren lassen. Dementsprechend: nexTo(ref, obj, 1, 0)
-    def nextTo(self, reference: GameObject, obj: GameObject, refC=1, objC=1):
+    # Platziert ein Objekt neben ein Referenz-Objekt anhand ihrer sich "berührende" Ecken. Zahl entspricht Ecke im Uhrzeigersinn von oben links mit 0 beginnend
+    # Beispiel: Will man ein Objekt exakt rechts neben ein ReferenzObjekt platzieren und sich die obere Rechte mit der oberen Linken berühren soll: nextTo(ref, obj, 1, 0)
+    # margin(X/Y) ermöglicht noch einen zusätlichen Abstand
+    def nextTo(self, reference: GameObject, obj: GameObject, refC=1, objC=1, marginX: int = 0, marginY: int = 0):
         refCorner = reference.cRect.corners[refC]
         objCorner = obj.cRect.corners[objC]
         diffX = objCorner.x - refCorner.x 
         diffY = objCorner.y - refCorner.y 
-        obj.updatePos(Vector2(obj.pos.x - diffX, obj.pos.y - diffY))
+        obj.updatePos(Vector2(obj.pos.x - diffX + marginX, obj.pos.y - diffY + marginY))
         self.addObject(obj)
         return self
     

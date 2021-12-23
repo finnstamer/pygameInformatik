@@ -21,9 +21,9 @@ player = Player()
 mB.placeInCenter(player)
 
 ektoplasma = Ektoplasma().setAlias("ekto1")
-mB.nextTo(player, ektoplasma, 3, 0)
+mB.nextTo(player, ektoplasma, 2, 1, marginX=0)
 
-# mB.pointMirror(player.pos, player, ektoplasma)
+mB.pointMirror(player.cRect.corners[2], player, ektoplasma)
 # mB.axisMirror(player.pos.x, -1, player, ektoplasma)
 level1 = Level(1, *mB.objects)
 
