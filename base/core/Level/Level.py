@@ -1,8 +1,7 @@
 from typing import List
-from base.object.GameObject import GameObject
 
 class Level():
-    def __init__(self, id: int, *objects: GameObject) -> None:
+    def __init__(self, id: int, *objects: object) -> None:
         self.id = id
         self.objects = list(objects)
 
@@ -14,12 +13,12 @@ class Level():
         for obj in self.objects:
             obj.draw()
 
-    def add(self, *objs: GameObject):
+    def add(self, *objs: object):
         for obj in list(objs):
             if obj not in self.objects:
                 self.objects.append(obj)
     
-    def remove(self, *objs: GameObject):
+    def remove(self, *objs: object):
         for obj in list(objs):
             if obj in self.objects:
                 self.objects.remove(obj)
@@ -35,5 +34,5 @@ class Level():
     def allSolidObjects(self):
         return list(filter(lambda x: x.solid, self.objects))
 
-    def negativeObjects(self, objs: List[GameObject]) -> GameObject:
+    def negativeObjects(self, objs: List[object]) -> object:
         return list(filter(lambda x: x not in objs, self.objects))

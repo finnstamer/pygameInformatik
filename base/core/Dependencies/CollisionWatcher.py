@@ -28,7 +28,7 @@ class CollisionWatcher():
             watchingObjects = CollisionWatcher.watchList[movedObj]
 
             for obj in watchingObjects:
-                if obj.collidesWith(movedObj.rect):
+                if obj.active and obj.collidesWith(movedObj.rect):
                     Events.dispatch(f"CollisionWatcher.collision.{obj.id}.{movedObj.id}")
                     Events.dispatch(f"CollisionWatcher.collision.{movedObj.id}.{obj.id}")
                 

@@ -3,15 +3,14 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.Factory.Factory import Factory
 from base.object.GameObject import GameObject
-from base.object.MovableObject import MovableObject
 
-class Ektoplasma(MovableObject):
+class Ektoplasma(GameObject):
     collected = 0 
     def __init__(self) -> None:
         super().__init__(width=25, height=25, color=(3, 173, 63))
         self.collisionEvent = ""
         self.speed = 5
-        Events.subscribe(self, "game.start")
+        Events.subscribe(self, "game.start", "game.tick")
 
     def receiveEvent(self, e: Event):
         if e.name == "game.start":

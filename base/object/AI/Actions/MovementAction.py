@@ -1,17 +1,21 @@
-from pygame import Vector2
+from base.core.Event.Event import Event
+from base.core.Event.Events import Events
 from base.object.GameObject import GameObject
 from base.object.AI.Action import Action
-from base.object.MovableObject import MovableObject
-
+from pygame import Vector2
 
 class MovementAction(Action):
-    def __init__(self, obj: MovableObject, start:Vector2, end:Vector2) -> None:
-        super().__init__()
-        self.object: MovableObject = obj
-        self.startState: Vector2 = start
-        self.endState: Vector2 = end
+    def __init__(self, obj: GameObject, startState: Vector2, endState: Vector2) -> None:
+        super().__init__(startState, endState)
+        self.object = obj
 
-    def run(self):
+    def receiveEvent(self, event: Event):
+        self.run()
+    
+    def onStart(self):
+        Events.subscribe(self, "game.tick")
+    
+    def onRun(self):
         xDiff = self.endState.x - self.object.pos.x 
         yDiff = self.endState.y - self.object.pos.y 
         xMovement = abs(xDiff) > abs(yDiff)
@@ -21,8 +25,10 @@ class MovementAction(Action):
         if abs(distance) > self.object.speed:
             speed = self.object.speed * distance / abs(distance)
         segmentPos = Vector2(self.object.pos.x + speed if xMovement else self.object.pos.x, self.object.pos.y + speed if not xMovement else self.object.pos.y)
-        self.object.updatePos(segmentPos) 
+        self.object.updatePos(segmentPos)
 
-    def isFinished(self) -> bool:
-        return self.object.pos == self.endState
+    def onStop(self):
+        Events.unsubscribe(self, "game.tick")
     
+    def isFinished(self):
+        return self.object.pos == self.endState

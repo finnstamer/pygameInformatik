@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import Tuple
+from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.geometry.Rectangle import Rectangle
@@ -19,6 +20,7 @@ class GameObject():
         self._height = height
         self.color = color
         self.solid = False
+        self.speed = 0
         self.buildRect()
         Factory.append(self)
 
@@ -110,6 +112,11 @@ class GameObject():
         self.updatePos_hidden(pos)
         Events.dispatch(f"{self.id}.moved", {"obj": self, "pos": self.pos})
         return self
+    
+    def move(self, pos: pygame.Vector2):
+        furthestPos = Movement.furthestMove(self, pos)
+        if furthestPos is not None:
+            self.updatePos(furthestPos)     
         
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0

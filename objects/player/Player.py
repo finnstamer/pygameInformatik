@@ -8,11 +8,11 @@ from base.core.Game import Game
 from base.object.Factory.Factory import Factory
 from base.object.AI.PathFinder import PathFinder
 from base.object.AI.Routines.MovementRoutine import MovementRoutine
-from base.object.MovableObject import MovableObject
+from base.object.GameObject import GameObject
 
-class Player(MovableObject):
+class Player(GameObject):
     def __init__(self) -> None:
-        MovableObject.__init__(self)
+        super().__init__()
         Factory.setAlias(self, "player")
 
         self.pos = pygame.math.Vector2((50, 50));
@@ -25,7 +25,6 @@ class Player(MovableObject):
         self.direction = 1 # Right
 
         self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
-
         Game.use(Controls)
         Events.subscribe(self, "game.tick", "game.start")
 

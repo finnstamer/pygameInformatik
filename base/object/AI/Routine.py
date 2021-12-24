@@ -33,6 +33,7 @@ class Routine(Action):
             self.pendingAction = None
             
     def isFinished(self):
+        print(len(self.actions))
         return len(self.actions) == 0
     
     def create(self, startState, endState):

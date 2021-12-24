@@ -32,10 +32,10 @@ class Game():
     # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
     # Diese werden vor dem game.start Event geladen.
     @staticmethod
-    def use(*dependency: object):
-        for d in list(dependency):
-            if d not in Game.dependencies:
-                Game.dependencies.append(d)
+    def use(*dependencies: object):
+        for dependency in list(dependencies):
+            if dependency not in Game.dependencies:
+                Game.dependencies.append(dependency)
 
     @staticmethod
     def initDependencies():
