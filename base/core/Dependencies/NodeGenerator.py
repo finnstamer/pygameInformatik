@@ -86,10 +86,10 @@ class NodeGenerator():
                 
                 if yMovement is not None:
                     nY.color = (235, 78, 16)
-                    nodes.append(nY)
+                    # nodes.append(nY)
                 if xMovement is not None:
                     nX = Node(xMovement)
                     nX.color = (235, 78, 16)
-                    nodes.append(nX)
+                    # nodes.append(nX)
         nodes = NodeGenerator.nodeFiller(nodes, obj)
         return nodes

@@ -3,7 +3,6 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.GameObject import GameObject
 
-# FIXME .unwatch führt zu einer Aufheben des Beobachtens. Zwei Module die auf dieselben Objekte beobachten und eines davon stoppt, unwatched es und macht die Aufgabe des anderen Moduls unmöglich
 # CollisionWatcher beobachtet die Kollision zweier Objekte. Sobald die Kollision stattfindet wird ein von der watch Methode zurückgegebenes Event gefired.
 class CollisionWatcher():
     watchList: Dict[GameObject, List[GameObject]] = {}
@@ -20,7 +19,7 @@ class CollisionWatcher():
         CollisionWatcher.watchList[obj].append(watch)
 
         Events.subscribe(CollisionWatcher, f"{watch.id}.moved", f"{obj.id}.moved")
-        return f"CollisionWatcher.collision.{obj.id}.{watch.id}"
+        return f"collisionWatcher.collision.{obj.id}.{watch.id}"
 
     def receiveEvent(event: Event):
         if event.isOfType("moved"):
@@ -29,12 +28,16 @@ class CollisionWatcher():
 
             for obj in watchingObjects:
                 if obj.active and obj.collidesWith(movedObj.rect):
-                    Events.dispatch(f"CollisionWatcher.collision.{obj.id}.{movedObj.id}")
-                    Events.dispatch(f"CollisionWatcher.collision.{movedObj.id}.{obj.id}")
+                    Events.dispatch(f"collisionWatcher.collision.{obj.id}.{movedObj.id}")
+                    Events.dispatch(f"collisionWatcher.collision.{movedObj.id}.{obj.id}")
                 
-    def unwatch(obj: GameObject, watch: GameObject):
+    def removeWatcher(obj: GameObject, watch: GameObject):
         if watch in CollisionWatcher.watchList:
             CollisionWatcher.watchList[watch].remove(obj)
             if len(CollisionWatcher.watchList[watch]) == 0:
                 Events.unsubscribe(CollisionWatcher, f"{watch.id}.moved")
 
+                
+    def unwatch(obj: GameObject, watch: GameObject):
+        CollisionWatcher.removeWatcher(obj, watch)
+        CollisionWatcher.removeWatcher(watch, obj)

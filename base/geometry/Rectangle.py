@@ -1,14 +1,12 @@
-from typing import Dict, List
+from typing import List
 from copy import deepcopy
-import pygame
+from pygame import Vector2, Rect
 
-from base.geometry.Vec2 import Vec2
-
-# Eigene Klasse anstatt pygame.Rect, da Rect mir zu wenig wichtige Informationen und Shorthands lieferte.
-# Umwandelung in pygame.Rect und andersherum ist möglich. 
+# Eigene Klasse anstatt Rect, da Rect mir zu wenig wichtige Informationen und Shorthands lieferte.
+# Umwandelung in Rect und andersherum ist möglich. 
 class Rectangle():
     def __init__(self) -> None:
-        default = pygame.Vector2()
+        default = Vector2()
         self.y = default
         self.x = default
         self.upperLeft = default
@@ -19,27 +17,27 @@ class Rectangle():
         self.leftLine = 0
         self.center = default
         
-        self.corners: List[pygame.Vector2] = []
+        self.corners: List[Vector2] = []
         self.area = 0
         self.width = 0
         self.height = 0
     
 
     @staticmethod
-    def byRect(rect: pygame.Rect):
-        return Rectangle.get(Vec2.fromTuple(rect.topleft), Vec2.fromTuple(rect.bottomright))
+    def byRect(rect: Rect):
+        return Rectangle.get(Vector2(rect.topleft), Vector2(rect.bottomright))
 
     @staticmethod
-    def get(uL: pygame.Vector2, lR: pygame.Vector2):
+    def get(uL: Vector2, lR: Vector2):
         r = Rectangle()
 
         r.upperLeft = uL
         r.lowerRight = lR
-        r.upperRight = pygame.Vector2(lR.x, uL.y)
-        r.lowerLeft = pygame.Vector2(uL.x, lR.y)
+        r.upperRight = Vector2(lR.x, uL.y)
+        r.lowerLeft = Vector2(uL.x, lR.y)
         r.topLine = r.upperRight.x - r.upperLeft.x
         r.leftLine = r.lowerLeft.y - r.upperLeft.y
-        r.center = pygame.Vector2((r.upperLeft.x + r.upperRight.x) / 2, (r.lowerLeft.y + r.upperLeft.y) / 2)
+        r.center = Vector2((r.upperLeft.x + r.upperRight.x) / 2, (r.lowerLeft.y + r.upperLeft.y) / 2)
         r.corners = [r.upperLeft, r.upperRight, r.lowerRight, r.lowerLeft]
         r.area = r.topLine * r.leftLine
         r.width = lR.x - uL.x
@@ -49,11 +47,11 @@ class Rectangle():
         return r
 
     def toPyRect(self):
-        return pygame.Rect(self.upperLeft.x, self.upperLeft.y, self.width, self.height)
+        return Rect(self.upperLeft.x, self.upperLeft.y, self.width, self.height)
 
     @staticmethod
-    def byCorner(c: List[pygame.Vector2]):
-        pyRect = pygame.Rect(
+    def byCorner(c: List[Vector2]):
+        pyRect = Rect(
             c[0].x, c[0].y, 
             c[1].x - c[0].x,
             c[3].y - c[0].y
@@ -66,7 +64,7 @@ class Rectangle():
     def onYIntervall(self, y: int):
         return self.upperLeft.y <= y <= self.lowerLeft.y
     
-    def contains(self, vec: pygame.Vector2):
+    def contains(self, vec: Vector2):
         return self.onXIntervall(vec.x) and self.onYIntervall(vec.y)
 
     def copy(self):

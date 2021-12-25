@@ -42,12 +42,12 @@ class Player(GameObject):
             # self.move(self.nextPos())
             self.oldMovement()
 
-            if keys["escape"]:
-                self.routine.create(Factory.get("ekto1").pos, self.pos).start()
+            # if keys["escape"]:
+                # root = PathFinder.nearestNode(self.routine.grid, self.pos)
+                # self.neighborVisualizer.setNodes(list(root.neighborsToList().values())).start()
             
             if keys["space"]:
-                root = PathFinder.nearestNode(self.routine.grid, self.pos)
-                self.neighborVisualizer.setNodes(list(root.neighborsToList().values())).start()
+                self.routine.create(Factory.get("ekto1").pos, self.pos).start()
  
     def nextPos(self) -> pygame.Vector2:
         return {

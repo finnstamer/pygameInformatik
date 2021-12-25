@@ -19,8 +19,8 @@ from random import randrange
 #   level = Level(1, *mB.objects)
 
 mB = MapBuilder()
-# for i in range(10):
-    # mB.addObject(Wall(Vector2(randrange(0, 500), randrange(0, 500)), 25, 25))
+for i in range(10):
+    mB.addObject(Wall(Vector2(randrange(0, 500), randrange(0, 500)), 25, 25))
 
 player = Player()
 mB.placeInCenter(player)
