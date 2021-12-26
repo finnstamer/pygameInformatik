@@ -5,15 +5,15 @@ from base.object.AI.Action import Action
 from pygame import Vector2
 
 class MovementAction(Action):
-    def __init__(self, obj: GameObject, startState: Vector2, endState: Vector2) -> None:
-        super().__init__(startState, endState)
-        self.object = obj
+    def __init__(self, obj: GameObject, endState: Vector2) -> None:
+        super().__init__(obj, endState)
+        self.middlewareHandler.on("start", lambda x: Events.subscribe(self, "game.tick"))
+        self.middlewareHandler.on("stop", lambda x: Events.unsubscribe(self, "game.tick"))
+        self.middlewareHandler.on("run", lambda x: self.onRun())
 
     def receiveEvent(self, event: Event):
-        self.run()
-    
-    def onStart(self):
-        Events.subscribe(self, "game.tick")
+        if event.name == "game.tick":
+            self.run()
     
     def onRun(self):
         xDiff = self.endState.x - self.object.pos.x 
@@ -24,11 +24,9 @@ class MovementAction(Action):
         speed = distance
         if abs(distance) > self.object.speed:
             speed = self.object.speed * distance / abs(distance)
+
         segmentPos = Vector2(self.object.pos.x + speed if xMovement else self.object.pos.x, self.object.pos.y + speed if not xMovement else self.object.pos.y)
         self.object.updatePos(segmentPos)
-
-    def onStop(self):
-        Events.unsubscribe(self, "game.tick")
     
     def isFinished(self):
         return self.object.pos == self.endState

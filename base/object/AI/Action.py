@@ -1,24 +1,27 @@
-class Action():
-    def __init__(self, state, endState) -> None:
-        self.state = state
-        self.endState = endState
-        self.progress = 0
-    
-    def onStart(self):
-        raise NotImplementedError(f"'onStart' Method on {self.__class__.__name__} not implemented.")
+from base.core.Event.Event import Event
+from base.core.Event.Events import Events
+from base.object.AI.Routines.MiddlewareHandler import MiddlewareHandler
+from base.object.Factory.Factory import Factory
 
-    def onRun(self):
-        raise NotImplementedError(f"'onRun' Method on {self.__class__.__name__} not implemented.")
-    
-    def onStop(self):
-        raise NotImplementedError(f"'onStop' Method on {self.__class__.__name__} not implemented.")
-    
-    def isFinished(self):
-        raise NotImplementedError(f"'isFinished' Method on {self.__class__.__name__} not implemented.")
+
+class Action():
+    def __init__(self, obj, endState) -> None:
+        self.id = -1
+        self.progress = 0
+        Factory.append(self)
+        self.middlewareHandler = MiddlewareHandler(self)
+        self.setStates(obj, endState)
+        
+    def setStates(self, obj, endState):
+        self.stop()
+        self.object = obj
+        self.endState = endState
+        Events.dispatch(f"Action.{self.id}.set", {"action": self})
+        return self
     
     def start(self):
         self.progress = 1
-        self.onStart()
+        Events.dispatch(f"Action.{self.id}.start", {"action": self})
         return self
 
     def run(self):
@@ -26,9 +29,13 @@ class Action():
             self.stop()
             self.progress = 2
             return
-        self.onRun()
+        Events.dispatch(f"Action.{self.id}.run", {"action": self})
 
     def stop(self):
         self.progress = 0
-        self.onStop()
+        Events.dispatch(f"Action.{self.id}.stop", {"action": self})
         return self
+    
+    def isFinished(self):
+        raise NotImplementedError(f"'isFinished' Method on {self.__class__.__name__} not implemented.")
+    

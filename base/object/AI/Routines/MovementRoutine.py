@@ -10,25 +10,22 @@ from base.object.GameObject import GameObject
 
 class MovementRoutine(Routine):
     def __init__(self, obj: GameObject) -> None:
-        super().__init__()
-        self.object = obj
-        self.grid = NodeStorage.findGrid(obj)
+        super().__init__(obj, True)
+        self.grid = NodeStorage.findGrid(self.object)
         self.pathVisualizer = NodeVisualizer([])
         self.gridVisualizer = NodeVisualizer([], (50, 50, 50))
         self.gridVisualizer.setNodes(self.grid)
         self.target = None
-    
-    def onStart(self):
-        Events.subscribe(self, "game.tick")
-    
-    def onStop(self):
-        Events.unsubscribe(self, "game.tick")
-        self.stopActions()
+        
+        self.middlewareHandler.on("start", lambda x: Events.subscribe(self, "game.tick"))
+        self.middlewareHandler.on("stop", lambda x: Events.unsubscribe(self, "game.tick"))
 
     def receiveEvent(self, event: Event):
-        self.run()
+        if event.name == "game.tick":
+            self.run()
 
     def createActions(self):
+        self.pendingAction = None
         self.stopActions()
         startNode = PathFinder.nearestNode(self.grid, self.object.pos)
         endNode = PathFinder.nearestNode(self.grid, self.endState) 
@@ -43,7 +40,6 @@ class MovementRoutine(Routine):
             if n.pos is None:
                 continue
             lastPos = self.actions[-1].endState if len(self.actions) > 0 else self.object.pos
-            actions.append(MovementAction(self.object, lastPos, n.pos)) 
+            actions.append(MovementAction(self.object, n.pos)) 
         self.setActions(actions)  
         self.pathVisualizer.setNodes(path)
-    
