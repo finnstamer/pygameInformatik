@@ -1,5 +1,9 @@
+from pygame.cursors import thickarrow_strings
+from base.core.Event.Event import Event
+from base.core.Event.Events import Events
 from base.object.AI.PathFinder import PathFinder
 from base.object.AI.Routines.MovementRoutine import MovementRoutine
+from base.object.Factory.Factory import Factory
 from base.object.GameObject import GameObject
 
 
@@ -8,12 +12,22 @@ class FollowObjectRoutine(MovementRoutine):
         super().__init__(obj)
         self.target = target
 
-        self.middlewareHandler.on("pendingAction.done", self.updateActions)
-            
-    def updateActions(self, x=False):
-        if len(self.actions) > 0:
-            targetNode = PathFinder.nearestNode(self.grid, self.target.pos)
-            if self.actions[-1].endState != targetNode.pos:
-                self.setStates(self.object, self.target.pos)
-                self.createActions()
+        self.middlewareHandler.on("pendingAction.done", self.reAdjust)
+        self.middlewareHandler.on("finished", lambda: Events.subscribe(f"{self.target.id}.moved", self.restart))
+        self.middlewareHandler.on("set", self.onSet, True)
     
+    def restart(self, event: Event):
+        self.setStates(self.object, self.target)
+        self.start()
+        if len(self.actions) > 0:    
+            Events.unsubscribe(event.name, self.restart)
+
+    def reAdjust(self, x=False):
+        targetNode = PathFinder.nearestNode(self.grid, self.target.pos)
+        if self.actions[-1].endState != targetNode.pos:
+            Events.unsubscribe(f"{self.target.id}.moved", self.restart)
+            self.stop()
+            self.setStates(self.object, self.target)
+            self.createActions()
+            self.start()
+            return

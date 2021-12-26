@@ -7,15 +7,15 @@ class Routine(Action):
         super().__init__(obj, endState)
         self.actions: List[Action] = []
         self.pendingAction = None
-        self.middlewareHandler.on("stop", lambda x: self.stopActions())
-        self.middlewareHandler.on("set", lambda x: self.createActions())
-        self.middlewareHandler.on("run", lambda x: self.onRun())
+
+        self.middlewareHandler.on("stop", self.stopActions)
+        self.middlewareHandler.on("set", self.createActions)
+        self.middlewareHandler.on("run", self.runActions)
     
     def createActions(self):
         raise NotImplementedError(f"'createActions' Method on {self.__class__.__name__} not implemented.")
     
-    def onRun(self):
-
+    def runActions(self):
         if self.progress == 0 or self.progress == 2:
             return
         if self.isFinished():
@@ -23,6 +23,8 @@ class Routine(Action):
             return
         
         if self.pendingAction is None:
+            if len(self.actions) == 0:
+                return
             self.pendingAction = self.actions[0]
             return self.pendingAction.start()
 

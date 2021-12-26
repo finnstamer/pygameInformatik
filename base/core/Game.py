@@ -18,7 +18,7 @@ class Game():
         self.active = True
         self.notes: Dict[str, Any] = {}
         self.levels: Dict[int, Level] = {}
-        Events.subscribe(self, "game.stop", "game.level.switch")
+        # Events.subscribe(self, "game.stop", "game.level.switch")
 
     def receiveEvent(self, event: Event):
         name = event.name

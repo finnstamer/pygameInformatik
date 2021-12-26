@@ -5,6 +5,7 @@ from base.core.Dependencies.NodeVisualizer import NodeVisualizer
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
+from base.object.AI.Routines.FollowObjectRoutine import FollowObjectRoutine
 from base.object.Factory.Factory import Factory
 from base.object.AI.PathFinder import PathFinder
 from base.object.AI.Routines.MovementRoutine import MovementRoutine
@@ -26,25 +27,23 @@ class Player(GameObject):
 
         self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
         Game.use(Controls)
-        Events.subscribe(self, "game.tick", "game.start")
-
-    def default(self, obj):
-        obj.color = (0, 250, 250)
-        return obj
+        Events.subscribe("game.tick", self.onTick)
+        Events.subscribe("game.start", self.onStart)
     
-    def receiveEvent(self, event: Event):
-        if event.name == "game.start":
-            self.routine = MovementRoutine(Factory.get("ekto1"))
+    def onStart(self, event):
+        # self.routine = MovementRoutine(Factory.get("ekto1"))
+        self.routine = FollowObjectRoutine(Factory.get("ekto1"), self)
 
-        if event.name == "game.tick":
-            keys = Controls.keys
-            self.control(keys)
-            # self.move(self.nextPos())
-            self.oldMovement()
-            
-            if keys["space"]:
-                self.routine.setStates(Factory.get("ekto1"), self.pos).start()
- 
+    def onTick(self, event):
+        print(self.routine.progress)
+        keys = Controls.keys
+        self.control(keys)
+        # self.move(self.nextPos())
+        self.oldMovement()
+
+        if keys["space"]:
+            self.routine.setStates(Factory.get("ekto1"), self).start()
+
     def nextPos(self) -> pygame.Vector2:
         return {
             0: pygame.Vector2(self.pos.x, self.pos.y - self.speed),

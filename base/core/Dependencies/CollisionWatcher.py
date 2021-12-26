@@ -18,7 +18,8 @@ class CollisionWatcher():
         CollisionWatcher.watchList[watch].append(obj)
         CollisionWatcher.watchList[obj].append(watch)
 
-        Events.subscribe(CollisionWatcher, f"{watch.id}.moved", f"{obj.id}.moved")
+        Events.subscribe(f"{watch.id}.moved", CollisionWatcher.receiveEvent)
+        Events.subscribe(f"{obj.id}.moved", CollisionWatcher.receiveEvent)
         return f"collisionWatcher.collision.{obj.id}.{watch.id}"
 
     def receiveEvent(event: Event):
@@ -35,7 +36,7 @@ class CollisionWatcher():
         if watch in CollisionWatcher.watchList:
             CollisionWatcher.watchList[watch].remove(obj)
             if len(CollisionWatcher.watchList[watch]) == 0:
-                Events.unsubscribe(CollisionWatcher, f"{watch.id}.moved")
+                Events.unsubscribe(f"{watch.id}.moved", CollisionWatcher.receiveEvent)
 
                 
     def unwatch(obj: GameObject, watch: GameObject):

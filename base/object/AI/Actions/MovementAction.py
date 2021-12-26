@@ -7,14 +7,11 @@ from pygame import Vector2
 class MovementAction(Action):
     def __init__(self, obj: GameObject, endState: Vector2) -> None:
         super().__init__(obj, endState)
-        self.middlewareHandler.on("start", lambda x: Events.subscribe(self, "game.tick"))
-        self.middlewareHandler.on("stop", lambda x: Events.unsubscribe(self, "game.tick"))
-        self.middlewareHandler.on("run", lambda x: self.onRun())
+        
+        self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run))
+        self.middlewareHandler.on("run", self.onRun)
+        self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run))
 
-    def receiveEvent(self, event: Event):
-        if event.name == "game.tick":
-            self.run()
-    
     def onRun(self):
         xDiff = self.endState.x - self.object.pos.x 
         yDiff = self.endState.y - self.object.pos.y 

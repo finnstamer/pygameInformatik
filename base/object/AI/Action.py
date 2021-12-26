@@ -24,10 +24,11 @@ class Action():
         Events.dispatch(f"Action.{self.id}.start", {"action": self})
         return self
 
-    def run(self):
+    def run(self, event):
         if self.isFinished():
             self.stop()
             self.progress = 2
+            Events.dispatch(f"Action.{self.id}.finished", {"action": self})
             return
         Events.dispatch(f"Action.{self.id}.run", {"action": self})
 

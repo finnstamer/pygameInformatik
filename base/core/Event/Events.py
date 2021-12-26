@@ -1,8 +1,10 @@
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
+from inspect import getargspec
 
 class Events():
-    subscribers: Dict[str, List[object]] = {}
+    # subscribers: Dict[str, List[object]] = {}
+    subscribers: Dict[str, List[Callable]] = {}
     requests: Dict[str, Callable] = {}
 
     @staticmethod
@@ -10,24 +12,20 @@ class Events():
         if name in Events.subscribers:
             subscribed = Events.subscribers[name]
             for s in subscribed:
-                s.receiveEvent(Event(name, value)) 
+                s(Event(name, value)) 
+    
+    @staticmethod
+    def subscribe(event: str, func: Callable):
+        if event not in Events.subscribers:
+            Events.subscribers[event] = [func]
+        if func not in Events.subscribers[event]:
+            Events.subscribers[event].append(func)
 
     @staticmethod
-    def subscribe(obj: object, *events: str):
-        events = list(events)
-        for e in events:
-            if e not in Events.subscribers:
-                Events.subscribers[e] = [obj]
-            if obj not in Events.subscribers[e]:
-                Events.subscribers[e].append(obj)
-
-    @staticmethod
-    def unsubscribe(obj: object, *events: str):
-        events = list(events)
-        for e in events:
-            if e in Events.subscribers:
-                subscribed = Events.subscribers[e]
-                Events.subscribers[e] = list(filter(lambda x: x != obj, subscribed))
+    def unsubscribe(event, func: Callable):
+        if event in Events.subscribers:
+            subscribed = Events.subscribers[event]
+            Events.subscribers[event] = list(filter(lambda x: x != func, subscribed))
 
     # Unsubscribes object from all its events
     @staticmethod
@@ -47,9 +45,10 @@ class Events():
             return Events.requests[req](*args)
         raise NotImplementedError(f"Request '{req}' is not accepted.")
 
-    def allSubscribedEvents(obj: object):
+    # FIXME
+    def allSubscribedEvents(func: Callable):
         events = []
         for e in Events.subscribers.items():
-            if obj in e[1]:
-                events.append(e[0])
+            if func in e[1]:
+                events.append(e[0])                
         return events

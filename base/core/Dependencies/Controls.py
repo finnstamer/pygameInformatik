@@ -8,14 +8,10 @@ class Controls():
     pressed = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
 
     def __init__(self) -> None:
-        Events.subscribe(self, "game.dependency.tick")
-
-    def receiveEvent(self, event: Event):
-        if event.name == "game.dependency.tick":
-            Controls.update()
+        Events.subscribe("game.dependency.tick", Controls.update)
         
     @staticmethod
-    def update():
+    def update(event):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 Controls.updateControlsPressed(event.key)

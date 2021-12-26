@@ -27,6 +27,7 @@ class Factory():
             raise LookupError(f"Factory: Alias '{id}' not found.")
         return Factory.objects[Factory.alias[id]]
 
+    # FIXME
     def clone(obj: object, reconnect=False):
         cloned = deepcopy(obj)
         if reconnect:

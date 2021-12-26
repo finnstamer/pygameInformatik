@@ -9,20 +9,21 @@ class Teleporter():
         self.teleporter = teleporter
         self.obj = obj
         self.dest = dest
-        self.collision = ""
+        self.colEvent = ""
     
     def stop(self):
         Events.disconnect(self)
         return self
     
     def start(self):
-        Events.subscribe(self, "game.start", self.collision)
+        Events.subscribe("game.start", self.onStart)
+        Events.subscribe(self.colEvent, self.onCollision)
         return self
 
-    def receiveEvent(self, event: Event):
+    def onStart(self, event: Event):
         if event.name == "game.start":
-            self.collision = CollisionWatcher.watch(self.teleporter, self.obj)
-            Events.subscribe(self, self.collision)
+            self.colEvent = CollisionWatcher.watch(self.teleporter, self.obj)
+            Events.subscribe(self.colEvent, self.onCollision)
 
-        if event.name == self.collision:
-            self.obj.updatePos(self.dest)
+    def onCollision(self, event):
+        self.obj.updatePos(self.dest)
