@@ -36,13 +36,14 @@ class Player(GameObject):
 
     def onTick(self, event):
         print(self.routine.progress)
-        keys = Controls.keys
-        self.control(keys)
+        self.control(Controls.keys)
         # self.move(self.nextPos())
         self.oldMovement()
 
-        if keys["space"]:
-            self.routine.setStates(Factory.get("ekto1"), self).start()
+        if Controls.keys["space"]:
+            self.routine.setStates(Factory.get("ekto1"), self).switch()
+        if Controls.keys["escape"]:
+            self.routine.stop()
 
     def nextPos(self) -> pygame.Vector2:
         return {

@@ -12,9 +12,10 @@ class FollowObjectRoutine(MovementRoutine):
         super().__init__(obj)
         self.target = target
 
+        self.middlewareHandler.on("set", self.onSet, 0)
         self.middlewareHandler.on("pendingAction.done", self.reAdjust)
         self.middlewareHandler.on("finished", lambda: Events.subscribe(f"{self.target.id}.moved", self.restart))
-        self.middlewareHandler.on("set", self.onSet, True)
+        self.middlewareHandler.on("stop", lambda: Events.unsubscribe(f"{self.target.id}.moved", self.restart))
     
     def restart(self, event: Event):
         self.setStates(self.object, self.target)
@@ -25,12 +26,9 @@ class FollowObjectRoutine(MovementRoutine):
     def reAdjust(self, x=False):
         targetNode = PathFinder.nearestNode(self.grid, self.target.pos)
         if self.actions[-1].endState != targetNode.pos:
-            Events.unsubscribe(f"{self.target.id}.moved", self.restart)
             self.stop()
             self.setStates(self.object, self.target)
-            self.createActions()
             self.start()
-            return
 
     def onSet(self):
         self.endState = self.target.pos

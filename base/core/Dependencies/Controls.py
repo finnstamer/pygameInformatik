@@ -6,6 +6,7 @@ from base.core.Event.Events import Events
 class Controls():
     keys = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
     pressed = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
+    released = {"left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
 
     def __init__(self) -> None:
         Events.subscribe("game.dependency.tick", Controls.update)
@@ -37,6 +38,8 @@ class Controls():
 
     @staticmethod
     def updateControlsReleased(released):
+        Controls.released["space"] = False
+
         if released == K_LEFT:
             Controls.keys["left"] = False
         if released == K_RIGHT:
@@ -47,6 +50,7 @@ class Controls():
             Controls.keys["down"] = False
         if released == K_SPACE:
             Controls.keys["space"] = False
+            Controls.released["space"] = True
         if released == K_ESCAPE:
             Controls.keys["escape"] = False
         if released == K_LSHIFT:

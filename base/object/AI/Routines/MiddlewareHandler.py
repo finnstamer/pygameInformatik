@@ -8,13 +8,13 @@ class MiddlewareHandler():
         self.action = action
         self.middlewares = {}
     
-    def on(self, event: str, func: Callable, forceFirst=False):
+    def on(self, event: str, func: Callable, forcePos=-1):
         if event not in self.middlewares:
             self.middlewares[event] = []
             Events.subscribe(f"Action.{self.action.id}.{event}", self.receiveEvent)
         
-        if forceFirst:
-            self.middlewares[event][0:0] = [func]
+        if forcePos != -1:
+            self.middlewares[event][forcePos:forcePos] = [func]
             return
         self.middlewares[event].append(func)
     
