@@ -31,3 +31,6 @@ class FollowObjectRoutine(MovementRoutine):
             self.createActions()
             self.start()
             return
+
+    def onSet(self):
+        self.endState = self.target.pos
