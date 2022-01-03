@@ -35,13 +35,13 @@ class Player(GameObject):
         self.routine = FollowObjectRoutine(Factory.get("ekto1"), self)
 
     def onTick(self, event):
-        print(self.routine.progress)
+        # print(self.routine.progress)
         self.control(Controls.keys)
-        # self.move(self.nextPos())
-        self.oldMovement()
+        self.move(self.nextPos())
+        # self.oldMovement()
 
         if Controls.keys["space"]:
-            self.routine.setStates(Factory.get("ekto1"), self).switch()
+            self.routine.setStates(Factory.get("ekto1"), self).start()
         if Controls.keys["escape"]:
             self.routine.stop()
 

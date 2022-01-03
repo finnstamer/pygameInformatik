@@ -1,9 +1,7 @@
-from pygame.cursors import thickarrow_strings
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.object.AI.PathFinder import PathFinder
 from base.object.AI.Routines.MovementRoutine import MovementRoutine
-from base.object.Factory.Factory import Factory
 from base.object.GameObject import GameObject
 
 

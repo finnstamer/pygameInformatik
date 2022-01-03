@@ -29,13 +29,15 @@ class Events():
 
     # Unsubscribes object from all its events
     @staticmethod
-    def disconnect(obj: object):
+    def disconnect(func: Callable):
         for e in Events.subscribers:
             subscribed = Events.subscribers[e]
-            Events.subscribers[e] = list(filter(lambda x: x != obj, subscribed))
+            Events.subscribers[e] = list(filter(lambda x: x != func, subscribed))
 
     @staticmethod
     def acceptRequest(req: str, func: Callable):
+        if req in Events.request:
+            raise LookupError(f"Request '{req}' already accepted by '{Events.request[req]}'") 
         Events.requests[req] = func
         
     # Objekte die eine Request ausgeben, erwarten eine Antwort 
@@ -45,7 +47,6 @@ class Events():
             return Events.requests[req](*args)
         raise NotImplementedError(f"Request '{req}' is not accepted.")
 
-    # FIXME
     def allSubscribedEvents(func: Callable):
         events = []
         for e in Events.subscribers.items():

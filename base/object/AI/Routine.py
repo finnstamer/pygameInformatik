@@ -26,6 +26,7 @@ class Routine(Action):
             if len(self.actions) == 0:
                 return
             self.pendingAction = self.actions[0]
+            Events.dispatch(f"Action.{self.id}.pendingAction.set", {"action": self, "done": self.pendingAction})
             return self.pendingAction.start()
 
         if self.pendingAction.progress == 2:

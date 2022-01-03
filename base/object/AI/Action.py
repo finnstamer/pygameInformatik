@@ -23,11 +23,6 @@ class Action():
         self.progress = 1
         Events.dispatch(f"Action.{self.id}.start", {"action": self})
         return self
-    
-    def switch(self):
-        if self.progress == 1:
-            return self.stop()
-        return self.start()
         
 
     def run(self, event):
