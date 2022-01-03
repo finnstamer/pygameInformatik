@@ -2,6 +2,8 @@ from pygame import Vector2
 from base.core.Event.Events import Events
 from base.core.Level.Level import Level
 from base.core.Level.MapBuilder import MapBuilder
+from base.object.Projectile import Projectile
+from base.object.Weapon import Weapon
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.wall import Wall
@@ -24,6 +26,16 @@ for i in range(10):
 
 player = Player()
 mB.placeInCenter(player)
+
+projectile = Projectile(range=150, damage=50, speed=20, width=5, height=5)
+projectile.color = (114, 114, 114)
+weapon = Weapon(player, Vector2(10, 10), projectile, 100)
+weapon.color = (29, 191, 172)
+weapon.height = 5
+weapon.width = 10
+weapon.setAlias("weapon")
+
+mB.addObject(weapon, projectile)
 
 ektoplasma = Ektoplasma().setAlias("ekto1")
 mB.nextTo(player, ektoplasma, 1, 0, marginX=0)

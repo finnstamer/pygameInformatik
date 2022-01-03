@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Tuple
+from typing import Callable, Dict, Tuple
 from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
@@ -22,6 +22,7 @@ class GameObject():
         self.solid = False
         self.speed = 0
         self.buildRect()
+        self.subscribedEvents: Dict[str, str] = {} # {"game.tick", "onTick"}
         Factory.append(self)
 
     @property

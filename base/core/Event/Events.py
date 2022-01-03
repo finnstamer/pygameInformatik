@@ -36,16 +36,18 @@ class Events():
 
     @staticmethod
     def acceptRequest(req: str, func: Callable):
-        if req in Events.request:
-            raise LookupError(f"Request '{req}' already accepted by '{Events.request[req]}'") 
+        if req in Events.requests:
+            pass
+            # print(f"Request '{req}' already accepted by '{Events.requests[req]}'") 
         Events.requests[req] = func
         
     # Objekte die eine Request ausgeben, erwarten eine Antwort 
     @staticmethod
-    def request(req: str, *args: Any) -> Any:
+    def request(req: str, arg: Any) -> Any:
         if req in Events.requests:
-            return Events.requests[req](*args)
-        raise NotImplementedError(f"Request '{req}' is not accepted.")
+            return Events.requests[req](arg)
+        return arg
+        # raise NotImplementedError(f"Request '{req}' is not accepted.")
 
     def allSubscribedEvents(func: Callable):
         events = []

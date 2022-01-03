@@ -10,6 +10,7 @@ class Ektoplasma(GameObject):
         super().__init__(width=25, height=25, color=(3, 173, 63))
         self.collisionEvent = ""
         self.speed = 5
+        self.solid = True
         # Events.subscribe(self, "game.start", "game.tick")
 
     def receiveEvent(self, e: Event):

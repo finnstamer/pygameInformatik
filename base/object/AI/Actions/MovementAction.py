@@ -23,6 +23,7 @@ class MovementAction(Action):
             speed = self.object.speed * distance / abs(distance)
 
         segmentPos = Vector2(self.object.pos.x + speed if xMovement else self.object.pos.x, self.object.pos.y + speed if not xMovement else self.object.pos.y)
+        segmentPos = self.middlewareHandler.setConnectionPoint("segmentPos", segmentPos)
         self.object.updatePos(segmentPos)
     
     def isFinished(self):

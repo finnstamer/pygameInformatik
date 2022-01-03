@@ -37,11 +37,12 @@ class Player(GameObject):
     def onTick(self, event):
         # print(self.routine.progress)
         self.control(Controls.keys)
-        self.move(self.nextPos())
-        # self.oldMovement()
+        # self.move(self.nextPos())
+        self.oldMovement()
 
         if Controls.keys["space"]:
-            self.routine.setStates(Factory.get("ekto1"), self).start()
+            # self.routine.setStates(Factory.get("ekto1"), self).start()
+            Factory.get("weapon").shoot(self.direction)
         if Controls.keys["escape"]:
             self.routine.stop()
 
