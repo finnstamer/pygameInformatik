@@ -39,8 +39,7 @@ class Player(GameObject):
         self.control(Controls.keys)
         # self.move(self.nextPos())
         self.oldMovement()
-
-        if Controls.keys["space"]:
+        if Controls.pressed["space"]:
             # self.routine.setStates(Factory.get("ekto1"), self).start()
             Factory.get("weapon").shoot(self.direction)
         if Controls.keys["escape"]:
@@ -55,22 +54,22 @@ class Player(GameObject):
         }[self.direction]
 
     def control(self, keys: Dict[str, bool]):
-        if keys["up"]:
+        if keys["w"]:
             self.direction = 0
-        if keys["right"]:
+        if keys["d"]:
             self.direction = 1
-        if keys["down"]:
+        if keys["s"]:
             self.direction = 2
-        if keys["left"]:
+        if keys["a"]:
             self.direction = 3
         
     def oldMovement(self):
         keys = Controls.keys
-        if keys["up"]:
+        if keys["w"]:
             self.move(pygame.Vector2(self.pos.x, self.pos.y - self.speed))
-        if keys["right"]:
+        if keys["d"]:
             self.move(pygame.Vector2(self.pos.x + self.speed, self.pos.y))
-        if keys["down"]:
+        if keys["s"]:
             self.move(pygame.Vector2(self.pos.x, self.pos.y + self.speed))
-        if keys["left"]:
+        if keys["a"]:
             self.move(pygame.Vector2(self.pos.x - self.speed, self.pos.y))

@@ -1,30 +1,31 @@
-from pygame import Vector2, color
+from pygame import Vector2
 from base.core.Dependencies.Spawner import Spawner
 from base.core.Event.Events import Events
-from base.object.AI.Actions.MovementAction import MovementAction
 from base.object.GameObject import GameObject
 from base.object.Projectile import Projectile
 import time
 
 class Weapon(GameObject):
     
-    def __init__(self, owner: GameObject, relativePosition: Vector2, projectile: Projectile, cooldown: float) -> None:
+    def __init__(self, owner: GameObject, relativePosition: Vector2, projectile: Projectile, cooldown: float, munition: int = 0) -> None:
         super().__init__()
         self.owner = owner
         self.relativePosition = relativePosition
         self.projectile = projectile
+        self.munition = munition
         self.cooldown = cooldown
         self.lastShot = None
         Events.subscribe("game.tick", self.onTick)
 
     def onTick(self, event):
+        # Adjust Weapon to Owner
         self.pos = Vector2(self.owner.pos.x + self.relativePosition.x, self.owner.pos.y + self.relativePosition.y)
 
     def shoot(self, dir: int):
-        if self.lastShot is None or (time.time() * 1000 - self.lastShot) > self.cooldown:
-            self.lastShot = time.time() * 1000
-        else:
-            return        
+        if self.munition == 0 or (self.lastShot is not None and (time.time() * 1000 - self.lastShot) <= self.cooldown):
+            return
+        self.munition = self.munition - 1
+        self.lastShot = time.time() * 1000
         projectile: Projectile = Spawner.spawnObject(self.projectile, self.pos)
         projectile.prepare()
         projectile.movementAction.setStates(projectile, self.shotPosition(dir))

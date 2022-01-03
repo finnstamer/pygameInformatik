@@ -21,6 +21,7 @@ class GameObject():
         self.color = color
         self.solid = False
         self.speed = 0
+        self.health = -1
         self.buildRect()
         self.subscribedEvents: Dict[str, str] = {} # {"game.tick", "onTick"}
         Factory.append(self)
@@ -122,6 +123,14 @@ class GameObject():
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0
     
+    def damage(self, points: int):
+        if self.health == -1:
+            return
+        self.health -= points
+        if self.health <= 0:
+            Events.dispatch(f"{self.id}.died", {"obj": self})
+            self.active = False
+
     def setAlias(self, alias: str):
         Factory.setAlias(self, alias)
         return self

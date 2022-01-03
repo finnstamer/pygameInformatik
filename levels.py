@@ -27,9 +27,9 @@ for i in range(10):
 player = Player()
 mB.placeInCenter(player)
 
-projectile = Projectile(range=150, damage=50, speed=20, width=5, height=5)
+projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5)
 projectile.color = (114, 114, 114)
-weapon = Weapon(player, Vector2(10, 10), projectile, 100)
+weapon = Weapon(player, Vector2(10, 10), projectile, cooldown=100, munition=50000)
 weapon.color = (29, 191, 172)
 weapon.height = 5
 weapon.width = 10

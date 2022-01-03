@@ -53,7 +53,6 @@ class Game():
             clock.tick(60)
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
-            
 
             screen.fill(pygame.Color(0, 0, 0));
             self.level.draw()

@@ -32,7 +32,7 @@ class Level():
             obj.active = True
         
     def allSolidObjects(self):
-        return list(filter(lambda x: x.solid, self.objects))
+        return list(filter(lambda x: x.solid and x.active, self.objects))
 
     def negativeObjects(self, objs: List[object]) -> object:
         return list(filter(lambda x: x not in objs, self.objects))

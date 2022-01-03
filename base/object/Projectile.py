@@ -1,3 +1,4 @@
+from typing import List
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
 from base.object.AI.Actions.MovementAction import MovementAction
@@ -30,8 +31,9 @@ class Projectile(GameObject):
             return furthestMove
         return pos
     
-    def hit(self, objects):
-        print(objects)
+    def hit(self, objects: List[GameObject]):
+        for obj in objects:
+            obj.damage(self.damage)
         pass
 
     def fadeOut(self):
