@@ -28,8 +28,8 @@ class Weapon(GameObject):
         self.lastShot = time.time() * 1000
         projectile: Projectile = Spawner.spawnObject(self.projectile, self.pos)
         projectile.prepare()
-        projectile.movementAction.setStates(projectile, self.shotPosition(dir))
-        projectile.movementAction.start()
+        projectile.action.setStates(projectile, self.shotPosition(dir))
+        projectile.action.start()
 
     def shotPosition(self, dir):
         return {

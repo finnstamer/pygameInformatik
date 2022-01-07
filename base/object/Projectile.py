@@ -2,6 +2,7 @@ from typing import List
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
 from base.object.AI.Actions.MovementAction import MovementAction
+from base.object.AI.Actions.ShootAction import ShootAction
 from base.object.GameObject import GameObject
 
 
@@ -14,12 +15,14 @@ class Projectile(GameObject):
         self.active = False
     
     def prepare(self):
-        self.movementAction = MovementAction(self, self.pos)
-        self.movementAction.middlewareHandler.on("finished", self.onFinished)
-        self.movementAction.middlewareHandler.on("finished", self.fadeOut)
-        self.movementAction.middlewareHandler.connect("segmentPos", self.evaluateNextPos)
-        self.active = True
+        self.action = ShootAction(self, self.pos)
+        self.action.middlewareHandler.on("shot.hit", self.onHit)
     
+    def onHit(self):
+        for obj in self.action.hitObjects:
+            obj.damage(self.damage)
+        self.action.stop()
+
     def evaluateNextPos(self, pos):
         furthestMove, objects = Movement.furthestMove_collider(self, pos, self.pos)
         if furthestMove == self.pos or furthestMove is None:
@@ -34,9 +37,6 @@ class Projectile(GameObject):
     def hit(self, objects: List[GameObject]):
         for obj in objects:
             obj.damage(self.damage)
-        pass
-
-    def fadeOut(self):
         pass
 
     def onFinished(self):

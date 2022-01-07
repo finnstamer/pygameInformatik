@@ -16,12 +16,12 @@ class Action():
         self.stop()
         self.object = obj
         self.endState = endState
-        Events.dispatch(f"Action.{self.id}.set", {"action": self})
+        self.middlewareHandler.dispatch("set")
         return self
     
     def start(self):
         self.progress = 1
-        Events.dispatch(f"Action.{self.id}.start", {"action": self})
+        self.middlewareHandler.dispatch("start")
         return self
         
 
@@ -29,13 +29,13 @@ class Action():
         if self.isFinished():
             self.stop()
             self.progress = 2
-            Events.dispatch(f"Action.{self.id}.finished", {"action": self})
+            self.middlewareHandler.dispatch("finished")
             return
-        Events.dispatch(f"Action.{self.id}.run", {"action": self})
+        self.middlewareHandler.dispatch("run")
 
     def stop(self):
         self.progress = 0
-        Events.dispatch(f"Action.{self.id}.stop", {"action": self})
+        self.middlewareHandler.dispatch("stop")
         return self
     
     def isFinished(self):

@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Any, Callable
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 
@@ -6,6 +6,9 @@ class MiddlewareHandler():
     def __init__(self, action) -> None:
         self.action = action
         self.middlewares = {}
+    
+    def dispatch(self, event: str, value: Any = ""):
+        Events.dispatch(f"Action.{self.action.id}.{event}", (self.action, value))
     
     def on(self, event: str, func: Callable, forcePos=-1):
         if event not in self.middlewares:
@@ -26,5 +29,5 @@ class MiddlewareHandler():
     def connect(self, name, func: Callable):
         Events.acceptRequest(f"Action.{self.action.id}.{name}", func)
 
-    def setConnectionPoint(self, name="", value=""):
+    def openConnection(self, name="", value=""):
         return Events.request(f"Action.{self.action.id}.{name}", value)
