@@ -19,10 +19,9 @@ class NodeVisualizer():
         return self
 
     def start(self):
-        Game.level.remove(*self.nodeObjects)
+        Game.level().remove(*self.nodeObjects)
         self.nodeObjects = list(map(lambda x: self.toObject(x), self.nodes))
-        if Game.level is not None:  
-            Game.level.add(*self.nodeObjects)        
+        Game.level().add(*self.nodeObjects)        
 
     def toObject(self, node: Node) -> GameObject:
         if node is None or node.pos == Vector2(-1, -1):

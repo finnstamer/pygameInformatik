@@ -7,6 +7,7 @@ class Controls():
     keys = {"w": False, "s": False, "a": False, "d": False, "left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
     pressed = {}
     released = {}
+    clicks = {"l": (False, pygame.Vector2(0, 0))}
 
     def __init__(self) -> None:
         Events.subscribe("game.dependency.tick", Controls.update)
@@ -21,7 +22,12 @@ class Controls():
                 Controls.updateControlsPressed(event.key)
             if event.type == pygame.KEYUP:
                 Controls.updateControlsReleased(event.key)
-                    
+            if event.type == pygame.MOUSEBUTTONUP:
+                Controls.updateClicks(event.key)
+            
+    def updateClicks(event):
+        Controls.clicks["l"] = (True, pygame.mouse.get_pos())
+                
     @staticmethod
     def updateControlsPressed(k):
         if k == K_SPACE:

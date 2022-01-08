@@ -1,7 +1,7 @@
 import pygame
 from typing import Any, Dict, List
 
-from pygame.constants import KEYDOWN, KEYUP
+from pygame.constants import KEYDOWN, KEYUP, MOUSEBUTTONUP
 
 from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -34,7 +34,7 @@ class Game():
 
     def start():
         pygame.init()
-        pygame.event.set_allowed([KEYDOWN, KEYUP])
+        pygame.event.set_allowed([KEYDOWN, KEYUP, MOUSEBUTTONUP])
         clock = pygame.time.Clock()
         Game.initDependencies()
 

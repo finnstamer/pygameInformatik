@@ -42,4 +42,4 @@ class Projectile(GameObject):
     def onFinished(self):
         self.hit([])
         self.active = False
-        Game.level.remove(self)
+        Game.level().remove(self)

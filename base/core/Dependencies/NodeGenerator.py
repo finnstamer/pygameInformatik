@@ -59,7 +59,7 @@ class NodeGenerator():
 
     
     def new_generateDynamicNodes(obj: GameObject):
-        solids = Game.level.allSolidObjects()
+        solids = Game.level().allSolidObjects()
         semistatic = NodeGenerator.semiStaticNodes(obj)
         nodes = semistatic[0]
         skipped = semistatic[1]
