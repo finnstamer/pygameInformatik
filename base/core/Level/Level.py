@@ -5,10 +5,6 @@ class Level():
         self.id = id
         self.objects = list(objects)
 
-    def getObject(self, id: int):
-        f = list(filter(lambda g: g.id == id, self.objects))
-        return f[0] if len(f) > 0 else None
-
     def draw(self):
         for obj in self.objects:
             obj.draw()

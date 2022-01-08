@@ -32,7 +32,8 @@ class Player(GameObject):
     
     def onStart(self, event):
         # self.routine = MovementRoutine(Factory.get("ekto1"))
-        self.routine = FollowObjectRoutine(Factory.get("ekto1"), self)
+        # self.routine = FollowObjectRoutine(Factory.get("ekto1"), self)
+        pass
 
     def onTick(self, event):
         # print(self.routine.progress)
@@ -43,7 +44,10 @@ class Player(GameObject):
             # self.routine.setStates(Factory.get("ekto1"), self).start()
             Factory.get("weapon").shoot(self.direction)
         if Controls.keys["escape"]:
-            self.routine.stop()
+            Game.level().reset()
+            # Game.level().remove(self)
+            # Factory.delete(self)
+            # Events.disconnectObject(self)
 
     def nextPos(self) -> pygame.Vector2:
         return {

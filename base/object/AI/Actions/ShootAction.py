@@ -34,4 +34,4 @@ class ShootAction(MovementAction):
 
     def deactivateProjectile(self):
         self.object.active = False
-        Game.level.remove(self.object)
+        Game.level().remove(self.object)

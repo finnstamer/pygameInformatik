@@ -11,9 +11,9 @@ class Spawner():
 
     @staticmethod
     def spawnObject(obj, pos: Vector2) -> GameObject:
-        cloned: GameObject = Factory.clone(obj, True)
+        cloned: GameObject = Factory.clone(obj)
         cloned.updatePos(pos)
-        Game.level.add(cloned)
+        Game.level().add(cloned)
         return cloned
     
     def spawnQuantity(self, pos: Vector2, qnty: int):

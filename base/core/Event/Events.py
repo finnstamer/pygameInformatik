@@ -27,18 +27,22 @@ class Events():
             subscribed = Events.subscribers[event]
             Events.subscribers[event] = list(filter(lambda x: x != func, subscribed))
 
-    # Unsubscribes object from all its events
+    # Unsubscribes func from all subscribed Events
     @staticmethod
     def disconnect(func: Callable):
         for e in Events.subscribers:
             subscribed = Events.subscribers[e]
             Events.subscribers[e] = list(filter(lambda x: x != func, subscribed))
 
+    def disconnectObject(obj: object):
+        funcs = [getattr(obj, f) for f in dir(obj) if not f.startswith("__") and callable(getattr(obj, f))]
+        print(funcs)
+        for f in funcs:
+            print(f)
+            Events.disconnect(f)
+
     @staticmethod
     def acceptRequest(req: str, func: Callable):
-        if req in Events.requests:
-            pass
-            # print(f"Request '{req}' already accepted by '{Events.requests[req]}'") 
         Events.requests[req] = func
         
     # Objekte die eine Request ausgeben, erwarten eine Antwort 

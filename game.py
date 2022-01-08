@@ -1,7 +1,6 @@
 from base.core.Game import Game
-from levels import level1
+from levels import Level1
 
-game = Game()
-game.addLevel(level1)
-game.setLevel(1)
-game.start()
+Game.addLevel(Level1(1))
+Game.setLevel(1)
+Game.start()

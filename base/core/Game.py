@@ -2,35 +2,25 @@ import pygame
 from typing import Any, Dict, List
 
 from pygame.constants import KEYDOWN, KEYUP
-from base.core.Event.Event import Event
 
 from base.core.Event.Events import Events
+from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.Level import Level
 from settings import screen
 
 class Game():
     tickDelta = 0
     dependencies: List[Any] = []
-    level: Level = Level(-1)
+    currentLevel: int = 0
     notes: Dict[str, Any] = {}
+    levels: Dict[int, AbstractLevel] = {0: Level(0)}
+    active = True
 
     def __init__(self) -> None:
-        self.active = True
         self.notes: Dict[str, Any] = {}
-        self.levels: Dict[int, Level] = {}
-        # Events.subscribe(self, "game.stop", "game.level.switch")
-
-    def receiveEvent(self, event: Event):
-        name = event.name
-        if name == "game.stop":
-            self.active = False
-            pygame.quit()
-            exit()
-        if name == "game.level.switch":
-            self.setLevel(event.value)
 
     # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
-    # Diese werden vor dem game.start Event geladen.
+    # Diese werden vor dem game.start Event initialisiert.
     @staticmethod
     def use(*dependencies: object):
         for dependency in list(dependencies):
@@ -42,32 +32,35 @@ class Game():
         for dependency in Game.dependencies:
             dependency()
 
-    def start(self):
+    def start():
         pygame.init()
         pygame.event.set_allowed([KEYDOWN, KEYUP])
         clock = pygame.time.Clock()
         Game.initDependencies()
 
         Events.dispatch("game.start")
-        while self.active:  
+        while Game.active:  
             clock.tick(60)
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
 
             screen.fill(pygame.Color(0, 0, 0));
-            self.level.draw()
+            Game.level().draw()
             
             pygame.display.flip()
 
-    def addLevel(self, *levels: Level) -> None:
+    def addLevel(*levels: AbstractLevel) -> None:
         for level in list(levels):
             level.deactivate()
-            self.levels[level.id] = level
+            Game.levels[level.id] = level
     
-    def setLevel(self, levelId: int) -> None:
-        Game.level.deactivate()
-
-        if levelId in self.levels:
-            Game.level = self.levels[levelId]
-            return Game.level.activate()
+    def setLevel(levelId: int) -> None:
+        Game.level().deactivate()
+        Game.currentLevel = levelId
+        if levelId in Game.levels:
+            Game.level().make()
+            return
         raise LookupError(f"Level '{levelId}' not found.")
+    
+    def level():
+        return Game.levels[Game.currentLevel]
