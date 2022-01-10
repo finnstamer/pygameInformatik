@@ -41,11 +41,11 @@ class Level1(AbstractLevel):
         # objects = [
         #   Wall(Vector2(), width=5, height=5)
         # ]
-        # enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
-        # enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
-        # enemy.setAlias("Enemy")
+        enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
+        enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
+        enemy.setAlias("Enemy")
         
-        mB.addObject(Player().updatePos(Vector2(200, 200)))
+        mB.addObject(Player().updatePos(Vector2(200, 200)), enemy)
         mB.addObject(*mirrorObjects)
         self.objects = mB.objects
 

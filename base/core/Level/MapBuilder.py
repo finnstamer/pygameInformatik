@@ -1,7 +1,9 @@
 from pygame import Vector2
 from base.core.Dependencies.Controls import Controls
 from base.core.Event.Events import Events
+from base.core.Game import Game
 from base.core.Object.Factory import Factory
+from objects.collectables.Ektoplasma import Ektoplasma
 from settings import screenRes
 from typing import List
 from base.core.Object.GameObject import GameObject
@@ -80,4 +82,5 @@ class MapBuilder():
         isClicked, pos = Controls.clicks["l"]
         if isClicked:        
             MapBuilder.clicks.append(pos)
+            Game.level().add(Ektoplasma().updatePos(Vector2(pos)))
         
