@@ -15,8 +15,8 @@ class Player(GameObject):
         self.pos = pygame.math.Vector2((50, 50));
         self.color = (50, 50, 50)
         self.solid = False
-        self.height = 50
-        self.width = 50
+        self.height = 35
+        self.width = 35
 
         self.speed = 5
         self.direction = 1 # Right
