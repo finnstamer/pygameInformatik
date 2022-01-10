@@ -1,4 +1,4 @@
-from pygame import Vector2
+from pygame import Vector2, Vector3
 from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.Level import Level
@@ -27,34 +27,29 @@ class Level1(AbstractLevel):
     def make(self):
         mB = MapBuilder()
         objects = [
-          Wall(Vector2(), width=5, height=5)
-        ]
+          Wall(Vector2(505,310), width=25, height=50),Wall(Vector2(460,30), width=100, height=50),
+          Wall(Vector2(560,80), width=100, height=50),Wall(Vector2(360,80), width=100, height=50),
+          Wall(Vector2(260,130), width=100, height=50),Wall(Vector2(660,130), width=100, height=50),
+          Wall(Vector2(760,180), width=100, height=50),Wall(Vector2(860,230), width=225, height=50),
+          Wall(Vector2(860,330), width=100, height=50),Wall(Vector2(1016,330), width=60, height=50),
+          Wall(Vector2(860,430), width=225, height=50),Wall(Vector2(460,630), width=100, height=50),
+          Wall(Vector2(360,580), width=100, height=50),Wall(Vector2(560,580), width=100, height=50),
+          Wall(Vector2(660,530), width=100, height=50),Wall(Vector2(760,480), width=100, height=50),
+          Wall(Vector2(260,530), width=100, height=50),Wall(Vector2(160,480), width=100, height=50),
+          Wall(Vector2(160,330), width=100, height=50),Wall(Vector2(160,180), width=100, height=50),
+          Wall(Vector2(0,230), width=160, height=50),Wall(Vector2(0,330), width=100, height=50),
+          Wall(Vector2(0,430), width=160, height=50),Wall(Vector2(415,430), width=200, height=25),
+          Wall(Vector2(400,230), width=75, height=25),Wall(Vector2(570,230), width=75, height=25),
+          Wall(Vector2(440,500), width=150, height=15),Wall(Vector2(440,175), width=150, height=15),
+          Wall(Vector2(300,285), width=25, height=150),Wall(Vector2(730,285), width=25, height=150),
+          Wall(Vector2(360,310), width=25, height=100),Wall(Vector2(670,310), width=25, height=100),
+          Wall(Vector2(790,275), width=25, height=175)
+          ]
+       
+       
+       
+       
+       
         mB.addObject(*objects)
         self.objects = mB.objects
-
-        # for i in range(10):
-        #     mB.addObject(Wall(Vector2(randrange(0, 500), randrange(0, 500)), 25, 25))
-
-        # player = Player()
-        # mB.placeInCenter(player)
-
-        # projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
-        # projectile.color = (114, 114, 114)
-        # weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
-        # weapon.color = (29, 191, 172)
-        # weapon.height = 20
-        # weapon.width = 75
-        # weapon.setImage("images/pump.png")
-        # weapon.setAlias("weapon")
-
-        # mB.addObject(weapon, projectile)
-
-        # ektoplasma = Ektoplasma().setAlias("ekto1")
-        # mB.nextTo(player, ektoplasma, 1, 0, marginX=0)
-
-# mB.pointMirror(player.cRect.corners[0], player, ektoplasma)
-# mB.axisMirror(-1, player.pos.y, player, ektoplasma)
-# level1 = Level(1, *mB.objects)
-
-
 
