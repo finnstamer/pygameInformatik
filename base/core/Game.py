@@ -57,6 +57,7 @@ class Game():
     # Aktuelles Level wird deaktiviert (Level.deactivate)
     def setLevel(levelId: int) -> None:
         Game.level().deactivate()
+        Game.level().delete()
         Game.currentLevel = levelId
         if levelId in Game.levels:
             Game.level().active = True

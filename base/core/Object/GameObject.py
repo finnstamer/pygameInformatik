@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Callable, Dict, Tuple
 from base.core.Dependencies.Movement import Movement
-from base.core.Event.Event import Event
+# from base.core.Dependencies.Movement import Movement
 from base.core.Event.Events import Events
 from base.geometry.Rectangle import Rectangle
 from base.core.Object.Factory import Factory

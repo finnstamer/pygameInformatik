@@ -21,13 +21,13 @@ class Weapon(GameObject):
         # Adjust Weapon to Owner
         self.pos = Vector2(self.owner.pos.x + self.relativePosition.x, self.owner.pos.y + self.relativePosition.y)
 
-    def shoot(self, dir: int):
+    def shoot(self, pos):
         if self.munition == 0 or (self.lastShot is not None and (time.time() * 1000 - self.lastShot) <= self.cooldown):
             return
         self.munition = self.munition - 1
         self.lastShot = time.time() * 1000
         self.projectile.pos = Vector2(self.pos.x + self.projectile.relativePosition.x, self.pos.y + self.projectile.relativePosition.y)
-        ShootWeaponAction(self, self.shotPosition(dir)).start()
+        ShootWeaponAction(self, pos).start()
 
     def shotPosition(self, dir):
         return {

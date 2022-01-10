@@ -22,7 +22,7 @@ class CollisionWatcher():
 
         Events.subscribe(f"{watch.id}.moved", CollisionWatcher.receiveEvent)
         Events.subscribe(f"{obj.id}.moved", CollisionWatcher.receiveEvent)
-        return f"collisionWatcher.collision.{obj.id}.{watch.id}"
+        return (f"collisionWatcher.collision.{obj.id}.{watch.id}", f"collisionWatcher.collision.{watch.id}.{obj.id}")
 
     def receiveEvent(event: Event):
         if event.isOfType("moved"):

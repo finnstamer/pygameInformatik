@@ -24,18 +24,16 @@ class Enemy(GameObject):
         self.speed = 3
         self.movement = MovementRoutine(self)
         
-        Events.subscribe("game.start", self.onStart)
-        Events.subscribe("game.tick", self.onTick)
-
-    def onStart(self, event):
         player = Factory.get("player")
         self.follow = FollowObjectRoutine(self, player)
-        Events.subscribe(f"{player.id}.moved", self.onPlayerMovement)
+        Events.subscribe(f"{player.id}.moved", self.onMovement)
+        Events.subscribe(f"{self.id}.moved", self.onMovement)
+        Events.subscribe("game.tick", self.onTick)
 
-    def onPlayerMovement(self, event):
-        if event.value.collidesWith(self.alertedRadiusObject.rect):
+    def onMovement(self, event):
+        if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):
             self.alerted = True
-        if not event.value.collidesWith(self.sleepRadiusObject.rect):
+        if not Factory.get("player").collidesWith(self.sleepRadiusObject.rect):
             self.alerted = False
             
     def onTick(self, event):

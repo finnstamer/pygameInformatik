@@ -34,12 +34,12 @@ class Player(GameObject):
     def onTick(self, event):
         if self.allowMovements:
             self.control(Controls.keys)
-            self.oldMovement()
-            # self.move(self.nextPos())
+            # self.oldMovement()
+            self.move(self.nextPos())
 
         clicked, pos = Controls.clicks["l"] 
-        # if clicked:
-        #     Factory.get("weapon").shoot(self.direction)
+        if clicked:
+            Factory.get("weapon").shoot(pygame.Vector2(pos))
         
         if Controls.keys["escape"]:
             Game.level().reset()

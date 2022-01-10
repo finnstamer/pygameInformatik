@@ -23,12 +23,12 @@ class MapBuilder():
                 self.objects.append(obj)
         return self
     
-    def centerVec(self):
+    def centerVec():
         return Vector2(screenRes[0] / 2, screenRes[1] / 2)
     
     def placeInCenter(self, obj: GameObject):
-        center = self.centerVec()
-        obj.updatePos(Vector2(center.x - obj.width, center.y - obj.height))
+        center = MapBuilder.centerVec()
+        obj.updatePos(Vector2(center.x - obj.width / 2, center.y - obj.height / 2))
         self.addObject(obj)
         return self
     

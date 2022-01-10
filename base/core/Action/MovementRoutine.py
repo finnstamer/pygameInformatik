@@ -14,7 +14,7 @@ class MovementRoutine(AbstractRoutine):
         self.grid = NodeStorage.findGrid(self.object)
         self.pathVisualizer = NodeVisualizer([])
         self.gridVisualizer = NodeVisualizer([], (50, 50, 50))
-        self.gridVisualizer.setNodes(self.grid).start
+        self.gridVisualizer.setNodes(self.grid)
         
         self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run))
         self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run))
@@ -37,4 +37,4 @@ class MovementRoutine(AbstractRoutine):
             lastPos = self.actions[-1].endState if len(self.actions) > 0 else self.object.pos
             actions.append(MovementAction(self.object, n.pos)) 
         self.setActions(actions)  
-        self.pathVisualizer.setNodes(path).start()
+        self.pathVisualizer.setNodes(path)

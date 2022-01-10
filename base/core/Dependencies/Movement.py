@@ -1,3 +1,4 @@
+from math import sqrt
 import pygame
 from typing import List, Tuple
 from base.core.Game import Game
@@ -76,3 +77,20 @@ class Movement:
             if Movement.allowPosition(obj, pos) == True:
                 return pos
         return None
+    
+    def furthestLineMovement(obj: object, pos: pygame.Vector2):
+        xDiff = pos.x - obj.pos.x 
+        yDiff = pos.y - obj.pos.y
+        distance = sqrt(xDiff ** 2 + yDiff ** 2)
+        xAdjust = xDiff / distance
+        yAdjust = yDiff / distance
+        lastPos = pos
+        for i in range(int(distance)):
+            _pos = pygame.Vector2(int(obj.pos.x + xAdjust), int(obj.pos.y + yAdjust))
+            # test = GameObject(_pos, 2, 2, (250, 250, 250))
+            # Game.level().add(test)
+            if Movement.allowPosition(obj, _pos) is False:
+                # test.color = (250, 0, 0)
+                return (lastPos, Movement.collidingObjects(obj, lastPos))
+            lastPos = pos
+        return (pos, [])
