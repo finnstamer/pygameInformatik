@@ -50,7 +50,6 @@ class Enemy(GameObject):
                 self.movement.setStates(self, newPath)
                 self.movement.start()   
                 self.color = (255, 130, 201)
-
         
         if self.alerted and self.follow.progress != 1:
             self.movement.stop()

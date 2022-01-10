@@ -12,6 +12,7 @@ from base.core.Object.GameObject import GameObject
 # Objekte, deren argumentname nicht referenz ist, werden ggf. geklont und automatisch hinzugefügt und 
 class MapBuilder():
     clickMode = False
+    start = None
     clicks = []
     def __init__(self, objects: List[GameObject] = []) -> None:
         self.objects = objects
@@ -80,7 +81,20 @@ class MapBuilder():
             MapBuilder.clickMode = not MapBuilder.clickMode
         
         isClicked, pos = Controls.clicks["l"]
-        if isClicked:        
-            MapBuilder.clicks.append(pos)
-            Game.level().add(Ektoplasma().updatePos(Vector2(pos)))
-        
+        pos = Vector2(pos)
+        if MapBuilder.clickMode and isClicked:
+            if MapBuilder.start is None:
+                MapBuilder.start = Vector2(pos)
+            else:
+                diffVec = Vector2(pos.x - MapBuilder.start.x, pos.y - MapBuilder.start.y)
+                xVec = abs(diffVec.x) > abs(diffVec.y)
+                objNum = diffVec.x / 15 if xVec else diffVec.y / 15
+                signum = diffVec.x / abs(diffVec.x) if xVec else diffVec.y / abs(diffVec.y) 
+                print(signum)
+                rng = range(int(MapBuilder.start.x) if xVec else int(MapBuilder.start.y), int(pos.x) if xVec else int(pos.y), int(signum * 15))
+                for i in rng:
+                    print(i)
+                    newPos = Vector2(i if xVec else MapBuilder.start.x, i if not xVec else MapBuilder.start.y)
+                    MapBuilder.clicks.append(newPos)
+                    Game.level().add(Ektoplasma().updatePos(newPos))
+                MapBuilder.start = None

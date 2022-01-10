@@ -21,7 +21,7 @@ from random import randrange
 
 # 3. Füge einem neuen Level deine Objekte hinzu
 #   level = Level(1, *mB.objects)
-MapBuilder.allowClickMode(lambda x: f"Ektoplasma().updatePos(Vector({x}))")
+MapBuilder.allowClickMode(lambda x: f"Ektoplasma().updatePos(Vector2({x})),")
 
 class Level1(AbstractLevel):
     def __init__(self) -> None:
