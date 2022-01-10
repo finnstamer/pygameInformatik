@@ -66,6 +66,7 @@ class Controls():
             Controls.keys["down"] = False
         if k == K_SPACE:
             Controls.keys["space"] = True
+            Controls.released["space"] = True
         if k == K_ESCAPE:
             Controls.keys["escape"] = False
         if k == K_LSHIFT:

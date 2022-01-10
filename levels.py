@@ -21,6 +21,7 @@ from random import randrange
 
 # 3. Füge einem neuen Level deine Objekte hinzu
 #   level = Level(1, *mB.objects)
+MapBuilder.allowClickMode(lambda x: f"Ektoplasma().updatePos(Vector({x}))")
 
 class Level1(AbstractLevel):
     def __init__(self) -> None:
@@ -40,11 +41,11 @@ class Level1(AbstractLevel):
         # objects = [
         #   Wall(Vector2(), width=5, height=5)
         # ]
-        enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
-        enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
-        enemy.setAlias("Enemy")
+        # enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
+        # enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
+        # enemy.setAlias("Enemy")
         
-        mB.addObject(Player().updatePos(Vector2(200, 200)), enemy)
+        mB.addObject(Player().updatePos(Vector2(200, 200)))
         mB.addObject(*mirrorObjects)
         self.objects = mB.objects
 

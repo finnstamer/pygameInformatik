@@ -11,7 +11,6 @@ class Player(GameObject):
     def __init__(self) -> None:
         super().__init__()
         Factory.setAlias(self, "player")
-
         self.pos = pygame.math.Vector2((50, 50));
         self.color = (50, 50, 50)
         self.solid = False
@@ -39,11 +38,9 @@ class Player(GameObject):
             # self.move(self.nextPos())
 
         clicked, pos = Controls.clicks["l"] 
-        if clicked:
-            Factory.get("weapon").shoot(self.direction)
+        # if clicked:
+        #     Factory.get("weapon").shoot(self.direction)
         
-        if Controls.keys["space"]:
-            Factory.get("Enemy").alerted = True
         if Controls.keys["escape"]:
             Game.level().reset()
             # Game.level().remove(self)

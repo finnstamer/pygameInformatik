@@ -1,4 +1,6 @@
 from pygame import Vector2
+from base.core.Dependencies.Controls import Controls
+from base.core.Event.Events import Events
 from base.core.Object.Factory import Factory
 from settings import screenRes
 from typing import List
@@ -7,6 +9,8 @@ from base.core.Object.GameObject import GameObject
 # Helper Klasse zur Erstellung von Level
 # Objekte, deren argumentname nicht referenz ist, werden ggf. geklont und automatisch hinzugefügt und 
 class MapBuilder():
+    clickMode = False
+    clicks = []
     def __init__(self, objects: List[GameObject] = []) -> None:
         self.objects = objects
 
@@ -58,3 +62,22 @@ class MapBuilder():
             cloned.updatePos(newPos)
             self.addObject(cloned)
         return self
+    
+    def allowClickMode(method):
+        MapBuilder.clickMethod = method
+        Events.subscribe("game.tick", MapBuilder.onTick)
+    
+    def onTick(event):
+        if Controls.released["space"]:
+            if MapBuilder.clickMode:
+                MapBuilder.clickMode = False
+                f = open("clickMode.txt", "w")
+                for i in MapBuilder.clicks:
+                    f.write(MapBuilder.clickMethod(i) + "\n")
+                f.close()
+            MapBuilder.clickMode = not MapBuilder.clickMode
+        
+        isClicked, pos = Controls.clicks["l"]
+        if isClicked:        
+            MapBuilder.clicks.append(pos)
+        

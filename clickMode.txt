@@ -1,0 +1,7 @@
+Ektoplasma().updatePos((115, 161))
+Ektoplasma().updatePos((196, 161))
+Ektoplasma().updatePos((347, 164))
+Ektoplasma().updatePos((503, 164))
+Ektoplasma().updatePos((712, 149))
+Ektoplasma().updatePos((983, 142))
+Ektoplasma().updatePos((1057, 140))
