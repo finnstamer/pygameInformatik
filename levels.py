@@ -21,6 +21,89 @@ from random import randrange
 # 3. Füge einem neuen Level deine Objekte hinzu
 #   level = Level(1, *mB.objects)
 
+
+
+class Level1(AbstractLevel):
+    def __init__(self) -> None:
+        super().__init__(1)
+    def make(self):
+        mB = MapBuilder()
+        objects = [
+          # Mittlerer Block
+          Wall(Vector2(500,330), width=80, height=70), 
+          # Oben rechts und links länglich
+          Wall(Vector2(450,90), width=50, height=180), 
+          Wall(Vector2(580,90), width=50, height=180), 
+          # Unten rechts und links länglich
+          Wall(Vector2(450,450), width=50, height=180),
+          Wall(Vector2(580,450), width=50, height=180),
+          # Mitte links oben und unten
+          Wall(Vector2(200,270), width=180, height=50),
+          Wall(Vector2(200,400), width=180, height=50),
+          # Mitte rechts oben und unten
+          Wall(Vector2(700,270), width=180, height=50),
+          Wall(Vector2(700,400), width=180, height=50),
+          #oben
+          Wall(Vector2(360,0), width=360, height=40),
+          #unten
+          Wall(Vector2(360,680), width=360, height=40),
+          #rechts
+          Wall(Vector2(0,235), width=40, height=250),
+          #links
+          Wall(Vector2(1040,235), width=40, height=250),
+          # Oben links (groß)
+          Wall(Vector2(200,90), width=180, height=120),
+          # Oben rechts (groß)
+          Wall(Vector2(700,90), width=180, height=120),
+          # Unten links (groß)
+          Wall(Vector2(200,510), width=180, height=120),
+          # Unten rechts (groß)
+          Wall(Vector2(700,510), width=180, height=120),
+          # Obere rechte Ecke
+          Wall(Vector2(0,0), width=280, height=40),
+          Wall(Vector2(0,0), width=40, height=155),
+          # Untere rechte Ecke
+          Wall(Vector2(0,565), width=40, height=155),
+          Wall(Vector2(0,680), width=280, height=40),
+          # Obere linke Ecke
+          Wall(Vector2(800,0), width=280, height=40),
+          Wall(Vector2(1040,0), width=40, height=155),
+          # Untere linke Ecke
+          Wall(Vector2(1040,565), width=40, height=155),
+          Wall(Vector2(800,680), width=280, height=40),
+          # 
+        ]
+        mB.addObject(*objects)
+        self.objects = mB.objects
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+"""
 class Level1(AbstractLevel):
     def __init__(self) -> None:
         super().__init__(1)
@@ -55,6 +138,6 @@ class Level1(AbstractLevel):
 # mB.pointMirror(player.cRect.corners[0], player, ektoplasma)
 # mB.axisMirror(-1, player.pos.y, player, ektoplasma)
 # level1 = Level(1, *mB.objects)
-
+"""
 
 
