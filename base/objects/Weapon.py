@@ -1,7 +1,7 @@
 from pygame import Vector2
-from base.core.Dependencies.Spawner import Spawner
 from base.core.Event.Events import Events
 from base.core.Object.GameObject import GameObject
+from base.objects.Actions.Actions.ShootWeaponAction import ShootWeaponAction
 from base.objects.Projectile import Projectile
 import time
 
@@ -26,10 +26,8 @@ class Weapon(GameObject):
             return
         self.munition = self.munition - 1
         self.lastShot = time.time() * 1000
-        projectile: Projectile = Spawner.spawnObject(self.projectile, Vector2(self.pos.x + self.projectile.relativePosition.x, self.pos.y + self.projectile.relativePosition.y))
-        projectile.prepare()
-        projectile.action.setStates(projectile, self.shotPosition(dir))
-        projectile.action.start()
+        self.projectile.pos = Vector2(self.pos.x + self.projectile.relativePosition.x, self.pos.y + self.projectile.relativePosition.y)
+        ShootWeaponAction(self, self.shotPosition(dir)).start()
 
     def shotPosition(self, dir):
         return {
