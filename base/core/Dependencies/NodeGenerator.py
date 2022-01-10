@@ -8,8 +8,11 @@ from base.core.Object.GameObject import GameObject
 from base.nodes.Node import Node
 from settings import screenRes
 
+# Erstellt ein Nodegitter auf Basis der Dimensionen eines gegegeben Objektes
+# ! Aktuell ist nur .semiStaticNodes() in Verwendung !  
 class NodeGenerator():
 
+    # Erstellt ein "statisches" Gitter und lässt alle Nodes aus, die eine Kollision verursachen würden.
     def semiStaticNodes(obj: GameObject) -> Tuple[List[Node], List[List[int]]]:
         nodes: List[Node] = []
         modx = obj.width
@@ -57,7 +60,9 @@ class NodeGenerator():
                 pass
         return grid
 
-    
+    # Dynamische Nodes basieren auf den .semiStaticNodes() mit dem Unterschied, dass bestimmte Bereiche,
+    # die durch das statische Gitter nicht abgedeckt werden, gefüllt werden
+    # ! Unfertig !
     def new_generateDynamicNodes(obj: GameObject):
         solids = Game.level().allSolidObjects()
         semistatic = NodeGenerator.semiStaticNodes(obj)

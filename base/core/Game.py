@@ -10,15 +10,18 @@ from settings import screen
 
 class Game():
     active = True
+    isStarted = False
     dependencies: List[Any] = []
     currentLevel: int = 0
     levels: Dict[int, AbstractLevel] = {0: Level(0)}
 
-    # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
-    # Diese werden vor dem game.start Event initialisiert.
+    # Funktion zur 
     def use(*dependencies: object):
         for dependency in list(dependencies):
             if dependency not in Game.dependencies:
+                # Ist Spiel bereits gestartet, würde die Initalisierung nicht mehr aufgerufen werden
+                if Game.isStarted:
+                    dependency()
                 Game.dependencies.append(dependency)
 
     # Dependencies werden initialisiert
@@ -34,6 +37,7 @@ class Game():
         Game.initDependencies()
 
         Events.dispatch("game.start")
+        Game.isStarted = True
         while Game.active:  
             clock.tick(60)
             Events.dispatch("game.dependency.tick")
@@ -55,6 +59,7 @@ class Game():
         Game.level().deactivate()
         Game.currentLevel = levelId
         if levelId in Game.levels:
+            Game.level().active = True
             Game.level().make()
             return
         raise LookupError(f"Level '{levelId}' not found.")

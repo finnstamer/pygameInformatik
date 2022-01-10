@@ -20,6 +20,7 @@ class Player(GameObject):
 
         self.speed = 5
         self.direction = 1 # Right
+        self.allowMovements = True
 
         self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
         Game.use(Controls)
@@ -32,13 +33,17 @@ class Player(GameObject):
         pass
 
     def onTick(self, event):
-        # print(self.routine.progress)
-        self.control(Controls.keys)
-        # self.move(self.nextPos())
-        self.oldMovement()
+        if self.allowMovements:
+            self.control(Controls.keys)
+            self.oldMovement()
+            # self.move(self.nextPos())
+
         clicked, pos = Controls.clicks["l"] 
         if clicked:
             Factory.get("weapon").shoot(self.direction)
+        
+        if Controls.keys["space"]:
+            Factory.get("Enemy").alerted = True
         if Controls.keys["escape"]:
             Game.level().reset()
             # Game.level().remove(self)

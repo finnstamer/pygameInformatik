@@ -1,13 +1,13 @@
 from base.core.Level.Level import Level
 from base.core.Object.Factory import Factory
 
-# abstrakte Klasse zur Erstellung von Level, deren Aufbau durch die .make Methode gespeichert wird
+# Abstrakte Klasse zur Erstellung von Level, deren Aufbau durch die .make Methode gespeichert wird
 # und somit einen erneuten Aufbau des Levels ermöglicht.
 class AbstractLevel(Level):
     def __init__(self, id: int) -> None:
         super().__init__(id)
     
-    # Aufbau des Leves und Zuweisung aller Objekte zu .objects notwendig
+    # Aufbau des Leves und Zuweisung aller Objekte zu .objects benötigt
     def make(self):
         raise NotImplementedError("Make Function is required in AbstractLevel")
     

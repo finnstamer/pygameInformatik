@@ -5,9 +5,9 @@ from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 class Controls():
     keys = {"w": False, "s": False, "a": False, "d": False, "left": False, "right": False, "up": False, "down": False, "space": False, "escape": False, "lShift": False}
+    clicks = {"l": (False, pygame.Vector2(0, 0))}
     pressed = {}
     released = {}
-    clicks = {"l": (False, pygame.Vector2(0, 0))}
     
     def __init__(self) -> None:
         Events.subscribe("game.dependency.tick", Controls.update)

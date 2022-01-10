@@ -3,6 +3,7 @@ from base.core.Dependencies.NodeGenerator import NodeGenerator
 from base.core.Object.GameObject import GameObject
 from base.nodes.Node import Node
 
+# Klasse zur Speicherung und Wiedervewendung von Nodegittern.
 class NodeStorage():
     grids: Dict[int, List[Node]] = {}
 

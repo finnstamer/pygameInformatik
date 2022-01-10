@@ -38,7 +38,7 @@ class MapBuilder():
         return self
     
     # Spiegelung von Objekten an der jeweiligen Achse, die nicht -1 ist, und von der jeweiligen Stelle 
-    def axisMirror(self, x=-1, y=-1, *objs: GameObject):
+    def axisMirror(self, x=-1, y=-1, objs: List[GameObject]=[]):
         xAxis = x != -1
         for obj in list(objs):
             clonedObj = Factory.clone(obj)
@@ -49,7 +49,7 @@ class MapBuilder():
         return self
     
     # Spieglung von Objekten an einem Punkt
-    def pointMirror(self, point: Vector2, *objs: GameObject):
+    def pointMirror(self, point: Vector2, objs: GameObject):
         for obj in list(objs):
             cloned = Factory.clone(obj)
             diffX = obj.pos.x - point.x

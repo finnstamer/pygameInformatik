@@ -2,6 +2,7 @@ import pygame
 from typing import List, Tuple
 from base.core.Game import Game
 
+# Klasse zur Verarbeitung von Positionen und Berechnungen von Bewegungen
 class Movement:        
 
     # Given a list of solid, blocking objects, check if a position of a given object is allowed.
@@ -41,6 +42,7 @@ class Movement:
             stepsRange[i] = pos
         return stepsRange[-1]
     
+    # Selbes Prinzip wie bei .furthestMove(), es werden dagegen noch die kolliderienden Objekte zurückgegeben
     def furthestMove_collider(obj: object, pos: pygame.Vector2, startPos: pygame.Vector2 = None) -> Tuple[pygame.Vector2 or None, List[object]]:
         startPos = obj.pos if startPos is None else startPos
         x = startPos.y == pos.y

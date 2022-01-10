@@ -5,8 +5,7 @@ from base.core.Game import Game
 from base.core.Object.GameObject import GameObject
 from base.nodes.Node import Node
 
-
-
+# Dient beim Testen zum Visualisieren von bestimmten Nodes oder alle Nodes eines Gitters
 class NodeVisualizer():
     def __init__(self, nodes: List[Node], color=(250, 0, 250)) -> None:
         self.nodes = nodes

@@ -3,6 +3,7 @@ from typing import List
 # Klasse zur Verwahrung aller nötigen Objekte und des Übertragens auf den Bildschirm, sowie der De- und Aktivierung dieser.
 class Level():
     def __init__(self, id: int, *objects: object) -> None:
+        self.active = False
         self.id = id
         self.objects = list(objects)
 
@@ -21,10 +22,12 @@ class Level():
                 self.objects.remove(obj)
     
     def deactivate(self):
+        self.active = False
         for obj in self.objects:
             obj.active = False
 
     def activate(self):
+        self.active = True
         for obj in self.objects:
             obj.active = True
         

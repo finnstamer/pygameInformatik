@@ -3,7 +3,8 @@ from typing import Dict
 from base.core.Dependencies.DependencyException import DependencyException
 import pygame
 
-# pygame.mixer is only available after pygame.init; therefore add Sounds as dependency
+# Klasse zum Abspielen von Sounds. 
+# Muss zur Verwendung über Game.use(Sounds) geladen werden, da
 class Sounds:
     loaded: Dict[str, pygame.mixer.Sound] = {}
     currentlyPlaying: pygame.mixer.Sound = None

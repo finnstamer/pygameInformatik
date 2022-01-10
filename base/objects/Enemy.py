@@ -1,0 +1,61 @@
+from typing import Tuple
+from pygame import Vector2
+from base.core.Action.MovementRoutine import MovementRoutine
+from base.core.Dependencies.CollisionWatcher import CollisionWatcher
+from base.core.Event.Events import Events
+from base.core.Game import Game
+from base.core.Object.Factory import Factory
+from base.core.Object.GameObject import GameObject
+from base.objects.Actions.Actions.MovementAction import MovementAction
+from random import randrange
+
+from base.objects.Actions.Routines.FollowObjectRoutine import FollowObjectRoutine
+
+class Enemy(GameObject):
+    def __init__(self, pos: Vector2 = ..., width: int = 0, height: int = 0, color: Tuple = ...) -> None:
+        super().__init__(pos=pos, width=width, height=height, color=(255, 130, 201))
+        self.alertedRadius = Vector2(200, 200)
+        self.sleepRadius = Vector2(400, 400)
+        self.alertedRadiusObject = GameObject(self.pos, self.alertedRadius.x, self.alertedRadius.y)
+        self.sleepRadiusObject = GameObject(self.pos, self.sleepRadius.x, self.sleepRadius.y)
+        self.pathPool = [] 
+        self.alerted = False
+        
+        self.speed = 3
+        self.movement = MovementRoutine(self)
+        
+        Events.subscribe("game.start", self.onStart)
+        Events.subscribe("game.tick", self.onTick)
+
+    def onStart(self, event):
+        player = Factory.get("player")
+        self.follow = FollowObjectRoutine(self, player)
+        Events.subscribe(f"{player.id}.moved", self.onPlayerMovement)
+
+    def onPlayerMovement(self, event):
+        if event.value.collidesWith(self.alertedRadiusObject.rect):
+            self.alerted = True
+        if not event.value.collidesWith(self.sleepRadiusObject.rect):
+            self.alerted = False
+            
+    def onTick(self, event):
+        # Adjust Event Zones
+        self.alertedRadiusObject.updatePos(Vector2(self.pos.x - self.alertedRadius.x / 2, self.pos.y - self.alertedRadius.y / 2))
+        self.sleepRadiusObject.updatePos(Vector2(self.pos.x - self.sleepRadius.x / 2, self.pos.y - self.sleepRadius.y / 2))
+        
+        if not self.alerted:
+            self.follow.stop()
+            if self.movement.progress != 1:
+                newPath = self.pathPool[randrange(0, len(self.pathPool))]
+                self.movement.setStates(self, newPath)
+                self.movement.start()   
+                self.color = (255, 130, 201)
+
+        
+        if self.alerted and self.follow.progress != 1:
+            self.movement.stop()
+            # .restart(), weil FollowObject nur beim .setStates(), die Position des zu verfolgenden Obejekt
+            # an die darunterliegende MovementRoutine weitergibt (siehe .onSet()). Es werden also keine neuen AKtionen gebildet.
+            self.follow.restart(None)
+            self.color = (245, 20, 148)
+    
