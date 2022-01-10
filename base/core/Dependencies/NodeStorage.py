@@ -1,8 +1,7 @@
 from typing import Dict, List
 from base.core.Dependencies.NodeGenerator import NodeGenerator
-from base.object.GameObject import GameObject
-
-from base.object.AI.Node import Node
+from base.core.Object.GameObject import GameObject
+from base.nodes.Node import Node
 
 class NodeStorage():
     grids: Dict[int, List[Node]] = {}

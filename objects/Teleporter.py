@@ -1,7 +1,7 @@
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 from pygame import Vector2
 
 class Teleporter():

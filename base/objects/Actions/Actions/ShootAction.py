@@ -1,9 +1,8 @@
-from typing import List
 from pygame import Vector2
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
-from base.object.AI.Actions.MovementAction import MovementAction
-from base.object.GameObject import GameObject
+from base.objects.Actions.Actions.MovementAction import MovementAction
+from base.core.Object.GameObject import GameObject
 
 
 class ShootAction(MovementAction):
@@ -28,9 +27,7 @@ class ShootAction(MovementAction):
             self.stop()
             self.deactivateProjectile()
             return self.object.pos
-        if furthestMove != pos:
-            return furthestMove
-        return pos
+        return furthestMove
 
     def deactivateProjectile(self):
         self.object.active = False

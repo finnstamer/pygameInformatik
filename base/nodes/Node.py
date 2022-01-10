@@ -2,7 +2,7 @@ from typing import Any, Dict, List
 
 from pygame import Vector2
 
-from base.object.Factory.Factory import Factory
+from base.core.Object.Factory import Factory
 
 
 class Node():

@@ -9,29 +9,24 @@ from base.core.Level.Level import Level
 from settings import screen
 
 class Game():
-    tickDelta = 0
+    active = True
     dependencies: List[Any] = []
     currentLevel: int = 0
-    notes: Dict[str, Any] = {}
     levels: Dict[int, AbstractLevel] = {0: Level(0)}
-    active = True
-
-    def __init__(self) -> None:
-        self.notes: Dict[str, Any] = {}
 
     # Verknüpfe unabhängige Dependencies mit dem Game Lifecycle
     # Diese werden vor dem game.start Event initialisiert.
-    @staticmethod
     def use(*dependencies: object):
         for dependency in list(dependencies):
             if dependency not in Game.dependencies:
                 Game.dependencies.append(dependency)
 
-    @staticmethod
+    # Dependencies werden initialisiert
     def initDependencies():
         for dependency in Game.dependencies:
             dependency()
 
+    # Game Loop wird gestartet und Events ausgegeben
     def start():
         pygame.init()
         pygame.event.set_allowed([KEYDOWN, KEYUP, MOUSEBUTTONUP])
@@ -54,6 +49,8 @@ class Game():
             level.deactivate()
             Game.levels[level.id] = level
     
+    # Setze aktuelles Level zum Level mit gegebener Id
+    # Aktuelles Level wird deaktiviert (Level.deactivate)
     def setLevel(levelId: int) -> None:
         Game.level().deactivate()
         Game.currentLevel = levelId

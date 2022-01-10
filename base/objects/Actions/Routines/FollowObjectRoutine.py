@@ -1,9 +1,8 @@
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
-from base.object.AI.PathFinder import PathFinder
-from base.object.AI.Routines.MovementRoutine import MovementRoutine
-from base.object.GameObject import GameObject
-
+from base.core.Action.MovementRoutine import MovementRoutine
+from base.core.Object.GameObject import GameObject
+from base.nodes.PathFinder import PathFinder
 
 class FollowObjectRoutine(MovementRoutine):
     def __init__(self, obj: GameObject, target: GameObject) -> None:

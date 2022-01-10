@@ -3,12 +3,13 @@ from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.Level import Level
 from base.core.Level.MapBuilder import MapBuilder
-from base.object.Projectile import Projectile
-from base.object.Weapon import Weapon
+from base.objects.Projectile import Projectile
+from base.objects.Weapon import Weapon
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.wall import Wall
 from random import randrange
+
 #### Vorgehensweise mit Beispielen:
 # 1. Erstelle einen MapBuilder und deine Objekte. 
 #   mB = MapBuilder()
@@ -21,6 +22,8 @@ from random import randrange
 #   level = Level(1, *mB.objects)
 
 class Level1(AbstractLevel):
+    def __init__(self) -> None:
+        super().__init__(1)
     def make(self):
         mB = MapBuilder()
         for i in range(10):
@@ -29,12 +32,13 @@ class Level1(AbstractLevel):
         player = Player()
         mB.placeInCenter(player)
 
-        projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5)
+        projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
         projectile.color = (114, 114, 114)
-        weapon = Weapon(player, Vector2(10, 10), projectile, cooldown=100, munition=50000)
+        weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
         weapon.color = (29, 191, 172)
-        weapon.height = 5
-        weapon.width = 10
+        weapon.height = 20
+        weapon.width = 75
+        weapon.setImage("images/pump.png")
         weapon.setAlias("weapon")
 
         mB.addObject(weapon, projectile)

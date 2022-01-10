@@ -2,8 +2,8 @@ from typing import List
 from copy import deepcopy
 from pygame import Vector2, Rect
 
-# Eigene Klasse anstatt Rect, da Rect mir zu wenig wichtige Informationen und Shorthands lieferte.
-# Umwandelung in Rect und andersherum ist möglich. 
+# Klasse zur genauen Beinhaltung bestimmter Variablen und Methoden.
+# Umwandelung in mit pygame kompatiblen Klassen möglich.
 class Rectangle():
     def __init__(self) -> None:
         default = Vector2()
@@ -22,7 +22,6 @@ class Rectangle():
         self.width = 0
         self.height = 0
     
-
     @staticmethod
     def byRect(rect: Rect):
         return Rectangle.get(Vector2(rect.topleft), Vector2(rect.bottomright))

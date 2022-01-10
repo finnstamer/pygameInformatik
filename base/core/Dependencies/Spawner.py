@@ -1,8 +1,8 @@
 from typing import List
 from pygame import Vector2
 from base.core.Game import Game
-from base.object.Factory.Factory import Factory
-from base.object.GameObject import GameObject
+from base.core.Object.Factory import Factory
+from base.core.Object.GameObject import GameObject
 
 
 class Spawner():

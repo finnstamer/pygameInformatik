@@ -2,14 +2,10 @@ from typing import Dict
 import pygame
 from base.core.Dependencies.Controls import Controls
 from base.core.Dependencies.NodeVisualizer import NodeVisualizer
-from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
-from base.object.AI.Routines.FollowObjectRoutine import FollowObjectRoutine
-from base.object.Factory.Factory import Factory
-from base.object.AI.PathFinder import PathFinder
-from base.object.AI.Routines.MovementRoutine import MovementRoutine
-from base.object.GameObject import GameObject
+from base.core.Object.Factory import Factory
+from base.core.Object.GameObject import GameObject
 
 class Player(GameObject):
     def __init__(self) -> None:
@@ -40,8 +36,8 @@ class Player(GameObject):
         self.control(Controls.keys)
         # self.move(self.nextPos())
         self.oldMovement()
-        if Controls.pressed["space"]:
-            # self.routine.setStates(Factory.get("ekto1"), self).start()
+        clicked, pos = Controls.clicks["l"] 
+        if clicked:
             Factory.get("weapon").shoot(self.direction)
         if Controls.keys["escape"]:
             Game.level().reset()

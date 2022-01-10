@@ -1,8 +1,8 @@
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
-from base.object.Factory.Factory import Factory
-from base.object.GameObject import GameObject
+from base.core.Object.Factory import Factory
+from base.core.Object.GameObject import GameObject
 
 class Ektoplasma(GameObject):
     collected = 0 

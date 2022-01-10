@@ -1,17 +1,18 @@
-from base.core.Event.Event import Event
-from base.core.Event.Events import Events
-from base.object.AI.Routines.MiddlewareHandler import MiddlewareHandler
-from base.object.Factory.Factory import Factory
+from base.objects.Actions.Routines.MiddlewareHandler import MiddlewareHandler
+from base.core.Object.Factory import Factory
 
-
-class Action():
+# Abstrakte Klasse zum State Management einer beliebiegen Aktion
+# Dient zum Grundaufbau vieler Aktionen / Routinen
+class AbstractAction():
     def __init__(self, obj, endState) -> None:
         self.id = -1
         self.progress = 0
         Factory.append(self)
+        # Ermöglich den Eingriff eine Aktion und seinen äußeren Komponente von diesen oder Dritten
         self.middlewareHandler = MiddlewareHandler(self)
         self.setStates(obj, endState)
         
+    # Stoppt die Aktion und setzt die aktuellen States
     def setStates(self, obj, endState):
         self.stop()
         self.object = obj
@@ -19,12 +20,14 @@ class Action():
         self.middlewareHandler.dispatch("set")
         return self
     
+    # Startet die Aktion
     def start(self):
         self.progress = 1
         self.middlewareHandler.dispatch("start")
         return self
-        
-
+    
+    # Ist .isFinished() wahr, wird die Aktion gestoppt und "finished" Event ausgegeben
+    # Sonst wird "run" Event ausgegeben.
     def run(self, event):
         if self.isFinished():
             self.stop()
@@ -33,11 +36,12 @@ class Action():
             return
         self.middlewareHandler.dispatch("run")
 
+    # Stoppt die Aktion
     def stop(self):
         self.progress = 0
         self.middlewareHandler.dispatch("stop")
         return self
-    
-    def isFinished(self):
+
+    def isFinished(self) -> bool:
         raise NotImplementedError(f"'isFinished' Method on {self.__class__.__name__} not implemented.")
     

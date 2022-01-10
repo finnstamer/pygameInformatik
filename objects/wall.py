@@ -1,6 +1,6 @@
 import pygame
 from pygame.math import Vector2;
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 import random;
 
 

@@ -1,22 +1,20 @@
 import typing
 import pygame
-from typing import Generic, List, TypeVar
+from typing import List
 
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 from base.geometry.Rectangle import Rectangle
 
-# O Ist ein Datentyp, dass aus einem GameObject (oder einer Abwandlung daraus besteht: bspw. Player)
-O = TypeVar('O', bound=GameObject)
-
-# Mit dieser Klasse werden mehrere am besten sehr ähnliche Objekte zusammengefasst und unter anderem verglichen.
-class Group(Generic[O]):
+# Klasse zur Gruppierung mehrerer Objekte. 
+# Ehemals nötig zur Verwendung von Objekten. Nun eher deprecated.
+class Group():
     def __init__(self, *obj: GameObject) -> None:
         self.constructor = None
-        self.objects: List[O] = list(obj)
+        self.objects: List[GameObject] = list(obj)
     
     # Das * for einem Parameter bedeutet, dass man von da an unendlich objekte anhängen kann. Der Paramter obj ist dann eine List aus Objekten
     # bspw: Group().add(obj1, obj2, obj3, obj4, ...)
-    def add(self, *obj: O):
+    def add(self, *obj: GameObject):
         self.objects = self.objects + list(obj)
         return self
     
@@ -47,23 +45,13 @@ class Group(Generic[O]):
 
     def length(self):
         return len(self.objects)
-
-    # Erstellt eine neue Instanz des Gruppenobjektes. Bspw. eine neue Wall
-    # Wenn Parameter mitgliefert werden sollen, werden sie als Parameter in create eingetragen
-    def create(self, *args) -> O:
-        instance = self.constructor(args)
-        self.add(instance)
-        return instance
         
     # Wende eine Funktion auf alle Objekte an
-    # Bsp: WallGroup.applyOnEach(lambda w: w.set('color', (0, 0, 0)); Dies würde die Farbe aller Wände schwarz machen. 
+    # Bsp: WallGroup.applyOnEach(lambda w: w.set('color', (0, 0, 0)); Dies würde die Farbe aller Wände auf schwarz setzen. 
     def applyOnEach(self, apply: typing.Callable[[GameObject], None]):
         for i in range(self.length()):
             apply(self.objects[i])
         return self
-
-    def indexOf(self, obj: O):
-        return self.objects.index(obj)
     
     # Berechnet das nächste Objekt aus der Gruppe zu einem Punkt
     def nearest(self, pos: pygame.math.Vector2) -> GameObject:
@@ -72,7 +60,7 @@ class Group(Generic[O]):
         return sorted(self.objects, key=lambda obj: obj.pos.distance_to(pos))[0]
 
     # Gibt eine Liste an Objekten zurück, die mit dem Parameter "rect" kollidieren. (In absteigender Reihenfolge nach Überschneindungsfläche)
-    def colliding(self, rect: Rectangle) -> List[O]:
+    def colliding(self, rect: Rectangle) -> List[GameObject]:
         colliding = []
         for i in self.objects:
             # collided = Rectangle.byRect(i.rect.clip(rect))

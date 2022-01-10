@@ -1,7 +1,7 @@
 from typing import Dict, List
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 
 # CollisionWatcher beobachtet die Kollision zweier Objekte. Sobald die Kollision stattfindet wird ein von der watch Methode zurückgegebenes Event gefired.
 class CollisionWatcher():

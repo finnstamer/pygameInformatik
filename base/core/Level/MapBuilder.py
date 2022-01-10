@@ -1,9 +1,11 @@
 from pygame import Vector2
-from base.object.Factory.Factory import Factory
+from base.core.Object.Factory import Factory
 from settings import screenRes
 from typing import List
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 
+# Helper Klasse zur Erstellung von Level
+# Objekte, deren argumentname nicht referenz ist, werden ggf. geklont und automatisch hinzugefügt und 
 class MapBuilder():
     def __init__(self, objects: List[GameObject] = []) -> None:
         self.objects = objects

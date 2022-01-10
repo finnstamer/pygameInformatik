@@ -1,3 +1,4 @@
+# Klasse zuer Erhaltung des Namens oder der mitgelieferten Paramter
 class Event():
     def __init__(self, name="", value="") -> None:
         self.name: str = name

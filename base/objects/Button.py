@@ -2,7 +2,7 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Dependencies.Controls import Controls
 from base.core.Event.Events import Events
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 
 
 class Button(GameObject):

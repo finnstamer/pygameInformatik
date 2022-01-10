@@ -1,4 +1,4 @@
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
 
 from settings import screenRes
 class Backround(GameObject):

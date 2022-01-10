@@ -2,9 +2,9 @@ from typing import List
 
 from pygame import Vector2
 from base.core.Game import Game
-from base.object.GameObject import GameObject
+from base.core.Object.GameObject import GameObject
+from base.nodes.Node import Node
 
-from base.object.AI.Node import Node
 
 
 class NodeVisualizer():

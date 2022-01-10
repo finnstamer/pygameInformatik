@@ -4,7 +4,7 @@ from base.core.Dependencies.Movement import Movement
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.geometry.Rectangle import Rectangle
-from base.object.Factory.Factory import Factory
+from base.core.Object.Factory import Factory
 from settings import screen
 import pygame
 
@@ -23,9 +23,9 @@ class GameObject():
         self.speed = 0
         self.health = -1
         self.buildRect()
-        self.subscribedEvents: Dict[str, str] = {} # {"game.tick", "onTick"}
         Factory.append(self)
 
+    # Getter und Setter
     @property
     def active(self) -> bool:
         return self._active
@@ -70,16 +70,15 @@ class GameObject():
     def rect(self, rect: pygame.Rect):
         self._rect = rect
         self.cRect = Rectangle.byRect(rect)
-    
-    def receiveEvent(self, e: Event):
-        raise NotImplementedError(f"Event '{e.name}' is subscribed but not implemented in '{self.__class__.__name__}'. Remove subscription or add the 'receiveEvent' function.")
-    
+
+    # Ermöglicht die Verwendung eines Bildes. Das .rect wird nicht überschrieben
+    # image argument soll aus root Sicht      
     def setImage(self, image: str):
         self.image = pygame.image.load(image)
-        self.image = pygame.transform.scale(self.image, (self._width, self._height)).convert()
+        self.image = pygame.transform.scale(self.image, (self._width, self._height)).convert_alpha()
         return self
-    
-    # pygame.draw überträgt das Rechteck des Objektes auf den Bildschirm.
+
+    # Wenn Objekt aktiv ist, wird .rect oder .image auf den Bildschirm übertragen    
     def draw(self):
         if self.active:
             if self.image:
@@ -88,49 +87,59 @@ class GameObject():
                 self.drawRect()
         return self
 
+    # Speziell das .rect wird auf den Bildschirm übertragen
     def drawRect(self):
         pygame.draw.rect(screen, self.color, self.rect)
         return self
     
+    # Aktualisiert das Rect (bpsw. bei Veränderung der Position oder Dimensionen)
+    # Wenn anderes pygame Objekt statt pygame.Rect zur Darstellung verwendet werden soll,
+    # kann Funktion überschrieben werden. 
     def updateRect(self):            
         self.rect = self.buildRect()
         return self
 
-    # Overridable Method for custom rect creating methods
-    def buildRect(self) -> pygame.Rect:
+    # Überschreibende Funktion zur Bildung einer Darstellungsvariante (hier pygame.Rect)
+    def buildRect(self):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
         self.cRect = Rectangle().byRect(self.rect)
         return self.rect
 
+    # Distanz des Objektes zu einem anderen Objekt nach ihren oberen linken Ecken
     def distanceTo(self, obj: GameObject):
-        return self._pos.distance_to(obj._pos)
+        return self.pos.distance_to(obj.pos)
 
-    def updatePos_hidden(self, pos: pygame.Vector2):
+    # Aktualsiert die Position und aktualisiert die Darstellung
+    # Gibt "id.moved" Event aus
+    def updatePos(self, pos: pygame.Vector2):
         self._pos = pos
         self.updateRect()
-        return self
-
-    def updatePos(self, pos: pygame.Vector2):
-        self.updatePos_hidden(pos)
-        Events.dispatch(f"{self.id}.moved", {"obj": self, "pos": self.pos})
+        Events.dispatch(f"{self.id}.moved", self)
         return self
     
+    # Bewegt wenn möglich ein Objekt zur Position. Sonst bis zur nächsten möglichen Stelle
     def move(self, pos: pygame.Vector2):
         furthestPos = Movement.furthestMove(self, pos)
         if furthestPos is not None:
             self.updatePos(furthestPos)     
-        
+        return self
+    
+    # Gibt zurück, ob dieses Objekt mit einem pygame.Rect kollidiert.
     def collidesWith(self, rect: pygame.Rect) -> bool:
         return Rectangle.byRect(self.rect.clip(rect)).area > 0
     
+    # Fügt diesem Objekt schaden zu, wenn das .health nicht -1 ist.
+    # Fällt .health unter 0 wird das Objekt deaktiviert und "id.died" Event ausgegeben
     def damage(self, points: int):
         if self.health == -1:
-            return
+            return self
         self.health -= points
         if self.health <= 0:
-            Events.dispatch(f"{self.id}.died", {"obj": self})
             self.active = False
+            Events.dispatch(f"{self.id}.died", self)
+        return self
 
+    # Shorthand, um über die Factory ein Alias für dieses Objekt zu setzen.
     def setAlias(self, alias: str):
         Factory.setAlias(self, alias)
         return self

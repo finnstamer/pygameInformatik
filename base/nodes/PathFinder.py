@@ -5,8 +5,8 @@ from math import ceil as ceil
 from base.core.Dependencies.DependencyException import DependencyException
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
-from base.object.GameObject import GameObject
-from base.object.AI.Node import Node
+from base.core.Object.GameObject import GameObject
+from base.nodes.Node import Node
 from settings import screenRes
 
 class PathFinder():

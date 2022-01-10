@@ -1,5 +1,6 @@
 from typing import List
 
+# Klasse zur Verwahrung aller nötigen Objekte und des Übertragens auf den Bildschirm, sowie der De- und Aktivierung dieser.
 class Level():
     def __init__(self, id: int, *objects: object) -> None:
         self.id = id

@@ -1,58 +1,57 @@
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
-from inspect import getargspec
 
+# Klasse zur ausgeben und abonnieren von Events, sowie zur Errichtung von Requests
 class Events():
-    # subscribers: Dict[str, List[object]] = {}
     subscribers: Dict[str, List[Callable]] = {}
     requests: Dict[str, Callable] = {}
 
-    @staticmethod
+    # Gibt ein Event an alle abonnierten Funktionen
     def dispatch(name: str="", value: Any=""):
         if name in Events.subscribers:
             subscribed = Events.subscribers[name]
             for s in subscribed:
                 s(Event(name, value)) 
     
-    @staticmethod
+    # Abonniert ein Event an eine Funktion
     def subscribe(event: str, func: Callable):
         if event not in Events.subscribers:
             Events.subscribers[event] = [func]
         if func not in Events.subscribers[event]:
             Events.subscribers[event].append(func)
 
-    @staticmethod
+    # Deabonniert ein bestimmtes Event von einer Funktion
     def unsubscribe(event, func: Callable):
         if event in Events.subscribers:
             subscribed = Events.subscribers[event]
             Events.subscribers[event] = list(filter(lambda x: x != func, subscribed))
 
-    # Unsubscribes func from all subscribed Events
-    @staticmethod
+    # Deabonniert alle Events von einer Funktion
     def disconnect(func: Callable):
         for e in Events.subscribers:
             subscribed = Events.subscribers[e]
             Events.subscribers[e] = list(filter(lambda x: x != func, subscribed))
 
+    # Deabonniert alle Events von allen Funktionen eines Objektes
     def disconnectObject(obj: object):
         funcs = [getattr(obj, f) for f in dir(obj) if not f.startswith("__") and callable(getattr(obj, f))]
-        print(funcs)
         for f in funcs:
-            print(f)
             Events.disconnect(f)
 
-    @staticmethod
+    # Eröffnet die Verbindungsstelle einer bestimmten Request an eine Funktion
+    # Nur eine Funktion ist an eine Request gebunden. Wird hiermit ggf. überschrieben. 
     def acceptRequest(req: str, func: Callable):
         Events.requests[req] = func
         
-    # Objekte die eine Request ausgeben, erwarten eine Antwort 
-    @staticmethod
+    # Gibt argumente an mit dieser Request verbundene Funktion weiter und gibt diese zurück.
+    # Ist keine Funktion angegeben, werden die Argumente wieder zurückgegeben.
     def request(req: str, arg: Any) -> Any:
         if req in Events.requests:
             return Events.requests[req](arg)
         return arg
         # raise NotImplementedError(f"Request '{req}' is not accepted.")
 
+    # Gibt alle Events zurück, die eine bestimmte Funktion abonniert hat.
     def allSubscribedEvents(func: Callable):
         events = []
         for e in Events.subscribers.items():

@@ -1,14 +1,14 @@
+from base.core.Action.AbstractRoutine import AbstractRoutine
 from base.core.Dependencies.NodeStorage import NodeStorage
 from base.core.Dependencies.NodeVisualizer import NodeVisualizer
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
-from base.object.AI.Actions.MovementAction import MovementAction
-from base.object.AI.PathFinder import PathFinder
-from base.object.AI.Routine import Routine
-from base.object.GameObject import GameObject
+from base.nodes.PathFinder import PathFinder
+from base.objects.Actions.Actions.MovementAction import MovementAction
+from base.core.Object.GameObject import GameObject
 
 
-class MovementRoutine(Routine):
+class MovementRoutine(AbstractRoutine):
     def __init__(self, obj: GameObject) -> None:
         super().__init__(obj, True)
         self.grid = NodeStorage.findGrid(self.object)
