@@ -11,12 +11,13 @@ class Player(GameObject):
     def __init__(self) -> None:
         super().__init__()
         Factory.setAlias(self, "player")
-        self.pos = pygame.math.Vector2((50, 50));
+        self.pos = pygame.math.Vector2((15, 25));
         self.color = (50, 50, 50)
         self.solid = False
-        self.height = 50
-        self.width = 50
+        self.height = 25
+        self.width = 25
 
+        self.setImage("images/player.png")
         self.speed = 5
         self.direction = 1 # Right
         self.allowMovements = True
@@ -34,8 +35,8 @@ class Player(GameObject):
     def onTick(self, event):
         if self.allowMovements:
             self.control(Controls.keys)
-            # self.oldMovement()
-            self.move(self.nextPos())
+            self.oldMovement()
+            # self.move(self.nextPos())
 
         clicked, pos = Controls.clicks["l"] 
         if clicked:

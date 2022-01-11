@@ -90,10 +90,8 @@ class MapBuilder():
                 xVec = abs(diffVec.x) > abs(diffVec.y)
                 objNum = diffVec.x / 15 if xVec else diffVec.y / 15
                 signum = diffVec.x / abs(diffVec.x) if xVec else diffVec.y / abs(diffVec.y) 
-                print(signum)
                 rng = range(int(MapBuilder.start.x) if xVec else int(MapBuilder.start.y), int(pos.x) if xVec else int(pos.y), int(signum * 15))
                 for i in rng:
-                    print(i)
                     newPos = Vector2(i if xVec else MapBuilder.start.x, i if not xVec else MapBuilder.start.y)
                     MapBuilder.clicks.append(newPos)
                     Game.level().add(Ektoplasma().updatePos(newPos))

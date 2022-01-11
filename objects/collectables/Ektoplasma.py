@@ -10,16 +10,13 @@ class Ektoplasma(GameObject):
         super().__init__(width=10, height=10, color=(3, 173, 63))
         self.collisionEvent = ""
         self.speed = 5
-        self.solid = True
+        self.solid = False
         self.health = 50
         # Events.subscribe(self, "game.start", "game.tick")
+        collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
+        self.collisionEvent = collisionEvent
+        Events.subscribe(self.collisionEvent[0], self.onCollision)
 
-    def receiveEvent(self, e: Event):
-        if e.name == "game.start":
-            collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
-            self.collisionEvent = collisionEvent
-            Events.subscribe(self, self.collisionEvent)
-
-        if e.name == self.collisionEvent:
-            Ektoplasma.collected += 1
-            # self.active = False 
+    def onCollision(self, e: Event):
+        Ektoplasma.collected += 1
+        self.active = False 

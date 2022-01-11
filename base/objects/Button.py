@@ -20,6 +20,5 @@ class Button(GameObject):
 
     def onTick(self, event):
         clicked, pos = Controls.clicks["l"]
-        print(clicked, pos)
         if clicked and self.rect.collidepoint(pos):
             self.onClick()

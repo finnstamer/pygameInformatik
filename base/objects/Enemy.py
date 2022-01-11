@@ -20,16 +20,21 @@ class Enemy(GameObject):
         self.sleepRadiusObject = GameObject(self.pos, self.sleepRadius.x, self.sleepRadius.y)
         self.pathPool = [] 
         self.alerted = False
+
+        player = Factory.get("player")
         
         self.speed = 3
         self.movement = MovementRoutine(self)
-        
-        player = Factory.get("player")
         self.follow = FollowObjectRoutine(self, player)
+        
         Events.subscribe(f"{player.id}.moved", self.onMovement)
         Events.subscribe(f"{self.id}.moved", self.onMovement)
         Events.subscribe("game.tick", self.onTick)
-
+        eve = CollisionWatcher.watch(self, player)
+        Events.subscribe(eve, self.onPlayer)
+    
+    def onPlayer(self, e):
+        Game.setLevel(0)
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):
             self.alerted = True

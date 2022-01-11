@@ -1,24 +1,35 @@
 from typing import Dict, List
+
+from pygame import Vector2
+
 from base.core.Dependencies.NodeGenerator import NodeGenerator
 from base.core.Object.GameObject import GameObject
 from base.nodes.Node import Node
 
 # Klasse zur Speicherung und Wiedervewendung von Nodegittern.
 class NodeStorage():
-    grids: Dict[int, List[Node]] = {}
+    grids: Dict[int, List[Vector2]] = {}
 
     def add(obj: GameObject, grid: List[Node]):
-        NodeStorage.grids[obj.id] = grid
+        NodeStorage.grids[NodeStorage.toDimension(obj)] = grid
     
     def reloadGrid(obj: GameObject) -> List[Node]:
         NodeStorage.removeGrid(obj)
         return NodeStorage.findGrid(obj)
 
+    def toDimension(obj):
+        return f"{obj.width}:{obj.height}"
+
     def findGrid(obj: GameObject) -> List[Node]:
-        if obj.id in NodeStorage.grids:
-            return NodeStorage.grids[obj.id]
-        return NodeGenerator.new_generateDynamicNodes(obj)
+        d = NodeStorage.toDimension(obj)
+        keys = list(NodeStorage.grids.keys())
+        if d in keys:
+            found = NodeStorage.grids[d]
+            return found
+        grid = NodeGenerator.new_generateDynamicNodes(obj)
+        NodeStorage.add(obj, grid)
+        return grid
     
     def removeGrid(obj: GameObject):
-        if obj.id in NodeStorage.grids:
-            del NodeStorage.grids[obj.id]
+        if NodeStorage.toDimension(obj) in NodeStorage.grids:
+            del NodeStorage.grids[NodeStorage.toDimension(obj)]

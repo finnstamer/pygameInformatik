@@ -27,6 +27,8 @@ class Controls():
             
     def updateClicks():
         Controls.clicks["l"] = (True, pygame.mouse.get_pos())
+        if Controls.clicks["l"][0]:
+            print(pygame.mouse.get_pos())
                 
     @staticmethod
     def updateControlsPressed(k):
