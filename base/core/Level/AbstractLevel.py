@@ -38,4 +38,4 @@ class AbstractLevel(Level):
     # Entfernt alle Objekte aus dem Level und lädt es neu
     def reset(self):
         self.delete()
-        self.make()
+        self.load()

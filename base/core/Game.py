@@ -61,7 +61,6 @@ class Game():
 
         Game.currentLevel = levelId
         if levelId in Game.levels:
-            print(Game.currentLevel)
             Game.level().load()
             return
         raise LookupError(f"Level '{levelId}' not found.")

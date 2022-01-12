@@ -2,13 +2,11 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Action.MovementRoutine import MovementRoutine
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
-from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
-from base.objects.Actions.Actions.MovementAction import MovementAction
 from random import randrange
 
 from base.objects.Actions.Routines.FollowObjectRoutine import FollowObjectRoutine
@@ -16,8 +14,8 @@ from base.objects.Actions.Routines.FollowObjectRoutine import FollowObjectRoutin
 class Enemy(GameObject):
     def __init__(self, pos: Vector2 = ..., width: int = 0, height: int = 0, color: Tuple = ...) -> None:
         super().__init__(pos=pos, width=width, height=height, color=(255, 130, 201))
-        self.alertedRadius = Vector2(200, 200)
-        self.sleepRadius = Vector2(400, 400)
+        self.alertedRadius = Vector2(300, 300)
+        self.sleepRadius = Vector2(450, 450)
         self.alertedRadiusObject = GameObject(self.pos, self.alertedRadius.x, self.alertedRadius.y)
         self.sleepRadiusObject = GameObject(self.pos, self.sleepRadius.x, self.sleepRadius.y)
         AbstractLevel.bind(self.alertedRadiusObject, self.sleepRadiusObject)
@@ -32,21 +30,25 @@ class Enemy(GameObject):
         self.health = 100
 
         
-        # Events.subscribe("Level.loaded", self.onLoad)
+        Events.subscribe("Level.loaded", self.onLoad)
         Events.subscribe(f"{player.id}.moved", self.onMovement)
         Events.subscribe(f"{self.id}.moved", self.onMovement)
         Events.subscribe("game.tick", self.onTick)
         Events.subscribe(f"{self.id}.died", self.onDied)
 
-        self.movement = MovementRoutine(self)
-        self.follow = FollowObjectRoutine(self, Factory.get("player"))    
+
+       
 
         collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
         Events.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
 
-        
+    # Lade Routinen, wenn alle nonFluidsSolids geladen sind
+    def onLoad(self, e):
+        print("Loaded")
+        self.movement = MovementRoutine(self)
+        self.follow = FollowObjectRoutine(self, Factory.get("player"))    
+
     def onPlayerCollision(self, e):
-        print("H")
         Game.level().reset()
 
     def onMovement(self, event):
