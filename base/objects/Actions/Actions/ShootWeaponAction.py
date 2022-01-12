@@ -23,6 +23,7 @@ class ShootWeaponAction(LineMovementAction):
         self.object = Spawner.spawnObject(self.weapon.projectile, self.weapon.projectile.pos)
         self.object.active = True
     
+    # Setze die max Anzahl an Steps für die LIneMovementAction in Abhängigkeit der range, anstatt der geklickten Position 
     def setSteps(self):
         self.stepsToDo = int(self.weapon.projectile.range / self.weapon.projectile.speed) 
     

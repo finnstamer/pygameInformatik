@@ -1,3 +1,4 @@
+from base.core.Level.AbstractLevel import AbstractLevel
 from base.objects.Actions.Routines.MiddlewareHandler import MiddlewareHandler
 from base.core.Object.Factory import Factory
 
@@ -8,10 +9,13 @@ class AbstractAction():
         self.id = -1
         self.progress = 0
         Factory.append(self)
+        AbstractLevel.bind(self)
         # Ermöglich den Eingriff eine Aktion und seinen äußeren Komponente von diesen oder Dritten
         self.middlewareHandler = MiddlewareHandler(self)
         self.setStates(obj, endState)
-        
+    
+    # Bindet standardmäßig Aktion an Level.
+    # Ermöglicht das Löschen einer Aktion nach dem Beendigung des Levels, damit es zu keinen Event und Objekt Konflikten kommt.
     # Stoppt die Aktion und setzt die aktuellen States
     def setStates(self, obj, endState):
         self.stop()

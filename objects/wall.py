@@ -12,4 +12,5 @@ class Wall(GameObject):
             width=width,
             height=height
         )
+        self.fluid = False
         self.solid = True

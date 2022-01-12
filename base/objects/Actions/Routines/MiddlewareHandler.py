@@ -2,8 +2,8 @@ from typing import Any, Callable
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 
-# Klasse zum äußeren Eingriff in komplexe Handlungen via einem spezifizierten Events (Events.py) basiertem System
-# ! Ist nur auf dem Aktionen ausgelegt. !
+# Klasse zum Verwalten Aktion-bedingter Events, was äußeren Eingriff in komplexe Handlungen via einem spezifizierten Events (Events.py) basiertem System ermöglicht
+# ! Ist nur auf ~Aktionen ausgelegt. !
 class MiddlewareHandler():
     def __init__(self, action) -> None:
         self.action = action

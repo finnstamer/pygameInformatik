@@ -1,7 +1,6 @@
 from __future__ import annotations
-from typing import Callable, Dict, Tuple
+from typing import Tuple
 from base.core.Dependencies.Movement import Movement
-# from base.core.Dependencies.Movement import Movement
 from base.core.Event.Events import Events
 from base.geometry.Rectangle import Rectangle
 from base.core.Object.Factory import Factory
@@ -19,7 +18,8 @@ class GameObject():
         self._width = width
         self._height = height
         self.color = color
-        self.solid = False
+        self.solid = False # Solides Objekt => es ist nicht durchlässig
+        self.fluid = False # Fluid Objekt => es bewegt sich im Raum (wichtig für NodeGenerator)
         self.speed = 0
         self.health = -1
         self.buildRect()

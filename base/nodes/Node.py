@@ -1,6 +1,7 @@
 from typing import Any, Dict, List
 
 from pygame import Vector2
+from base.core.Level.AbstractLevel import AbstractLevel
 
 from base.core.Object.Factory import Factory
 
@@ -15,6 +16,7 @@ class Node():
         self.right: Node = right
         self.color = None
         Factory.append(self)
+        AbstractLevel.bind(self)
     
     def neighborsToList(self) -> Dict[int, object]:
         return {0: self.higher, 1: self.right, 2: self.down, 3: self.left}

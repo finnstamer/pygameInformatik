@@ -16,6 +16,9 @@ class Player(GameObject):
         self.solid = False
         self.height = 25
         self.width = 25
+        
+        self.solid = True
+        self.fluid = True
 
         self.setImage("images/player.png")
         self.speed = 5
@@ -25,28 +28,16 @@ class Player(GameObject):
         self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
         Game.use(Controls)
         Events.subscribe("game.tick", self.onTick)
-        Events.subscribe("game.start", self.onStart)
-    
-    def onStart(self, event):
-        # self.routine = MovementRoutine(Factory.get("ekto1"))
-        # self.routine = FollowObjectRoutine(Factory.get("ekto1"), self)
-        pass
 
     def onTick(self, event):
         if self.allowMovements:
             self.control(Controls.keys)
-            self.oldMovement()
-            # self.move(self.nextPos())
+            self.oldMovement() # Alte gezielte Bewegungssteuerung
+            # self.move(self.nextPos()) // Pacman-Movement
 
         clicked, pos = Controls.clicks["l"] 
         if clicked:
             Factory.get("weapon").shoot(pygame.Vector2(pos))
-        
-        if Controls.keys["escape"]:
-            Game.level().reset()
-            # Game.level().remove(self)
-            # Factory.delete(self)
-            # Events.disconnectObject(self)
 
     def nextPos(self) -> pygame.Vector2:
         return {

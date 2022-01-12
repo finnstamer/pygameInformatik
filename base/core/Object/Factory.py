@@ -63,4 +63,3 @@ class Factory():
         subClasses = [getattr(obj, p) for p in dir(obj) if isclass(p) and not p.__name__.startswith("__")]
         for c in subClasses:
             Factory.delete(c)
-        del obj

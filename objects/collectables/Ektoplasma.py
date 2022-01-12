@@ -12,7 +12,7 @@ class Ektoplasma(GameObject):
         self.speed = 5
         self.solid = False
         self.health = 50
-        # Events.subscribe(self, "game.start", "game.tick")
+
         collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
         self.collisionEvent = collisionEvent
         Events.subscribe(self.collisionEvent[0], self.onCollision)

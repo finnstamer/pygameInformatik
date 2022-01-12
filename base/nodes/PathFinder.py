@@ -9,6 +9,7 @@ from base.core.Object.GameObject import GameObject
 from base.nodes.Node import Node
 from settings import screenRes
 
+# Klasse zur algorithmischen Wegfindung
 class PathFinder():
     minActions = 5000
     walkedNodes = []
@@ -31,7 +32,7 @@ class PathFinder():
         depth += 1
         for i in range(len(neighbors)):
             n = neighbors[i]
-            if n == None or n in recPath: # Dont search double on paths, already gone by the other "instances"
+            if n == None or n in recPath: # Verhindere doppelte Suche
                 continue
         
             path = recPath + [n]

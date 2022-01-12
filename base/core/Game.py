@@ -12,7 +12,7 @@ class Game():
     active = True
     isStarted = False
     dependencies: List[Any] = []
-    currentLevel: int = 0
+    currentLevel: int = -1
     levels: Dict[int, AbstractLevel] = {0: Level(0)}
 
     # Funktion zur 
@@ -56,12 +56,13 @@ class Game():
     # Setze aktuelles Level zum Level mit gegebener Id
     # Aktuelles Level wird deaktiviert (Level.deactivate)
     def setLevel(levelId: int) -> None:
-        Game.level().deactivate()
-        Game.level().delete()
+        if Game.currentLevel >= 0: # Default unset Level is -1
+            Game.level().delete()
+
         Game.currentLevel = levelId
         if levelId in Game.levels:
-            Game.level().active = True
-            Game.level().make()
+            print(Game.currentLevel)
+            Game.level().load()
             return
         raise LookupError(f"Level '{levelId}' not found.")
     

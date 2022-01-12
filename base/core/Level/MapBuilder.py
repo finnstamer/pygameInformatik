@@ -15,7 +15,8 @@ class MapBuilder():
     start = None
     clicks = []
     def __init__(self, objects: List[GameObject] = []) -> None:
-        self.objects = objects
+        self.objects = []
+        self.addObject(*objects)
 
     def addObject(self, *objects: GameObject):
         for obj in list(objects):

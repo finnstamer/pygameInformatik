@@ -14,7 +14,6 @@ class Button(GameObject):
         Game.use(Controls)
     
     def onClick(self):
-        print("23")
         self.onClickMethod()
         pass
 

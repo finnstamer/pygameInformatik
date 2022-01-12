@@ -64,7 +64,7 @@ class NodeGenerator():
     # die durch das statische Gitter nicht abgedeckt werden, gefüllt werden
     # ! Unfertig !
     def new_generateDynamicNodes(obj: GameObject):
-        solids = Game.level().allSolidObjects()
+        solids = Game.level().nonFluidSolids
         semistatic = NodeGenerator.semiStaticNodes(obj)
         nodes = semistatic[0]
         skipped = semistatic[1]

@@ -3,7 +3,8 @@ from math import sqrt
 from base.core.Object.GameObject import GameObject
 from base.objects.Actions.Actions.MovementAction import MovementAction
 
-
+# Action zur Berechnung einer geraden Bewegung in eine Richtung
+# Wurde nur Teils getestet und ist !nicht! optimiert.
 class LineMovementAction(MovementAction):
     def __init__(self, obj: GameObject, endState: Vector2) -> None:
         super().__init__(obj, endState)
@@ -18,7 +19,8 @@ class LineMovementAction(MovementAction):
         self.xAdjust = int(xDiff / steps)
         self.yAdjust = int(yDiff / steps)
         self.stepsToDo = steps
-
+    
+    # Überschreibt onRun von MovementAction
     def onRun(self):
         self.stepsToDo -= 1
         segmentPos = Vector2(self.object.pos.x + self.xAdjust, self.object.pos.y + self.yAdjust)

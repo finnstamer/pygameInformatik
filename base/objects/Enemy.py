@@ -2,8 +2,10 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Action.MovementRoutine import MovementRoutine
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
+from base.core.Event.Event import Event
 from base.core.Event.Events import Events
 from base.core.Game import Game
+from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 from base.objects.Actions.Actions.MovementAction import MovementAction
@@ -18,23 +20,35 @@ class Enemy(GameObject):
         self.sleepRadius = Vector2(400, 400)
         self.alertedRadiusObject = GameObject(self.pos, self.alertedRadius.x, self.alertedRadius.y)
         self.sleepRadiusObject = GameObject(self.pos, self.sleepRadius.x, self.sleepRadius.y)
+        AbstractLevel.bind(self.alertedRadiusObject, self.sleepRadiusObject)
         self.pathPool = [] 
         self.alerted = False
 
         player = Factory.get("player")
         
+        self.solid = True
+        self.fluid = True
         self.speed = 3
-        self.movement = MovementRoutine(self)
-        self.follow = FollowObjectRoutine(self, player)
+        self.health = 100
+
         
+        # Events.subscribe("Level.loaded", self.onLoad)
         Events.subscribe(f"{player.id}.moved", self.onMovement)
         Events.subscribe(f"{self.id}.moved", self.onMovement)
         Events.subscribe("game.tick", self.onTick)
-        eve = CollisionWatcher.watch(self, player)
-        Events.subscribe(eve, self.onPlayer)
-    
-    def onPlayer(self, e):
-        Game.setLevel(0)
+        Events.subscribe(f"{self.id}.died", self.onDied)
+
+        self.movement = MovementRoutine(self)
+        self.follow = FollowObjectRoutine(self, Factory.get("player"))    
+
+        collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
+        Events.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
+
+        
+    def onPlayerCollision(self, e):
+        print("H")
+        Game.level().reset()
+
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):
             self.alerted = True
@@ -61,3 +75,6 @@ class Enemy(GameObject):
             self.follow.restart(None)
             self.color = (245, 20, 148)
     
+    def onDied(self, event):
+        self.follow.stop()
+        self.movement.stop()

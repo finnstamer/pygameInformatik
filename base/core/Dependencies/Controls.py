@@ -1,6 +1,5 @@
 import pygame
 from pygame.constants import K_ESCAPE, K_LEFT, K_LSHIFT, K_RIGHT, K_SPACE, K_UP, K_DOWN, KSCAN_A, KSCAN_D, KSCAN_S, KSCAN_W, K_a, K_d, K_s, K_w
-from base.core.Event.Event import Event
 
 from base.core.Event.Events import Events
 class Controls():
@@ -27,8 +26,6 @@ class Controls():
             
     def updateClicks():
         Controls.clicks["l"] = (True, pygame.mouse.get_pos())
-        if Controls.clicks["l"][0]:
-            print(pygame.mouse.get_pos())
                 
     @staticmethod
     def updateControlsPressed(k):
