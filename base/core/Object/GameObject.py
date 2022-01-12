@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing import Tuple
 from base.core.Dependencies.Movement import Movement
 from base.core.Event.Events import Events
+from base.core.Game import Game
 from base.geometry.Rectangle import Rectangle
 from base.core.Object.Factory import Factory
 from settings import screen
@@ -119,7 +120,7 @@ class GameObject():
     
     # Bewegt wenn möglich ein Objekt zur Position. Sonst bis zur nächsten möglichen Stelle
     def move(self, pos: pygame.Vector2):
-        furthestPos = Movement.furthestMove(self, pos)
+        furthestPos = Movement.furthestMove(self, pos, objs=Game.level().nonFluidSolids)
         if furthestPos is not None:
             self.updatePos(furthestPos)     
         return self

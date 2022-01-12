@@ -36,7 +36,7 @@ class ShootWeaponAction(LineMovementAction):
     # die Aktion beendet und das Objekt entfernt
     def evaluateNextPos(self, pos) -> Vector2:
         furthestMove, objects = Movement.furthestLineMovement(self.object, pos)
-        if len(objects)  > 0:
+        if len(objects) > 0:
             self.hitObjects = objects
             self.middlewareHandler.dispatch("shot.hit")
             self.stop()

@@ -34,22 +34,18 @@ class Enemy(GameObject):
         Events.subscribe(f"{player.id}.moved", self.onMovement)
         Events.subscribe(f"{self.id}.moved", self.onMovement)
         Events.subscribe("game.tick", self.onTick)
-        Events.subscribe(f"{self.id}.died", self.onDied)
-
-
-       
+        Events.subscribe(f"{self.id}.died", self.onDied)       
 
         collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
         Events.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
 
     # Lade Routinen, wenn alle nonFluidsSolids geladen sind
-    def onLoad(self, e):
-        print("Loaded")
+    def onLoad(self, e):        
         self.movement = MovementRoutine(self)
         self.follow = FollowObjectRoutine(self, Factory.get("player"))    
 
     def onPlayerCollision(self, e):
-        Game.level().reset()
+        Game.setLevel(0)
 
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):

@@ -7,36 +7,39 @@ from base.core.Game import Game
 class Movement:        
 
     # Given a list of solid, blocking objects, check if a position of a given object is allowed.
-    def allowPosition(obj: object, pos: pygame.Vector2) -> bool:
+    def allowPosition(obj: object, pos: pygame.Vector2, objs: List = None) -> bool:
         pyRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
-        for solid in Game.level().nonFluidSolids: 
-            if solid.collidesWith(pyRect):
+        objects = Game.level().solids if objs is None else objs
+        for solid in objects: 
+            if solid != obj and solid.collidesWith(pyRect):
                 return False
         return True
     
-    def collidingObjects(obj: object, pos: pygame.Vector2) -> List[object]:
+    def collidingObjects(obj: object, pos: pygame.Vector2, objs=None) -> List[object]:
         objects = []
         pyRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
-        for solid in Game.level().nonFluidSolids: 
+        solids = Game.level().solids if objs is None else objs
+
+        for solid in solids:
             if solid.collidesWith(pyRect):
                 objects.append(solid)
         return objects
 
     # Given a list of solid, blocking objects, return the furthest position a given object can move, till it will be blocked
     # Is the object blocked in its original position, it returns None
-    def furthestMove(obj: object, pos: pygame.Vector2, startPos: pygame.Vector2 = None) -> pygame.Vector2 or None:
+    def furthestMove(obj: object, pos: pygame.Vector2, startPos: pygame.Vector2 = None, objs = None) -> pygame.Vector2 or None:
         startPos = obj.pos if startPos is None else startPos
         x = startPos.y == pos.y
 
         steps = int(pos.x - startPos.x if x else pos.y - startPos.y)
         if steps == 0:
-            return pos if Movement.allowPosition(obj, pos) else None
+            return pos if Movement.allowPosition(obj, pos, objs) else None
         
         stepsRange = list(range(0, steps + 1 if steps > 0 else steps - 1, 1 if steps > 0 else -1))
         for s in stepsRange:
             i = abs(s)
             pos = pygame.Vector2(startPos.x + s if x else startPos.x, startPos.y + s if not x else startPos.y)
-            if Movement.allowPosition(obj, pos) == False:
+            if Movement.allowPosition(obj, pos, objs) == False:
                 if i == 0:
                     return None
                 return stepsRange[i - 1]
@@ -44,19 +47,19 @@ class Movement:
         return stepsRange[-1]
     
     # Selbes Prinzip wie bei .furthestMove(), es werden dagegen noch die kolliderienden Objekte zurückgegeben
-    def furthestMove_collider(obj: object, pos: pygame.Vector2, startPos: pygame.Vector2 = None) -> Tuple[pygame.Vector2 or None, List[object]]:
+    def furthestMove_collider(obj: object, pos: pygame.Vector2, startPos: pygame.Vector2 = None, objs =None) -> Tuple[pygame.Vector2 or None, List[object]]:
         startPos = obj.pos if startPos is None else startPos
         x = startPos.y == pos.y
 
         steps = int(pos.x - startPos.x if x else pos.y - startPos.y)
         if steps == 0:
-            return pos if Movement.allowPosition(obj, pos) else None
+            return pos if Movement.allowPosition(obj, pos, objs) else None
         
         stepsRange = list(range(0, steps + 1 if steps > 0 else steps - 1, 1 if steps > 0 else -1))
         for s in stepsRange:
             i = abs(s)
             pos = pygame.Vector2(startPos.x + s if x else startPos.x, startPos.y + s if not x else startPos.y)
-            collidingObjects = Movement.collidingObjects(obj, pos)
+            collidingObjects = Movement.collidingObjects(obj, pos, objs)
             if len(collidingObjects) > 0:
                 if i == 0:
                     return (None, collidingObjects)
@@ -66,7 +69,7 @@ class Movement:
 
     # Given a list of solid, blocking objects, return the first position a given object can move, till it will be blocked
     # Is the object blocked in its original position, it returns None
-    def firstMove(obj: object, pos: pygame.Vector2, solidObjects: List[object], startPos: pygame.Vector2 = None) -> pygame.Vector2 or None:
+    def firstMove(obj: object, pos: pygame.Vector2, solidObjects: List[object], startPos: pygame.Vector2 = None, objs = None) -> pygame.Vector2 or None:
         startPos = obj.pos if startPos is None else startPos
         x = pos.y == startPos.y
 
@@ -74,11 +77,11 @@ class Movement:
         stepsRange = list(range(0, steps, 1 if steps > 0 else -1))
         for s in stepsRange:
             pos = pygame.Vector2(startPos.x + s if x else startPos.x, startPos.y + s if not x else startPos.y)
-            if Movement.allowPosition(obj, pos) == True:
+            if Movement.allowPosition(obj, pos, objs) == True:
                 return pos
         return None
     
-    def furthestLineMovement(obj: object, pos: pygame.Vector2):
+    def furthestLineMovement(obj: object, pos: pygame.Vector2, objs=None):
         xDiff = pos.x - obj.pos.x 
         yDiff = pos.y - obj.pos.y
         distance = sqrt(xDiff ** 2 + yDiff ** 2)
@@ -87,7 +90,7 @@ class Movement:
         lastPos = pos
         for i in range(int(distance)):
             _pos = pygame.Vector2(int(obj.pos.x + i * xAdjust), int(obj.pos.y + i* yAdjust))
-            if Movement.allowPosition(obj, _pos) is False:
-                return (lastPos, Movement.collidingObjects(obj, lastPos))
+            if Movement.allowPosition(obj, _pos, objs) is False:
+                return (lastPos, Movement.collidingObjects(obj, lastPos, objs))
             lastPos = pos
         return (pos, [])

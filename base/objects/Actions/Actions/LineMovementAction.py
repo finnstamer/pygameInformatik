@@ -16,6 +16,9 @@ class LineMovementAction(MovementAction):
         yDiff = self.endState.y - self.object.pos.y 
         distance = sqrt(xDiff ** 2 + yDiff ** 2)
         steps = int(distance / self.object.speed)
+        if steps == 0:
+            self.stepsToDo = 0
+            return
         self.xAdjust = int(xDiff / steps)
         self.yAdjust = int(yDiff / steps)
         self.stepsToDo = steps

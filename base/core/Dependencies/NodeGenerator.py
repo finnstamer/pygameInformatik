@@ -26,7 +26,7 @@ class NodeGenerator():
                 skipped[x].append(skipped[x][y - 1] if y > 0 else 0)
 
                 vec = Vector2(x * modx, y * mody)
-                if not Movement.allowPosition(obj, vec):
+                if not Movement.allowPosition(obj, vec, Game.level().nonFluidSolids):
                     nodes.append(Node(Vector2(-1, -1)))
                     skipped[x][y] += 1
                     continue
