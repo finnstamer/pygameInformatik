@@ -15,8 +15,8 @@ class Node():
         self.left: Node = left
         self.right: Node = right
         self.color = None
-        Factory.append(self)
-        AbstractLevel.bind(self)
+        # Factory.append(self)
+        # AbstractLevel.bind(self)
     
     def neighborsToList(self) -> Dict[int, object]:
         return {0: self.higher, 1: self.right, 2: self.down, 3: self.left}

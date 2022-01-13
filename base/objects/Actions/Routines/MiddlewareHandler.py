@@ -1,6 +1,8 @@
 from typing import Any, Callable
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
+from base.core.Level.AbstractLevel import AbstractLevel
+from base.core.Object.Factory import Factory
 
 # Klasse zum Verwalten Aktion-bedingter Events, was äußeren Eingriff in komplexe Handlungen via einem spezifizierten Events (Events.py) basiertem System ermöglicht
 # ! Ist nur auf ~Aktionen ausgelegt. !
@@ -8,6 +10,7 @@ class MiddlewareHandler():
     def __init__(self, action) -> None:
         self.action = action
         self.middlewares = {}
+        AbstractLevel.bind(self)
     
     # Shorthand zum Ausgeben eines Events, das an die Aktion gebunden ist
     def dispatch(self, event: str, value: Any = ""):

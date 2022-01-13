@@ -426,4 +426,4 @@ Ektoplasma().updatePos(Vector2([557, 391])),
         
         
         mB.addObject(*objects)
-        self.objects = mB.objects
+        self.add(*mB.objects)

@@ -46,6 +46,8 @@ class Enemy(GameObject):
 
     def onPlayerCollision(self, e):
         Game.setLevel(0)
+        pass
+
 
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):

@@ -5,6 +5,9 @@ from base.core.Object.Factory import Factory
 # Abstrakte Klasse zur Erstellung von Level, deren Aufbau durch die .make Methode gespeichert wird
 # und somit einen erneuten Aufbau des Levels ermöglicht.
 class AbstractLevel(Level):
+
+    # Level gebundene Objekte sind Instanzen, die nicht per .draw Methode gezeichent werden, sondern im Hintergrund agieren
+    # und an das Level gebunden sind.
     bound = []
     def __init__(self, id: int) -> None:
         super().__init__(id)
@@ -22,14 +25,22 @@ class AbstractLevel(Level):
         AbstractLevel.bound += (list(objs))
 
     def unbind(obj):
-        AbstractLevel.bound.remove(obj)
+        if obj in AbstractLevel.bound:
+            AbstractLevel.bound.remove(obj)            
     
-    # Entfernt alle Objekte aus dem Level
-    def delete(self):
-        objects = self.objects + AbstractLevel.bound
-        uniqueObjects = list(set(objects))
+    def delete(self, obj):
+        Factory.deleteRecursive(obj)
+        if obj in self.objects:
+            self.objects.remove(obj)
+            return
+        if obj in AbstractLevel.bound:
+            AbstractLevel.bound.remove(obj)
 
-        for o in uniqueObjects:
+    # Entfernt alle Objekte aus dem Level
+    def deleteAll(self):
+        objects = self.objects + AbstractLevel.bound
+
+        for o in objects:
             Factory.delete(o)                
 
         self.objects = []
@@ -37,5 +48,5 @@ class AbstractLevel(Level):
 
     # Entfernt alle Objekte aus dem Level und lädt es neu
     def reset(self):
-        self.delete()
+        self.deleteAll()
         self.load()

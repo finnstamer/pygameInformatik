@@ -1,3 +1,4 @@
+import inspect
 from typing import Dict
 from base.core.Event.Events import Events
 
@@ -43,11 +44,9 @@ class Factory():
 
     # Entfernt Alias zur ID eines gegeben Objektes
     def removeAlias(obj: object):
-        vals = list(Factory.alias.values())
-        if obj.id in vals:
-            keys = list(Factory.alias.keys())
-            alias = keys[list(Factory.alias.values()).index(obj.id)]
-            del Factory.alias[alias]
+        for id, alias in Factory.alias.items():
+            if id == obj.id:
+                del Factory.alias[alias]
     
     # Entfernt die ID eines Objektes
     def removeId(obj: object):
@@ -55,11 +54,12 @@ class Factory():
 
     # Isoliert und entfernt ein Objekt vollständig 
     def delete(obj: object):
-        if obj.id is not None:
+        if hasattr(obj, "id"):
             Factory.removeAlias(obj)
             Factory.removeId(obj)
-        Events.disconnectObject(obj)
-        
-        subClasses = [getattr(obj, p) for p in dir(obj) if isclass(p) and not p.__name__.startswith("__")]
-        for c in subClasses:
-            Factory.delete(c)
+        Events.unsubscribeMethodsOnObject(obj)
+    
+    def deleteRecursive(obj: object):
+        props = inspect.getmembers(obj)
+        print(props)
+        Factory.delete(obj)

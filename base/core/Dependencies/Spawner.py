@@ -1,9 +1,9 @@
+from concurrent.futures import thread
 from typing import List
 from pygame import Vector2
 from base.core.Game import Game
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
-
 
 class Spawner():
     def __init__(self, obj: GameObject) -> None:

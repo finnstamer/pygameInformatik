@@ -1,6 +1,9 @@
 from typing import List
 from base.core.Action.AbstractAction import AbstractAction
 from base.core.Event.Events import Events
+from base.core.Game import Game
+from base.core.Level.AbstractLevel import AbstractLevel
+from base.core.Object.Factory import Factory
 
 # Abstrakte Klasse zur Verwaltung mehrerer Aktionen.
 # Routine basiert selbst auf einer Aktion. 
@@ -10,6 +13,9 @@ class AbstractRoutine(AbstractAction):
         super().__init__(obj, endState)
         self.actions: List[AbstractAction] = []
         self.pendingAction = None
+
+        # Aktionen werden nach Beendigugn automatisch entfernt
+        self.autoDelete = True
 
         self.middlewareHandler.on("set", self.createActions)
         self.middlewareHandler.on("run", self.runActions)
@@ -22,12 +28,6 @@ class AbstractRoutine(AbstractAction):
     # Ruft nächste Aktion auf, wenn keine gesetzt ist.
     # Ist die Aktion sonst fertig, wird die Aktion auf None gesetzt. 
     def runActions(self):
-        if self.progress == 0 or self.progress == 2:
-            return
-        if self.isFinished():
-            self.progress = 2
-            return
-        
         if self.pendingAction is None:
             if len(self.actions) == 0:
                 return
@@ -37,7 +37,12 @@ class AbstractRoutine(AbstractAction):
 
         if self.pendingAction.progress == 2:
             self.middlewareHandler.dispatch("pendingAction.done", self.pendingAction)
+                
             self.actions.pop(0)
+            if self.autoDelete:
+                # FIXME
+                Game.level().delete(self.pendingAction)
+                pass
             self.pendingAction = None
 
     # Routine ist i.d.R dann fertig, wenn alle darunterliegenden Aktionen beendet sind.

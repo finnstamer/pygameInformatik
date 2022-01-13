@@ -1,3 +1,5 @@
+import inspect
+import optparse
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
 
@@ -22,21 +24,20 @@ class Events():
 
     # Deabonniert ein bestimmtes Event von einer Funktion
     def unsubscribe(event, func: Callable):
-        if event in Events.subscribers:
-            subscribed = Events.subscribers[event]
-            Events.subscribers[event] = list(filter(lambda x: x != func, subscribed))
+        if event in Events.subscribers and func in Events.subscribers[event]:
+            Events.subscribers[event].remove(func)
 
     # Deabonniert alle Events von einer Funktion
-    def disconnect(func: Callable):
-        for e in Events.subscribers:
-            subscribed = Events.subscribers[e]
-            Events.subscribers[e] = list(filter(lambda x: x != func, subscribed))
+    def unsubscribeAll(func: Callable):
+        for event in Events.subscribers:
+            Events.unsubscribe(event, func)
 
     # Deabonniert alle Events von allen Funktionen eines Objektes
-    def disconnectObject(obj: object):
-        funcs = [getattr(obj, f) for f in dir(obj) if not f.startswith("__") and callable(getattr(obj, f))]
-        for f in funcs:
-            Events.disconnect(f)
+    def unsubscribeMethodsOnObject(obj: object):
+        methods = inspect.getmembers(obj, predicate=inspect.ismethod)
+        for name, method in methods:
+            # print(f"Events - Disconnecting: {name}")
+            Events.unsubscribeAll(method)
 
     # Eröffnet die Verbindungsstelle einer bestimmten Request an eine Funktion
     # Nur eine Funktion ist an eine Request gebunden. Wird hiermit ggf. überschrieben. 
@@ -49,7 +50,6 @@ class Events():
         if req in Events.requests:
             return Events.requests[req](arg)
         return arg
-        # raise NotImplementedError(f"Request '{req}' is not accepted.")
 
     # Gibt alle Events zurück, die eine bestimmte Funktion abonniert hat.
     def allSubscribedEvents(func: Callable):

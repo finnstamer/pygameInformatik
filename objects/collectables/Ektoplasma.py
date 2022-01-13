@@ -1,6 +1,7 @@
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
+from base.core.Game import Game
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 
@@ -20,3 +21,4 @@ class Ektoplasma(GameObject):
     def onCollision(self, e: Event):
         Ektoplasma.collected += 1
         self.active = False 
+        # Game.level().delete(self)
