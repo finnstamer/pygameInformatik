@@ -29,17 +29,15 @@ class AbstractLevel(Level):
             AbstractLevel.bound.remove(obj)            
     
     def delete(self, obj):
-        Factory.delete(obj)
         if obj in self.objects:
             self.objects.remove(obj)
-            return
-        if obj in AbstractLevel.bound:
-            AbstractLevel.bound.remove(obj)
+        else:
+            AbstractLevel.unbind(obj)
+        Factory.delete(obj)
 
     # Entfernt alle Objekte aus dem Level
     def deleteAll(self):
         objects = self.objects + AbstractLevel.bound
-
         for o in objects:
             Factory.delete(o)                
 

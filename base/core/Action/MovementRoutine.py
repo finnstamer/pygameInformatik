@@ -25,7 +25,7 @@ class MovementRoutine(AbstractRoutine):
         self.stopActions()
         startNode = PathFinder.nearestNode(self.grid, self.object.pos)
         endNode = PathFinder.nearestNode(self.grid, self.endState) 
-        paths = PathFinder.find(startNode, endNode, 50)
+        paths = PathFinder.find(startNode, endNode, 100)
 
         if len(paths) == 0:
             return

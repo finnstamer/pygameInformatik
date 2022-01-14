@@ -59,6 +59,7 @@ class Game():
     def setLevel(levelId: int) -> None:
         if Game.currentLevel >= 0: # Default unset Level is -1
             Debugger.log(f"Game: Deleting {Game.currentLevel}...")
+            Game.level().deactivate()
             Game.level().deleteAll()
             Debugger.log(f"Game: Finished Deleting {Game.currentLevel}")
         Game.currentLevel = levelId

@@ -46,7 +46,7 @@ class Enemy(GameObject):
         self.follow = FollowObjectRoutine(self, Factory.get("player"))  
         
     def onPlayerCollision(self, e):
-        Game.setLevel(0)
+        Game.setLevel(Game.currentLevel)
         pass
 
 

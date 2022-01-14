@@ -6,7 +6,6 @@ from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 
 class Ektoplasma(GameObject):
-    collected = 0 
     def __init__(self) -> None:
         super().__init__(width=10, height=10, color=(3, 173, 63))
         self.collisionEvent = ""
@@ -19,6 +18,5 @@ class Ektoplasma(GameObject):
         self.subscribe(self.collisionEvent[0], self.onCollision)
 
     def onCollision(self, e: Event):
-        Ektoplasma.collected += 1
         self.active = False 
-        # Game.level().delete(self)
+        Game.level().delete(self)

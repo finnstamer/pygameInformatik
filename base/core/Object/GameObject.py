@@ -119,6 +119,12 @@ class GameObject():
         Events.dispatch(f"{self.id}.moved", self)
         return self
     
+    def hiddenPosUpdate(self, pos: pygame.Vector2):
+        self._pos = pos
+        self.updateRect()
+        return self
+    
+
     # Bewegt wenn möglich ein Objekt zur Position. Sonst bis zur nächsten möglichen Stelle
     def move(self, pos: pygame.Vector2):
         furthestPos = Movement.furthestMove(self, pos, objs=Game.level().nonFluidSolids)
