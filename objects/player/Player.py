@@ -37,7 +37,8 @@ class Player(GameObject):
 
         clicked, pos = Controls.clicks["l"] 
         if clicked:
-            Factory.get("weapon").shoot(pygame.Vector2(pos))
+            # Factory.get("weapon").shoot(pygame.Vector2(pos))
+            print(pos)
         
         if Controls.released["space"]:
             Factory.get("Enemy").damage(100)

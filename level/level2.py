@@ -3,9 +3,11 @@ from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from pygame import Vector2
+from base.core.Object.GameObject import GameObject
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
 from base.objects.Weapon import Weapon
+from objects.Teleporter import Teleporter
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 
@@ -23,7 +25,7 @@ class Level2(AbstractLevel):
 
     def make(self):
         mB = MapBuilder()
-        player = Player().updatePos(Vector2(490,370))
+        player = Player().updatePos(Vector2(500, 600))
         projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
         projectile.color = (114, 114, 114)
         weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
@@ -33,13 +35,27 @@ class Level2(AbstractLevel):
         weapon.setImage("images/weapon.png")
         weapon.setAlias("weapon")
 
-        enemy = Enemy(Vector2(300, 300), 20, 20, (250, 0, 0))
-        enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
+        enemy = Enemy(Vector2(472, 197), 20, 20, (250, 0, 0))
+        enemy.pathPool = [Vector2(130, 411), Vector2(511, 128), Vector2(418, 408)]
         enemy.setAlias("Enemy")
 
+        enemy2 = Enemy(Vector2(472, 264), 20, 20, (250, 0, 0))
+        enemy2.pathPool = [Vector2(539, 137), Vector2(889, 392), Vector2(591, 409)]
 
+        teleport1 = GameObject(Vector2(0, 280), 35, 50)
+        Teleporter(teleport1, player, Vector2(1027, 287))
+
+        teleport2 = GameObject(Vector2(1053, 280), 35, 50)
+        Teleporter(teleport2, player, Vector2(37, 280))
+        
+        teleport1 = GameObject(Vector2(0, 381), 35, 50)
+        Teleporter(teleport1, player, Vector2(1027, 381))
+
+        teleport2 = GameObject(Vector2(1053, 381), 35, 50)
+        Teleporter(teleport2, player, Vector2(37, 381))
+        
         objects = [
-        player, enemy, weapon,
+        player, enemy, enemy2, weapon, teleport1, teleport2,
           Wall(Vector2(505,310), width=25, height=50),Wall(Vector2(460,30), width=100, height=50),
           Wall(Vector2(560,80), width=100, height=50),Wall(Vector2(360,80), width=100, height=50),
           Wall(Vector2(260,130), width=100, height=50),Wall(Vector2(660,130), width=100, height=50),

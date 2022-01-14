@@ -33,7 +33,6 @@ class AbstractAction():
     # Ist .isFinished() wahr, wird die Aktion gestoppt und "finished" Event ausgegeben
     # Sonst wird "run" Event ausgegeben.
     def run(self, event):
-        print(self.isFinished())
         if self.isFinished():
             self.stop()
             self.progress = 2

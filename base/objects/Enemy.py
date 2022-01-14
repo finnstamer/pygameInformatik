@@ -14,7 +14,7 @@ from base.objects.Actions.Routines.FollowObjectRoutine import FollowObjectRoutin
 
 class Enemy(GameObject):
     def __init__(self, pos: Vector2 = ..., width: int = 0, height: int = 0, color: Tuple = ...) -> None:
-        super().__init__(pos=pos, width=width, height=height, color=(255, 130, 201))
+        super().__init__(pos=pos, width=width, height=height, color=(255, 153, 211))
         self.alertedRadius = Vector2(300, 300)
         self.sleepRadius = Vector2(450, 450)
         self.alertedRadiusObject = GameObject(self.pos, self.alertedRadius.x, self.alertedRadius.y)
@@ -65,19 +65,21 @@ class Enemy(GameObject):
         if self.health == 0:
             return         
         if not self.alerted:
+            self.speed = 3
             self.follow.stop()
             if self.movement.progress != 1:
                 newPath = self.pathPool[randrange(0, len(self.pathPool))]
                 self.movement.setStates(self, newPath)
                 self.movement.start()   
-                self.color = (255, 130, 201)
+                self.color = (255, 153, 211)
         
         if self.alerted and self.follow.progress != 1:
+            self.speed = 5
             self.movement.stop()
             # .restart(), weil FollowObject nur beim .setStates(), die Position des zu verfolgenden Obejekt
             # an die darunterliegende MovementRoutine weitergibt (siehe .onSet()). Es werden also keine neuen AKtionen gebildet.
             self.follow.restart(None)
-            self.color = (245, 20, 148)
+            self.color = (191, 6, 0)
     
     def onDied(self, event):
         self.follow.stop()

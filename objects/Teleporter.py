@@ -10,7 +10,7 @@ class Teleporter():
         self.teleporter = teleporter
         self.obj = obj
         self.dest = dest
-        self.colEvent = CollisionWatcher.watch(self.teleporter, self.obj)
+        self.colEvent, _ = CollisionWatcher.watch(self.teleporter, self.obj)
         AbstractLevel.bind(self)
         Events.subscribe(self.colEvent, self.onCollision, self)
     
