@@ -27,7 +27,7 @@ class Player(GameObject):
 
         self.neighborVisualizer = NodeVisualizer([], (3, 119, 252))
         Game.use(Controls)
-        Events.subscribe("game.tick", self.onTick)
+        self.subscribe("game.tick", self.onTick)
 
     def onTick(self, event):
         if self.allowMovements:

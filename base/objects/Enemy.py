@@ -2,6 +2,7 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Action.MovementRoutine import MovementRoutine
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
+from base.core.Dependencies.NodeStorage import NodeStorage
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -30,20 +31,20 @@ class Enemy(GameObject):
         self.health = 100
 
         
-        Events.subscribe("Level.loaded", self.onLoad)
-        Events.subscribe(f"{player.id}.moved", self.onMovement)
-        Events.subscribe(f"{self.id}.moved", self.onMovement)
-        Events.subscribe("game.tick", self.onTick)
-        Events.subscribe(f"{self.id}.died", self.onDied)       
+        self.subscribe("Level.loaded", self.onLoad)
+        self.subscribe(f"{player.id}.moved", self.onMovement)
+        self.subscribe(f"{self.id}.moved", self.onMovement)
+        self.subscribe("game.tick", self.onTick)
+        self.subscribe(f"{self.id}.died", self.onDied)       
 
         collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
-        Events.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
+        self.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
 
     # Lade Routinen, wenn alle nonFluidsSolids geladen sind
     def onLoad(self, e):        
         self.movement = MovementRoutine(self)
-        self.follow = FollowObjectRoutine(self, Factory.get("player"))    
-
+        self.follow = FollowObjectRoutine(self, Factory.get("player"))  
+        
     def onPlayerCollision(self, e):
         Game.setLevel(0)
         pass

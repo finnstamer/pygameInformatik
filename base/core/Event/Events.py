@@ -2,6 +2,7 @@ import inspect
 import optparse
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
+from base.core.Event.EventStorageHandler import EventStorageHandler
 
 # Klasse zur ausgeben und abonnieren von Events, sowie zur Errichtung von Requests
 class Events():
@@ -16,16 +17,19 @@ class Events():
                 s(Event(name, value)) 
     
     # Abonniert ein Event an eine Funktion
-    def subscribe(event: str, func: Callable):
+    def subscribe(event: str, func: Callable, obj = None):
         if event not in Events.subscribers:
             Events.subscribers[event] = [func]
         if func not in Events.subscribers[event]:
             Events.subscribers[event].append(func)
+        if obj is not None:
+            EventStorageHandler.store(obj, event, func)
 
     # Deabonniert ein bestimmtes Event von einer Funktion
-    def unsubscribe(event, func: Callable):
-        if event in Events.subscribers and func in Events.subscribers[event]:
+    def unsubscribe(event, func: Callable, obj=None):
+        if event in Events.subscribers.keys() and func in Events.subscribers[event]:
             Events.subscribers[event].remove(func)
+            EventStorageHandler.remove(obj, event, func)
 
     # Deabonniert alle Events von einer Funktion
     def unsubscribeAll(func: Callable):
@@ -34,11 +38,12 @@ class Events():
 
     # Deabonniert alle Events von allen Funktionen eines Objektes
     def unsubscribeMethodsOnObject(obj: object):
-        methods = inspect.getmembers(obj, predicate=inspect.ismethod)
-        for name, method in methods:
-            # print(f"Events - Disconnecting: {name}")
-            Events.unsubscribeAll(method)
-
+        events = EventStorageHandler.retrieve(obj)
+        for i in range(len(events)):
+            e = events[i]
+            event, func = (e["event"], e["func"])
+            Events.unsubscribe(event, func, obj)
+            
     # Eröffnet die Verbindungsstelle einer bestimmten Request an eine Funktion
     # Nur eine Funktion ist an eine Request gebunden. Wird hiermit ggf. überschrieben. 
     def acceptRequest(req: str, func: Callable):

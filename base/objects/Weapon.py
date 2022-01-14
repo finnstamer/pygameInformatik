@@ -15,7 +15,7 @@ class Weapon(GameObject):
         self.munition = munition
         self.cooldown = cooldown
         self.lastShot = None
-        Events.subscribe("game.tick", self.onTick)
+        self.subscribe("game.tick", self.onTick)
 
     def onTick(self, event):
         # Adjust Weapon to Owner

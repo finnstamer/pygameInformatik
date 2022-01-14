@@ -1,6 +1,7 @@
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
 from base.core.Event.Event import Event
 from base.core.Event.Events import Events
+from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Object.GameObject import GameObject
 from pygame import Vector2
 
@@ -10,10 +11,11 @@ class Teleporter():
         self.obj = obj
         self.dest = dest
         self.colEvent = CollisionWatcher.watch(self.teleporter, self.obj)
-        Events.subscribe(self.colEvent, self.onCollision)
+        AbstractLevel.bind(self)
+        Events.subscribe(self.colEvent, self.onCollision, self)
     
     def stop(self):
-        Events.unsubscribe(self.colEvent, self.onCollision)
+        Events.unsubscribe(self.colEvent, self.onCollision, self)
         return self
     
     def onCollision(self, event):

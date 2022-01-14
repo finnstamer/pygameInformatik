@@ -29,7 +29,7 @@ class AbstractLevel(Level):
             AbstractLevel.bound.remove(obj)            
     
     def delete(self, obj):
-        Factory.deleteRecursive(obj)
+        Factory.delete(obj)
         if obj in self.objects:
             self.objects.remove(obj)
             return
@@ -44,6 +44,7 @@ class AbstractLevel(Level):
             Factory.delete(o)                
 
         self.objects = []
+        # print(Events.subscribers)
         AbstractLevel.bound = []
 
     # Entfernt alle Objekte aus dem Level und lädt es neu

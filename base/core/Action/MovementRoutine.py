@@ -17,8 +17,8 @@ class MovementRoutine(AbstractRoutine):
         self.gridVisualizer = NodeVisualizer([], (50, 50, 50))
         self.gridVisualizer.setNodes(self.grid)
         
-        self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run))
-        self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run))
+        self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run, self))
+        self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run, self))
 
     def createActions(self):
         self.pendingAction = None

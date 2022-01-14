@@ -11,10 +11,10 @@ class MovementAction(AbstractAction):
         
         # Zum Starten wird die .run() Methode an das "game.tick" Event gebunden.
         # Demnach wird run jeden Tick ausgeführt
-        self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run))
+        self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run, self))
         self.middlewareHandler.on("run", self.onRun)
         # Deabonniert .run() Methode beim Stopp
-        self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run))
+        self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run, self))
 
     # Berechnet die nächste Bewegung auf Basis der .speed Eigenschaft des Objektes.
     # ! Kollision werden nicht beachtet !

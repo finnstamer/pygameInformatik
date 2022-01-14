@@ -1,5 +1,6 @@
 from __future__ import annotations
-from typing import Tuple
+from gc import callbacks
+from typing import Callable, Tuple
 from base.core.Dependencies.Movement import Movement
 from base.core.Event.Events import Events
 from base.core.Game import Game
@@ -144,3 +145,6 @@ class GameObject():
     def setAlias(self, alias: str):
         Factory.setAlias(self, alias)
         return self
+    
+    def subscribe(self, event: str, func: Callable):
+        Events.subscribe(event, func, self)

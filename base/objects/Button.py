@@ -9,8 +9,8 @@ from base.core.Object.GameObject import GameObject
 class Button(GameObject):
     def __init__(self, pos: Vector2 = ..., width: int = 0, height: int = 0, color: Tuple = ...) -> None:
         super().__init__(pos=pos, width=width, height=height, color=color)
-        Events.subscribe("game.tick", self.onTick)
-        self.onClickMethod = lambda: None
+        self.subscribe("game.tick", self.onTick)
+        self.onClickMethod = lambda: 6
         Game.use(Controls)
     
     def onClick(self):

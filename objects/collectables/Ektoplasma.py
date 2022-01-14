@@ -16,7 +16,7 @@ class Ektoplasma(GameObject):
 
         collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
         self.collisionEvent = collisionEvent
-        Events.subscribe(self.collisionEvent[0], self.onCollision)
+        self.subscribe(self.collisionEvent[0], self.onCollision)
 
     def onCollision(self, e: Event):
         Ektoplasma.collected += 1

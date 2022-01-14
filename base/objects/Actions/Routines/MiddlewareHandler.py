@@ -22,7 +22,7 @@ class MiddlewareHandler():
     def on(self, event: str, func: Callable, forcePos=-1):
         if event not in self.middlewares:
             self.middlewares[event] = []
-            Events.subscribe(f"Action.{self.action.id}.{event}", self.receiveEvent)
+            Events.subscribe(f"Action.{self.action.id}.{event}", self.receiveEvent, self)
         
         if forcePos != -1:
             self.middlewares[event][forcePos:forcePos] = [func]

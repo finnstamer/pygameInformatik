@@ -1,3 +1,4 @@
+from hashlib import algorithms_available
 import inspect
 from typing import Dict
 from base.core.Event.Events import Events
@@ -44,10 +45,10 @@ class Factory():
 
     # Entfernt Alias zur ID eines gegeben Objektes
     def removeAlias(obj: object):
-        for id, alias in Factory.alias.items():
+        for alias, id in list(Factory.alias.items()):
             if id == obj.id:
                 del Factory.alias[alias]
-    
+
     # Entfernt die ID eines Objektes
     def removeId(obj: object):
         del Factory.objects[obj.id]
@@ -58,8 +59,3 @@ class Factory():
             Factory.removeAlias(obj)
             Factory.removeId(obj)
         Events.unsubscribeMethodsOnObject(obj)
-    
-    def deleteRecursive(obj: object):
-        props = inspect.getmembers(obj)
-        print(props)
-        Factory.delete(obj)

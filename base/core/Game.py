@@ -58,10 +58,11 @@ class Game():
     def setLevel(levelId: int) -> None:
         if Game.currentLevel >= 0: # Default unset Level is -1
             Game.level().deleteAll()
-
+            print(f"Delted level {Game.currentLevel}")
         Game.currentLevel = levelId
         if levelId in Game.levels:
             Game.level().load()
+            print(f"Build level {levelId}")
             return
         raise LookupError(f"Level '{levelId}' not found.")
     
