@@ -26,7 +26,9 @@ class ShootWeaponAction(LineMovementAction):
     
     # Setze die max Anzahl an Steps für die LIneMovementAction in Abhängigkeit der range, anstatt der geklickten Position 
     def setSteps(self):
-        self.stepsToDo = int(self.weapon.projectile.range / self.weapon.projectile.speed) 
+        if self.stepsToDo != 0:
+            self.stepsToDo = int(self.weapon.projectile.range / self.weapon.projectile.speed) 
+            
     
     # Setzt die Liste der getroffenen Objekte bei jedem Tick zurück
     def resetHitObjects(self):

@@ -60,7 +60,10 @@ class Enemy(GameObject):
         # Adjust Event Zones
         self.alertedRadiusObject.updatePos(Vector2(self.pos.x - self.alertedRadius.x / 2, self.pos.y - self.alertedRadius.y / 2))
         self.sleepRadiusObject.updatePos(Vector2(self.pos.x - self.sleepRadius.x / 2, self.pos.y - self.sleepRadius.y / 2))
-        
+
+        # Über die Movements wird überprüft ob das nächste Movement in einer Aktion zu einer Kollision führt
+        if self.health == 0:
+            return         
         if not self.alerted:
             self.follow.stop()
             if self.movement.progress != 1:

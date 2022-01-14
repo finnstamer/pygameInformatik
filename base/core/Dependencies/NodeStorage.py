@@ -27,7 +27,7 @@ class NodeStorage():
         if d in keys:
             found = NodeStorage.grids[d]
             return found
-        grid = NodeGenerator.new_generateDynamicNodes(obj)
+        grid, skipped = NodeGenerator.semiStaticNodes(obj)
         NodeStorage.add(obj, grid)
         return grid
     

@@ -137,6 +137,9 @@ class GameObject():
             return self
         self.health -= points
         if self.health <= 0:
+            # Unterschied zwischen gestorbenen Schadennehmer und unbesiegbaren im Nachinhein ersichtlich machen
+            # unbesigbar = .health < 0; möglich zu sterbender = .health >= 0
+            self.health = 0
             self.active = False
             Events.dispatch(f"{self.id}.died", self)
         return self

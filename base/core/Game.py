@@ -2,6 +2,7 @@ import pygame
 from typing import Any, Dict, List
 
 from pygame.constants import KEYDOWN, KEYUP, MOUSEBUTTONUP
+from base.core.Dependencies.Debugger import Debugger
 
 from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -57,10 +58,14 @@ class Game():
     # Aktuelles Level wird deaktiviert (Level.deactivate)
     def setLevel(levelId: int) -> None:
         if Game.currentLevel >= 0: # Default unset Level is -1
+            Debugger.log(f"Game: Deleting {Game.currentLevel}...")
             Game.level().deleteAll()
+            Debugger.log(f"Game: Finished Deleting {Game.currentLevel}")
         Game.currentLevel = levelId
         if levelId in Game.levels:
+            Debugger.log(f"Game: Loading {levelId}...")
             Game.level().load()
+            Debugger.log(f"Game: Finished Loading {levelId}")
             return
         raise LookupError(f"Level '{levelId}' not found.")
     
