@@ -41,7 +41,9 @@ class Events():
         events = EventStorageHandler.retrieve(obj)
         for i in range(len(events)):
             e = events[i]
-            event, func = (e["event"], e["func"])
+            event, func, isRequest = (e["event"], e["func"], e["request"])
+            if isRequest:
+                return Events.reque
             Events.unsubscribe(event, func, obj)
             
     # Eröffnet die Verbindungsstelle einer bestimmten Request an eine Funktion
@@ -55,6 +57,11 @@ class Events():
         if req in Events.requests:
             return Events.requests[req](arg)
         return arg
+    
+    def disconnect(req, func, obj):
+        if req in Events.request and func == Events.request[req]:
+            del Events.request[req]
+            EventStorageHandler.remove(obj, req, func, True)
 
     # Gibt alle Events zurück, die eine bestimmte Funktion abonniert hat.
     def allSubscribedEvents(func: Callable):

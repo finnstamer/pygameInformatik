@@ -2,6 +2,7 @@ from pygame import Vector2
 from base.core.Dependencies.Movement import Movement
 from base.core.Dependencies.Spawner import Spawner
 from base.core.Game import Game
+from base.core.Object.Factory import Factory
 from base.objects.Actions.Actions.LineMovementAction import LineMovementAction
 from base.objects.Actions.Actions.MovementAction import MovementAction
 from base.core.Object.GameObject import GameObject
@@ -50,5 +51,4 @@ class ShootWeaponAction(LineMovementAction):
             
     def removeProjectile(self):
         self.object.active = False
-        Game.level().remove(self.object)
-    
+        Game.level().delete(self.object)

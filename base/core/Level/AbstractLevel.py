@@ -44,7 +44,6 @@ class AbstractLevel(Level):
             Factory.delete(o)                
 
         self.objects = []
-        # print(Events.subscribers)
         AbstractLevel.bound = []
 
     # Entfernt alle Objekte aus dem Level und lädt es neu
