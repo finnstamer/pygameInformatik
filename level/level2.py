@@ -28,7 +28,7 @@ class Level2(AbstractLevel):
         print(self.startEktoplasma)
 
     def onTick(self, e):
-      if Game.level() == self and self.currentEktoplasmaCount == self.startEktoplasma - 346:
+      if Game.level() == self and self.currentEktoplasmaCount() == self.startEktoplasma - 346:
         Game.setLevel(0)
 
     def make(self):
