@@ -32,7 +32,7 @@ class Game():
 
     # Game Loop wird gestartet und Events ausgegeben
     def start():
-        pygame.init()
+        # pygame.init()
         pygame.event.set_allowed([KEYDOWN, KEYUP, MOUSEBUTTONUP])
         clock = pygame.time.Clock()
         Game.initDependencies()

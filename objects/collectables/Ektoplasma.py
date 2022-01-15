@@ -9,9 +9,7 @@ class Ektoplasma(GameObject):
     def __init__(self) -> None:
         super().__init__(width=10, height=10, color=(3, 173, 63))
         self.collisionEvent = ""
-        self.speed = 5
         self.solid = False
-        self.health = 50
 
         collisionEvent = CollisionWatcher.watch(self, Factory.get("player"))
         self.collisionEvent = collisionEvent

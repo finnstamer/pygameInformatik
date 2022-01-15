@@ -8,11 +8,13 @@ from level.hub import Hub
 from level.level1 import Level1
 from level.level2 import Level2
 from level.level3 import Level3
+from level.level4 import Level4
 from objects.collectables.Ektoplasma import Ektoplasma
-
+import pygame
 Debugger.debug = True
 
-Game.addLevel(Hub(), Level1(), Level2(), Level3())
+pygame.init()
+Game.addLevel(Hub(), Level1(), Level2(), Level3(), Level4())
 Game.setLevel(0)
 
 Game.start()

@@ -20,6 +20,10 @@ class Level():
                 self.objects.append(obj)
         self.update()
     
+    def set(self, *objs: object):
+        self.objects = []
+        self.add(*objs)
+    
     def remove(self, *objs: object):
         for obj in list(objs):
             if obj in self.objects:

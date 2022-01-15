@@ -3,9 +3,11 @@ from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from pygame import Vector2
+from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
+from base.objects.Text import TextObject
 from base.objects.Weapon import Weapon
 from objects.Teleporter import Teleporter
 from objects.collectables.Ektoplasma import Ektoplasma
@@ -18,6 +20,7 @@ class Level2(AbstractLevel):
         Events.subscribe("game.tick", self.onTick)
         Events.subscribe("Level.loaded", self.onLevelLoad)
         self.startEktoplasma = -1
+        self.highScore = 0
     
     def currentEktoplasmaCount(self):
       return len(list(map(lambda x: isinstance(x, Ektoplasma), self.objects)))
@@ -25,11 +28,17 @@ class Level2(AbstractLevel):
     def onLevelLoad(self, e):
       if e.value == self:
         self.startEktoplasma = self.currentEktoplasmaCount()
-        print(self.startEktoplasma)
+        Factory.get("Level2.highscore").setText("Highscore:" + str(self.highScore))
 
     def onTick(self, e):
-      if Game.level() == self and self.currentEktoplasmaCount() == self.startEktoplasma - 346:
-        Game.setLevel(0)
+      if Game.level() == self:
+        collected = self.startEktoplasma - self.currentEktoplasmaCount()
+        Factory.get("Level2.counter").setText(str(collected))
+        if self.highScore < collected:
+          self.highScore = collected
+          Factory.get("Level2.highscore").setText("Highscore:" + str(self.highScore))
+        if collected == 346:
+          Game.setLevel(4)
 
     def make(self):
         mB = MapBuilder()
@@ -61,9 +70,20 @@ class Level2(AbstractLevel):
 
         teleport2 = GameObject(Vector2(1053, 381), 35, 50)
         Teleporter(teleport2, player, Vector2(37, 381))
+
+        text = TextObject(40, Vector2(700, 0))
+        text.backgroundColor = (250, 250, 250)
+        text.color = (250, 0, 0)
+        text.setAlias("Level2.counter")
         
+        highscore = TextObject(25, Vector2(800, 0))
+        highscore.backgroundColor = (250, 250, 250)
+        highscore.color = (250, 0, 0)
+        highscore.setFontSize(20)
+        highscore.setAlias("Level2.highscore")
+
         objects = [
-        player, enemy, enemy2, weapon, teleport1, teleport2,
+        player, enemy, enemy2, text, highscore, weapon, teleport1, teleport2,
           Wall(Vector2(505,310), width=25, height=50),Wall(Vector2(460,30), width=100, height=50),
           Wall(Vector2(560,80), width=100, height=50),Wall(Vector2(360,80), width=100, height=50),
           Wall(Vector2(260,130), width=100, height=50),Wall(Vector2(660,130), width=100, height=50),
@@ -444,4 +464,4 @@ Ektoplasma().hiddenPosUpdate(Vector2([557, 391])),
         
         
         mB.addObject(*objects)
-        self.add(*mB.objects)
+        self.set(*mB.objects)

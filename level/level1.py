@@ -3,6 +3,7 @@ from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
+from base.objects.Text import TextObject
 from base.objects.Weapon import Weapon
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
@@ -24,8 +25,8 @@ class Level1(AbstractLevel):
     mB.pointMirror(MapBuilder.centerVec(), mirrorObjects)
     
     player = Player().hiddenPosUpdate(Vector2(200, 200))
-    enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
-    enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
+    # enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
+    # enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
 
     projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
     projectile.color = (114, 114, 114)
@@ -36,9 +37,9 @@ class Level1(AbstractLevel):
     weapon.setImage("images/pump.png")
     weapon.setAlias("weapon")
 
-    ektolasma = Ektoplasma().hiddenPosUpdate(MapBuilder.centerVec())
+    # ektolasma = Ektoplasma().hiddenPosUpdate(MapBuilder.centerVec())
     
-    mB.addObject(player, enemy, ektolasma)
+    mB.addObject(player)
     mB.addObject(weapon, projectile)
     mB.addObject(*mirrorObjects)
 

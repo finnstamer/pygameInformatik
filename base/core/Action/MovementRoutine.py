@@ -16,10 +16,16 @@ class MovementRoutine(AbstractRoutine):
         self.pathVisualizer = NodeVisualizer([])
         self.gridVisualizer = NodeVisualizer([], (50, 50, 50))
         self.gridVisualizer.setNodes(self.grid)
+        self.middlewareHandler.on("pendingAction.done", self.debugAction)
         
         self.middlewareHandler.on("start", lambda: Events.subscribe("game.tick", self.run, self))
         self.middlewareHandler.on("stop", lambda: Events.unsubscribe("game.tick", self.run, self))
 
+    def debugAction(self):
+        # print(f"MovementRoutine: Lasting Actions: {len(self.actions)}")
+        pass
+
+        
     def createActions(self):
         self.pendingAction = None
         self.stopActions()

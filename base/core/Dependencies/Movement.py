@@ -5,7 +5,6 @@ from base.core.Game import Game
 
 # Klasse zur Verarbeitung von Positionen und Berechnungen von Bewegungen
 class Movement:        
-
     # Given a list of solid, blocking objects, check if a position of a given object is allowed.
     def allowPosition(obj: object, pos: pygame.Vector2, objs: List = None) -> bool:
         pyRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()

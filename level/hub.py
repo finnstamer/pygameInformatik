@@ -1,4 +1,3 @@
-from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
@@ -14,7 +13,7 @@ class Hub(AbstractLevel):
     mB = MapBuilder()
     button = Button(Vector2(), 200, 200)
     button.onClickMethod = lambda: Game.setLevel(2)
-    # button.color = (200, 200, 200)0
+    # button.color = (200, 200, 200)
     button.setImage("images/start.png")
     mB.placeInCenter(button)
     self.objects = mB.objects
