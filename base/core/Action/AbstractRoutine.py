@@ -40,9 +40,7 @@ class AbstractRoutine(AbstractAction):
                 
             self.actions.pop(0)
             if self.autoDelete:
-                # FIXME
                 Game.level().delete(self.pendingAction)
-                pass
             self.pendingAction = None
 
     # Routine ist i.d.R dann fertig, wenn alle darunterliegenden Aktionen beendet sind.

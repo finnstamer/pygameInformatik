@@ -27,6 +27,8 @@ class Enemy(GameObject):
         
         self.solid = True
         self.fluid = True
+        self.sleepSpeed = 3
+        self.alertSpeed = 6
         self.speed = 3
         self.health = 100
 
@@ -65,7 +67,7 @@ class Enemy(GameObject):
         if self.health == 0:
             return         
         if not self.alerted:
-            self.speed = 3
+            self.speed = self.sleepSpeed
             self.follow.stop()
             if self.movement.progress != 1:
                 newPath = self.pathPool[randrange(0, len(self.pathPool))]
@@ -74,7 +76,7 @@ class Enemy(GameObject):
                 self.color = (255, 153, 211)
         
         if self.alerted and self.follow.progress != 1:
-            self.speed = 5
+            self.speed = self.alertSpeed
             self.movement.stop()
             # .restart(), weil FollowObject nur beim .setStates(), die Position des zu verfolgenden Obejekt
             # an die darunterliegende MovementRoutine weitergibt (siehe .onSet()). Es werden also keine neuen AKtionen gebildet.

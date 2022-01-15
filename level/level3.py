@@ -1,9 +1,11 @@
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from pygame import Vector2
+from base.core.Object.GameObject import GameObject
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
 from base.objects.Weapon import Weapon
+from objects.Teleporter import Teleporter
 from objects.player.Player import Player
 
 from objects.wall import Wall
@@ -11,8 +13,7 @@ class Level3(AbstractLevel):
     def __init__(self) -> None:
         super().__init__(3)
     def make(self):
-        mB = MapBuilder()
-        player = Player().updatePos(Vector2(100, MapBuilder.centerVec().y - 25))
+        player = Player().updatePos(Vector2(520, 300))
         projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
         projectile.color = (114, 114, 114)
         weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
@@ -68,11 +69,40 @@ class Level3(AbstractLevel):
           Wall(Vector2(800,680), width=280, height=40),
            
         ]
-        mB.addObject(*objects)
-        self.objects = mB.objects
-        paths = [Vector2(510, 40)]
+        # -- X-Axis Down
+        tp1 = GameObject(Vector2(1060, 490), 20, 78)
+        Teleporter(tp1, player, Vector2(21, 490))
+        
+        tp2 = GameObject(Vector2(0, 490), 20, 78)
+        Teleporter(tp2, player, Vector2(1035, 490))
 
+        # -- X-Axis Up
+        tp3 = GameObject(Vector2(1060, 160), 20, 78)
+        Teleporter(tp3, player, Vector2(21, 160))
+        
+        tp4 = GameObject(Vector2(0, 160), 20, 78)
+        Teleporter(tp4, player, Vector2(1035, 160))
+
+        # -- Y-Axis Right
+        tp5 = GameObject(Vector2(720, 0), 80, 20)
+        Teleporter(tp5, player, Vector2(750, 674))
+
+        
+        tp7 = GameObject(Vector2(720, 700), 80, 20)
+        Teleporter(tp7, player, Vector2(750, 26))
+
+        # -- Y-Axis Left
+        tp6 = GameObject(Vector2(280, 0), 80, 20)
+        Teleporter(tp6, player, Vector2(310, 674))
+
+        tp8 = GameObject(Vector2(280, 700), 80, 20)
+        Teleporter(tp8, player, Vector2(310, 26))
+
+        self.add(tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8)
+        self.add(*objects)
+
+        paths = [Vector2(530, 40), Vector2(1000, 350), Vector2(530, 650), Vector2(40, 352)]
         for p in paths:
-            enemy = Enemy(p, 50, 50)
+            enemy = Enemy(p, 25, 25)
             enemy.pathPool = paths
-            self.objects.append(enemy)
+            self.add(enemy)

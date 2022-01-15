@@ -72,12 +72,10 @@ class Level2(AbstractLevel):
         Teleporter(teleport2, player, Vector2(37, 381))
 
         text = TextObject(40, Vector2(700, 0))
-        text.backgroundColor = (250, 250, 250)
         text.color = (250, 0, 0)
         text.setAlias("Level2.counter")
         
         highscore = TextObject(25, Vector2(800, 0))
-        highscore.backgroundColor = (250, 250, 250)
         highscore.color = (250, 0, 0)
         highscore.setFontSize(20)
         highscore.setAlias("Level2.highscore")

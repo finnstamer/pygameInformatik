@@ -7,7 +7,7 @@ from base.objects.Actions.Actions.LineMovementAction import LineMovementAction
 from base.objects.Actions.Actions.MovementAction import MovementAction
 from base.core.Object.GameObject import GameObject
 
-# Aktion zum Schuss eines duplizierten Projektils auf Basis der MovementAction
+# Aktion zum Schuss eines duplizierten Projektils auf Basis der LineMovementAction
 class ShootWeaponAction(LineMovementAction):
     def __init__(self, weapon: GameObject, endState: Vector2) -> None:
         super().__init__(weapon, endState)
@@ -29,7 +29,6 @@ class ShootWeaponAction(LineMovementAction):
         if self.stepsToDo != 0:
             self.stepsToDo = int(self.weapon.projectile.range / self.weapon.projectile.speed) 
             
-    
     # Setzt die Liste der getroffenen Objekte bei jedem Tick zurück
     def resetHitObjects(self):
         self.hitObjects = []
