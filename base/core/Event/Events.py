@@ -1,8 +1,9 @@
+from gc import callbacks
 import inspect
 import optparse
 from typing import Any, Callable, Dict, List
 from base.core.Event.Event import Event
-from base.core.Event.EventStorageHandler import EventStorageHandler
+from base.core.Event.EventRegister import EventRegister
 
 # Klasse zur ausgeben und abonnieren von Events, sowie zur Errichtung von Requests
 class Events():
@@ -23,13 +24,13 @@ class Events():
         if func not in Events.subscribers[event]:
             Events.subscribers[event].append(func)
         if obj is not None:
-            EventStorageHandler.store(obj, event, func)
+            EventRegister.register(obj, event, func)
 
     # Deabonniert ein bestimmtes Event von einer Funktion
     def unsubscribe(event, func: Callable, obj=None):
         if event in Events.subscribers.keys() and func in Events.subscribers[event]:
             Events.subscribers[event].remove(func)
-            EventStorageHandler.remove(obj, event, func)
+            EventRegister.remove(obj, event, func)
 
     # Deabonniert alle Events von einer Funktion
     def unsubscribeAll(func: Callable):
@@ -38,18 +39,25 @@ class Events():
 
     # Deabonniert alle Events von allen Funktionen eines Objektes
     def unsubscribeMethodsOnObject(obj: object):
-        events = EventStorageHandler.retrieve(obj)
+        events = EventRegister.retrieve(obj)
         for i in range(len(events)):
             e = events[i]
             event, func, isRequest = (e["event"], e["func"], e["request"])
             if isRequest:
-                return Events.reque
+                Events.rejectRequest(event, func, obj)
+                continue
             Events.unsubscribe(event, func, obj)
             
     # Eröffnet die Verbindungsstelle einer bestimmten Request an eine Funktion
     # Nur eine Funktion ist an eine Request gebunden. Wird hiermit ggf. überschrieben. 
-    def acceptRequest(req: str, func: Callable):
+    def acceptRequest(req: str, func: Callable, obj=None):
         Events.requests[req] = func
+        EventRegister.register(obj, req, func, True)
+    
+    def rejectRequest(req: str, func: callbacks, obj=None):
+        if req in Events.requests:
+            del Events.request[req]
+            EventRegister.remove(obj, req, func, True)
         
     # Gibt argumente an mit dieser Request verbundene Funktion weiter und gibt diese zurück.
     # Ist keine Funktion angegeben, werden die Argumente wieder zurückgegeben.
@@ -57,11 +65,6 @@ class Events():
         if req in Events.requests:
             return Events.requests[req](arg)
         return arg
-    
-    def disconnect(req, func, obj):
-        if req in Events.request and func == Events.request[req]:
-            del Events.request[req]
-            EventStorageHandler.remove(obj, req, func, True)
 
     # Gibt alle Events zurück, die eine bestimmte Funktion abonniert hat.
     def allSubscribedEvents(func: Callable):

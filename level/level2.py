@@ -1,3 +1,5 @@
+from base.core.Dependencies.Fonts import Fonts
+from base.core.Dependencies.Sounds import Sounds
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -5,13 +7,16 @@ from base.core.Level.MapBuilder import MapBuilder
 from pygame import Vector2
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
+from base.objects.BackgroundMusic import BackgroundMusic
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
-from base.objects.Text import TextObject
+from base.objects.TextObject import TextObject
 from base.objects.Weapon import Weapon
+from base.objects.Backround import Backround
 from objects.Teleporter import Teleporter
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
+from objects.player.Skins import Skins
 
 from objects.wall import Wall
 class Level2(AbstractLevel):
@@ -71,16 +76,29 @@ class Level2(AbstractLevel):
         teleport2 = GameObject(Vector2(1053, 381), 35, 50)
         Teleporter(teleport2, player, Vector2(37, 381))
 
-        text = TextObject(40, Vector2(700, 0))
-        text.color = (250, 0, 0)
+        Fonts.load("font", "assets/font.ttf", 35)
+        Fonts.load("font", "assets/font.ttf", 15)
+
+        Sounds.load(5, "sounds/background.wav")
+        BackgroundMusic(5, 0.15, False)
+
+        text = TextObject(Vector2(700, 0))
+        text.color = (3, 173, 63)
+        text.setFont("font", 35)
         text.setAlias("Level2.counter")
         
-        highscore = TextObject(25, Vector2(800, 0))
-        highscore.color = (250, 0, 0)
-        highscore.setFontSize(20)
+        highscore = TextObject(Vector2(800, 0))
+        highscore.color = (3, 173, 63)
+        highscore.setFont("font", 15)
         highscore.setAlias("Level2.highscore")
 
+        bg = Backround("images/background.gif")
+
+        Skins.setCurrentSkin(1)
+        Skins.apply()
+
         objects = [
+          bg,
         player, enemy, enemy2, text, highscore, weapon, teleport1, teleport2,
           Wall(Vector2(505,310), width=25, height=50),Wall(Vector2(460,30), width=100, height=50),
           Wall(Vector2(560,80), width=100, height=50),Wall(Vector2(360,80), width=100, height=50),

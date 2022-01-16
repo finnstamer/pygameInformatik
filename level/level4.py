@@ -1,6 +1,6 @@
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
-from base.objects.Text import TextObject
+from base.objects.TextObject import TextObject
 from pygame import Vector2
 
 class Level4(AbstractLevel):

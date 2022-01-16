@@ -57,18 +57,19 @@ class Game():
     # Setze aktuelles Level zum Level mit gegebener Id
     # Aktuelles Level wird deaktiviert (Level.deactivate)
     def setLevel(levelId: int) -> None:
+        if levelId not in Game.levels:
+            raise LookupError(f"Level '{levelId}' not found.")
+
         if Game.currentLevel >= 0: # Default unset Level is -1
             Debugger.log(f"Game: Deleting {Game.currentLevel}...")
+            Events.dispatch("game.level.delete", Game.levels[levelId])
             Game.level().deactivate()
             Game.level().deleteAll()
             Debugger.log(f"Game: Finished Deleting {Game.currentLevel}")
         Game.currentLevel = levelId
-        if levelId in Game.levels:
-            Debugger.log(f"Game: Loading {levelId}...")
-            Game.level().load()
-            Debugger.log(f"Game: Finished Loading {levelId}")
-            return
-        raise LookupError(f"Level '{levelId}' not found.")
-    
+        Debugger.log(f"Game: Loading {levelId}...")
+        Game.level().load()
+        Debugger.log(f"Game: Finished Loading {levelId}")
+
     def level():
         return Game.levels[Game.currentLevel]

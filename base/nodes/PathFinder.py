@@ -18,7 +18,7 @@ class PathFinder():
     def find(start: Node, dest: Node, depth: int=5) -> List[List[Node]]:
         if start == dest:
             return []
-
+        
         PathFinder.minActions = 750
         paths = PathFinder.findPaths(start, dest, depth=-1, maxDepth=depth, recPath=[start])
         sortedPaths = sorted(paths, key=lambda obj: len(obj))
@@ -36,6 +36,9 @@ class PathFinder():
                 continue
         
             path = recPath + [n]
+            if depth > maxDepth:
+                PathFinder.minActions = 0
+
             if depth > maxDepth or depth > PathFinder.minActions: #or n in PathFinder.walkedNodes:
                 return paths
 
@@ -50,7 +53,7 @@ class PathFinder():
         return paths
     
     def nodesToIds(nodeList):
-        formatted = []
+        formatted = [] 
         for n in nodeList:
             if type(n) is list:
                 formatted.append(PathFinder.nodesToIds(n))

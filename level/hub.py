@@ -1,3 +1,4 @@
+from base.core.Dependencies.Fonts import Fonts
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
@@ -11,8 +12,10 @@ class Hub(AbstractLevel):
   
   def make(self):
     mB = MapBuilder()
+    Fonts.load("start", "assets/font.ttf", 25)
+    
     button = Button(Vector2(), 200, 200)
-    button.onClickMethod = lambda: Game.setLevel(3)
+    button.onClickMethod = lambda: Game.setLevel(2)
     # button.color = (200, 200, 200)
     button.setImage("images/start.png")
     mB.placeInCenter(button)

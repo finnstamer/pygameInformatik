@@ -1,5 +1,5 @@
 from base.core.Dependencies.Debugger import Debugger
-from base.core.Event.EventStorageHandler import EventStorageHandler
+from base.core.Event.EventRegister import EventRegister
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Object.Factory import Factory

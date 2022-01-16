@@ -36,6 +36,14 @@ class Factory():
             raise LookupError(f"Factory: Alias '{id}' not found.")
         return Factory.objects[Factory.alias[id]]
 
+    def isRegistered(id: int or str):
+        if type(id) == int:
+            if id in Factory.objects:
+                return True
+        if id in Factory.alias:
+            return True
+        return False
+        
     # Klont ein Objekt und fügt es der Factory an.
     # Zu beachten ist, dass Event Abonnements nicht kopiert werden
     def clone(obj: object):

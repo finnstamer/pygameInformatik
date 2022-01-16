@@ -1,5 +1,5 @@
 from base.core.Level.AbstractLevel import AbstractLevel
-from objects.Backround import Backround
+from base.objects.Backround import Backround
 
 
 class Loading(AbstractLevel):

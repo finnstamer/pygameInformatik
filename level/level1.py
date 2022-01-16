@@ -3,7 +3,7 @@ from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
-from base.objects.Text import TextObject
+from base.objects.TextObject import TextObject
 from base.objects.Weapon import Weapon
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
@@ -15,6 +15,8 @@ class Level1(AbstractLevel):
 
   def make(self):
     mB = MapBuilder()
+
+    
 
     mirrorObjects = [
       Wall(Vector2(10, 10), width=50, height=50),
