@@ -29,11 +29,12 @@ class SoundsManager:
 
         sound.play()
         SoundsManager.playing.append(sound.id)
-        Wait.callIn(sound.sound.get_length() * 1000, lambda: SoundsManager.onSoundStop(sound))
+        Wait.callIn(sound.sound.get_length() * 1000, lambda: SoundsManager.onSoundFinished(sound), f"sounds.{sound.id}.finished")
 
-    def onSoundStop(sound):
+    def onSoundFinished(sound):
         SoundsManager.stop(sound)
         Events.dispatch(f"sounds.{sound.id}.finished")
+        Wait.unqueueByName(f"sounds.{sound.id}.finished")
 
     def stop(sound: Sound):
         if sound.id not in SoundsManager.playing:

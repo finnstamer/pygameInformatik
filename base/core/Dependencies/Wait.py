@@ -4,28 +4,27 @@ from typing import Callable, Dict, List
 from base.core.Event.Events import Events
 
 class Wait():
-    queue: Dict[int, List[Callable]] = {}
+    queue = [] # [{"name": "sounds.1.stopped", "time:" 124523489, "func": FUNCTION}]
 
-    def callIn(ms: int, function: Callable):
+    def callIn(ms: int, function: Callable, name=""):
         callTime = time_ns() + ms * 1000000
-        if callTime not in Wait.queue.keys():
-            Wait.queue[callTime] = []
-        Wait.queue[callTime].append(function)
+        Wait.queue.append((callTime, function, name))
 
     def onTick(e):
         t = time_ns()
-        for time, functions in list(Wait.queue.items()):
+        for time, func, name in Wait.queue:
             if t >= time:
-                for f in functions:
-                    f()
-                    Wait.remove(time, f)
+                func()
+                Wait.unqueue(time, func, name)
     
-    def remove(time: int, function: Callable):
-        if time in Wait.queue.keys():
-            Wait.queue[time].remove(function)
+    def unqueue(time: int, function: Callable, name):
+        entry = (time, function, name)
+        if entry in Wait.queue:
+            Wait.queue.remove(entry)
     
-    def removeTime(time: int):
-        if time in Wait.queue.keys():
-            del Wait.queue[time]
-
+    def unqueueByName(name: str):
+        for t, f, n in Wait.queue:
+            if name == n:
+                Wait.unqueue(t, f, n)
+    
 Events.subscribe("game.tick", Wait.onTick, Wait)

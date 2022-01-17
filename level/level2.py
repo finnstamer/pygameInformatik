@@ -25,7 +25,7 @@ class Level2(AbstractLevel):
         Events.subscribe("Level.loaded", self.onLevelLoad)
         self.startEktoplasma = -1
         self.highScore = 0
-        self.backgroundSound = Sound("sounds/background.wav", 0.5)
+        self.backgroundSound = Sound("sounds/backgroun2.wav", 0.5)
 
     
     def currentEktoplasmaCount(self):
