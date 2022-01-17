@@ -25,7 +25,7 @@ class Level2(AbstractLevel):
         Events.subscribe("Level.loaded", self.onLevelLoad)
         self.startEktoplasma = -1
         self.highScore = 0
-        self.backgroundSound = Sound("sounds/backgroun2.wav", 0.15)
+        self.backgroundSound = Sound("sounds/background.wav", 0.5)
 
     
     def currentEktoplasmaCount(self):
@@ -43,7 +43,7 @@ class Level2(AbstractLevel):
         if self.highScore < collected:
           self.highScore = collected
           Factory.get("Level2.highscore").setText("Highscore:" + str(self.highScore))
-        if collected == 346:
+        if collected >= 346:
           Game.setLevel(4)
 
     def make(self):

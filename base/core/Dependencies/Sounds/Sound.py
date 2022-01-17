@@ -3,6 +3,7 @@ import pygame
 from base.core.Object.Factory import Factory
 class Sound():
     def __init__(self, path: str, volume: float) -> None:
+        self.id = -1
         Factory.append(self)
         self.setPath(path)
         self.setVolume(volume)
@@ -15,7 +16,6 @@ class Sound():
         self.sound.set_volume(vol)
 
     def stop(self):
-        print("STOP")
         self.sound.stop()
 
     def play(self):

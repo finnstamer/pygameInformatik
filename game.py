@@ -13,6 +13,8 @@ from objects.collectables.Ektoplasma import Ektoplasma
 import pygame
 Debugger.debug = True
 
+
+
 pygame.init()
 Game.addLevel(Hub(), Level1(), Level2(), Level3(), Level4())
 Game.setLevel(0)

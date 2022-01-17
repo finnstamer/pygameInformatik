@@ -1,4 +1,6 @@
 from base.core.Dependencies.Fonts import Fonts
+from base.core.Dependencies.Wait import Wait
+from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
@@ -9,7 +11,7 @@ from base.objects.Button import Button
 class Hub(AbstractLevel):
   def __init__(self) -> None:
       super().__init__(0)
-  
+      
   def make(self):
     mB = MapBuilder()
     Fonts.load("start", "assets/font.ttf", 25)

@@ -41,7 +41,8 @@ class Player(GameObject):
             print(pos)
         
         if Controls.released["space"]:
-            Factory.get("Enemy").damage(100)
+            # Factory.get("Enemy").damage(100)
+            Game.setLevel(4)
 
     def nextPos(self) -> pygame.Vector2:
         return {
