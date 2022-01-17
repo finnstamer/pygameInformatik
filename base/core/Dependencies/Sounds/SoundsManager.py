@@ -44,5 +44,3 @@ class SoundsManager:
 
     def isPlaying(sound: Sound):
         return sound.id in SoundsManager.playing
-
-# Events.subscribe("game.tick", SoundsManager.onTick)

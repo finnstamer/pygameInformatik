@@ -44,7 +44,7 @@ class Level2(AbstractLevel):
           self.highScore = collected
           Factory.get("Level2.highscore").setText("Highscore:" + str(self.highScore))
         if collected >= 346:
-          Game.setLevel(4)
+          Game.setLevel(3)
 
     def make(self):
         mB = MapBuilder()

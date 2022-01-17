@@ -52,12 +52,14 @@ class Events():
     # Nur eine Funktion ist an eine Request gebunden. Wird hiermit ggf. überschrieben. 
     def acceptRequest(req: str, func: Callable, obj=None):
         Events.requests[req] = func
-        EventRegister.register(obj, req, func, True)
+        if obj is not None:
+            EventRegister.register(obj, req, func, True)
     
     def rejectRequest(req: str, func: callbacks, obj=None):
         if req in Events.requests:
             del Events.request[req]
-            EventRegister.remove(obj, req, func, True)
+            if obj is not None:
+                EventRegister.remove(obj, req, func, True)
         
     # Gibt argumente an mit dieser Request verbundene Funktion weiter und gibt diese zurück.
     # Ist keine Funktion angegeben, werden die Argumente wieder zurückgegeben.
