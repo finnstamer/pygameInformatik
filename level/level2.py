@@ -1,5 +1,5 @@
 from base.core.Dependencies.Fonts import Fonts
-from base.core.Dependencies.Sounds import Sounds
+from base.core.Dependencies.Sounds.Sound import Sound
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -17,7 +17,6 @@ from objects.Teleporter import Teleporter
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.player.Skins import Skins
-
 from objects.wall import Wall
 class Level2(AbstractLevel):
     def __init__(self) -> None:
@@ -26,6 +25,8 @@ class Level2(AbstractLevel):
         Events.subscribe("Level.loaded", self.onLevelLoad)
         self.startEktoplasma = -1
         self.highScore = 0
+        self.backgroundSound = Sound("sounds/backgroun2.wav", 0.15)
+
     
     def currentEktoplasmaCount(self):
       return len(list(map(lambda x: isinstance(x, Ektoplasma), self.objects)))
@@ -79,8 +80,7 @@ class Level2(AbstractLevel):
         Fonts.load("font", "assets/font.ttf", 35)
         Fonts.load("font", "assets/font.ttf", 15)
 
-        Sounds.load(5, "sounds/background.wav")
-        BackgroundMusic(5, 0.15, False)
+        BackgroundMusic(self.backgroundSound, False).play()
 
         text = TextObject(Vector2(700, 0))
         text.color = (3, 173, 63)

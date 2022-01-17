@@ -28,6 +28,7 @@ class MovementRoutine(AbstractRoutine):
         paths = PathFinder.find(startNode, endNode, 50)
 
         if len(paths) == 0:
+            # self.setActions([])
             return
         path = paths[0]
 

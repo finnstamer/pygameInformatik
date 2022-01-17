@@ -60,9 +60,9 @@ class Game():
         if levelId not in Game.levels:
             raise LookupError(f"Level '{levelId}' not found.")
 
+        Events.dispatch("game.level.set", Game.levels[levelId])
         if Game.currentLevel >= 0: # Default unset Level is -1
             Debugger.log(f"Game: Deleting {Game.currentLevel}...")
-            Events.dispatch("game.level.delete", Game.levels[levelId])
             Game.level().deactivate()
             Game.level().deleteAll()
             Debugger.log(f"Game: Finished Deleting {Game.currentLevel}")

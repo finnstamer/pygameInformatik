@@ -2,8 +2,6 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Action.MovementRoutine import MovementRoutine
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
-from base.core.Dependencies.NodeStorage import NodeStorage
-from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Object.Factory import Factory
@@ -42,7 +40,7 @@ class Enemy(GameObject):
         collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
         self.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
 
-    # Lade Routinen, wenn alle nonFluidsSolids geladen sind
+    # Lade Routinen, wenn alle nonFluidSolids geladen sind
     def onLoad(self, e):        
         self.movement = MovementRoutine(self)
         self.follow = FollowObjectRoutine(self, Factory.get("player"))  
