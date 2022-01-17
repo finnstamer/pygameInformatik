@@ -37,10 +37,9 @@ class SoundsManager:
         Wait.unqueueByName(f"sounds.{sound.id}.finished")
 
     def stop(sound: Sound):
-        if sound.id not in SoundsManager.playing:
-            raise LookupError(f"Sound '{id}' is not playing.")
-        sound.stop()
-        SoundsManager.playing.remove(sound.id)
+        if sound.id in SoundsManager.playing:
+            sound.stop()
+            SoundsManager.playing.remove(sound.id)
 
     def isPlaying(sound: Sound):
         return sound.id in SoundsManager.playing

@@ -24,6 +24,7 @@ class GameObject():
         self.fluid = False # Fluid Objekt => es bewegt sich im Raum (wichtig für NodeGenerator)
         self.speed = 0
         self.health = -1
+        self.transparent = False
         self.buildRect()
         Factory.append(self)
 
@@ -82,7 +83,7 @@ class GameObject():
 
     # Wenn Objekt aktiv ist, wird .rect oder .image auf den Bildschirm übertragen    
     def draw(self):
-        if self.active:
+        if self.active and not self.transparent:
             if self.image:
                 screen.blit(self.image, self.rect)
             else:
@@ -123,13 +124,16 @@ class GameObject():
         self._pos = pos
         self.updateRect()
         return self
-    
 
     # Bewegt wenn möglich ein Objekt zur Position. Sonst bis zur nächsten möglichen Stelle
     def move(self, pos: pygame.Vector2):
         furthestPos = Movement.furthestMove(self, pos, objs=Game.level().nonFluidSolids)
         if furthestPos is not None:
             self.updatePos(furthestPos)     
+        return self
+
+    def setTransparent(self):
+        self.transparent = True
         return self
     
     # Gibt zurück, ob dieses Objekt mit einem pygame.Rect kollidiert.

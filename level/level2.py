@@ -65,17 +65,17 @@ class Level2(AbstractLevel):
         enemy2 = Enemy(Vector2(472, 264), 20, 20, (250, 0, 0))
         enemy2.pathPool = [Vector2(539, 137), Vector2(889, 392), Vector2(591, 409)]
 
-        teleport1 = GameObject(Vector2(0, 280), 35, 50)
+        teleport1 = GameObject(Vector2(0, 280), 35, 50).setTransparent()
         Teleporter(teleport1, player, Vector2(1027, 287))
 
-        teleport2 = GameObject(Vector2(1053, 280), 35, 50)
+        teleport2 = GameObject(Vector2(1053, 280), 35, 50).setTransparent()
         Teleporter(teleport2, player, Vector2(37, 280))
         
-        teleport1 = GameObject(Vector2(0, 381), 35, 50)
-        Teleporter(teleport1, player, Vector2(1027, 381))
+        teleport3 = GameObject(Vector2(0, 381), 35, 50).setTransparent()
+        Teleporter(teleport3, player, Vector2(1027, 381))
 
-        teleport2 = GameObject(Vector2(1053, 381), 35, 50)
-        Teleporter(teleport2, player, Vector2(37, 381))
+        teleport4 = GameObject(Vector2(1053, 381), 35, 50).setTransparent()
+        Teleporter(teleport4, player, Vector2(37, 381))
 
         Fonts.load("font", "assets/font.ttf", 35)
         Fonts.load("font", "assets/font.ttf", 15)
@@ -99,7 +99,7 @@ class Level2(AbstractLevel):
 
         objects = [
           bg,
-        player, enemy, enemy2, text, highscore, weapon, teleport1, teleport2,
+        player, enemy, enemy2, text, highscore, weapon, teleport1, teleport2, teleport3, teleport4,
           Wall(Vector2(505,310), width=25, height=50),Wall(Vector2(460,30), width=100, height=50),
           Wall(Vector2(560,80), width=100, height=50),Wall(Vector2(360,80), width=100, height=50),
           Wall(Vector2(260,130), width=100, height=50),Wall(Vector2(660,130), width=100, height=50),
