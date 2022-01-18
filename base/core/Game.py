@@ -42,10 +42,10 @@ class Game():
         Game.isStarted = True
         while Game.active:  
             clock.tick(60)
+            # PerformantRendering.render()
+            
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
-
-            # PerformantRendering.render()
             screen.fill(pygame.Color(0, 0, 0));
             Game.level().draw()
             

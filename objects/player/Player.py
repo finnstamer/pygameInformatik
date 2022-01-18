@@ -65,6 +65,7 @@ class Player(GameObject):
         
     def oldMovement(self):
         keys = Controls.keys
+        print("MOvement Evaluation")
         if keys["w"]:
             self.move(pygame.Vector2(self.pos.x, self.pos.y - self.speed))
         if keys["d"]:

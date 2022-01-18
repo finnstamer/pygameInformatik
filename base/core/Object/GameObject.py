@@ -36,7 +36,10 @@ class GameObject():
     @active.setter
     def active(self, value: bool):
         self._active = value
-        Events.dispatch(f"{self.id}.active")
+        if value == True:
+            Events.dispatch(f"{self.id}.active", self)
+            return
+        Events.dispatch(f"{self.id}.inactive", self)
 
     @property
     def width(self) -> int:

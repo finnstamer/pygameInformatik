@@ -31,13 +31,17 @@ class Events():
     # Abonniert ein Event an eine Funktion
     # Derzeit ist >eine< Wilcard unterstützt
     def subscribe(event: str, func: Callable, obj = None):
-        if event.rfind("*") != -1:
+        wildcard = event.rfind("*")
+        if wildcard != -1:
+            if event[0] == "*":
+                event = ".\\" + event[1:]
+            print(event)
             if event not in Events.wildcards:
                 Events.wildcards[event] = [func]
             if func not in Events.wildcards[event]:
                 Events.wildcards[event].append(func)            
             return
-            
+
         if event not in Events.subscribers:
             Events.subscribers[event] = [func]
         if func not in Events.subscribers[event]:

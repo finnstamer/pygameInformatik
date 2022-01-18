@@ -1,5 +1,7 @@
 from typing import List
 
+from base.core.Event.Events import Events
+
 # Klasse zur Verwahrung aller nötigen Objekte und des Übertragens auf den Bildschirm, sowie der De- und Aktivierung dieser.
 class Level():
     def __init__(self, id: int, *objects: object) -> None:
@@ -19,6 +21,7 @@ class Level():
             if obj not in self.objects:
                 self.objects.append(obj)
         self.update()
+        Events.dispatch("level.objects.add", list(objs))
     
     def set(self, *objs: object):
         self.objects = []
@@ -29,6 +32,7 @@ class Level():
             if obj in self.objects:
                 self.objects.remove(obj)
         self.update()
+        Events.dispatch("level.objects.remove", list(objs))
     
     def deactivate(self):
         self.active = False

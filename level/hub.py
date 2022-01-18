@@ -21,4 +21,4 @@ class Hub(AbstractLevel):
     # button.color = (200, 200, 200)
     button.setImage("images/start.png")
     mB.placeInCenter(button)
-    self.objects = mB.objects
+    self.add(*mB.objects)

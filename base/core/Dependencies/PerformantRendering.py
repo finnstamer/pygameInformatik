@@ -1,22 +1,46 @@
+from multiprocessing import Event
 import pygame
-from typing import List
+from typing import List, Tuple
 from base.core.Event.Events import Events
 
 class PerformantRendering():
-    changes: List[object] = []
+    drawQueue: List[object] = []
+    changes: List[pygame.Rect] = []
 
-    def collectChange(obj: object):
-        PerformantRendering.changes.append(obj.rect)
-    
+    def collectChange(e: Event):
+        objects = e.value
+        if not isinstance(e.value, List):
+            objects = [e.value]
+        for obj in objects:
+            print(f"Collecting change on {e.name}")
+            PerformantRendering.changes.append(obj.rect)
+            PerformantRendering.drawQueue.append(obj)
+
+    def collectRemove(e: Event):
+        PerformantRendering.changes.append(e.value.rect)
+        if e.value in PerformantRendering.drawQueue:
+            PerformantRendering.drawQueue.remove(e.value)
+
     def resetChanges():
         PerformantRendering.changes = []
+        PerformantRendering.drawQueue = []
 
-    def onTick(e):
-        print(f"A: {e.name}")
+    def render():
+        print(len(PerformantRendering.changes))
+        pygame.display.update(PerformantRendering.changes)
+        for obj in PerformantRendering.drawQueue:
+            obj.draw()   
         PerformantRendering.resetChanges()
     
-    def render():
-        pygame.display.update(PerformantRendering.changes)        
-    
-
-# Events.subscribe("game.*tick", PerformantRendering.onTick, PerformantRendering)
+collectDraw = [
+    "*.moved",
+    "*.active",
+    "level.objects.add"
+]
+collectErase = [
+    "*.inactive",
+]
+# for e in collectDraw:
+#     Events.subscribe(e, PerformantRendering.collectChange, PerformantRendering)
+# for e in collectErase:
+#     Events.subscribe(e, PerformantRendering.collectRemove, PerformantRendering)

@@ -1,3 +1,4 @@
+import re
 from base.core.Dependencies.Debugger import Debugger
 from base.core.Event.EventRegister import EventRegister
 from base.core.Event.Events import Events
@@ -13,6 +14,7 @@ from objects.collectables.Ektoplasma import Ektoplasma
 import pygame
 Debugger.debug = True
 
+# print(re.fullmatch(".\\.moved", "5.moved"))
 
 
 pygame.init()
