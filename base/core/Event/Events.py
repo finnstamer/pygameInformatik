@@ -1,24 +1,43 @@
-from gc import callbacks
-import inspect
-import optparse
 from typing import Any, Callable, Dict, List
+from winreg import ExpandEnvironmentStrings
 from base.core.Event.Event import Event
 from base.core.Event.EventRegister import EventRegister
+import re
 
 # Klasse zur ausgeben und abonnieren von Events, sowie zur Errichtung von Requests
 class Events():
     subscribers: Dict[str, List[Callable]] = {}
+    wildcards: Dict[str, List[Callable]] = {}
     requests: Dict[str, Callable] = {}
 
     # Gibt ein Event an alle abonnierten Funktionen
     def dispatch(name: str="", value: Any=""):
+        event = Event(name, value)
+        # for e in list(Events.subscribers):
+        #     if e == event.name:
+        #         for f in Events.subscribers[e]:
+        #             f(event) 
+
         if name in Events.subscribers:
             subscribed = Events.subscribers[name]
             for s in subscribed:
-                s(Event(name, value)) 
+                s(event) 
+        
+        for w in Events.wildcards:
+            if re.match(w, event.name):
+                for s in Events.wildcards[w]:
+                    s(event)
     
     # Abonniert ein Event an eine Funktion
+    # Derzeit ist >eine< Wilcard unterstützt
     def subscribe(event: str, func: Callable, obj = None):
+        if event.rfind("*") != -1:
+            if event not in Events.wildcards:
+                Events.wildcards[event] = [func]
+            if func not in Events.wildcards[event]:
+                Events.wildcards[event].append(func)            
+            return
+            
         if event not in Events.subscribers:
             Events.subscribers[event] = [func]
         if func not in Events.subscribers[event]:
@@ -55,7 +74,7 @@ class Events():
         if obj is not None:
             EventRegister.register(obj, req, func, True)
     
-    def rejectRequest(req: str, func: callbacks, obj=None):
+    def rejectRequest(req: str, func: Callable, obj=None):
         if req in Events.requests:
             del Events.request[req]
             if obj is not None:

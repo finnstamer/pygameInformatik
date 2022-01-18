@@ -24,7 +24,7 @@ class Level3(AbstractLevel):
     def __init__(self) -> None:
         super().__init__(3)
         Events.subscribe("game.tick", self.onTick)
-        Events.subscribe("Level.loaded", self.onLevelLoad)
+        Events.subscribe("level.loaded", self.onLevelLoad)
         self.highScore = 0
         self.backgroundMusic = Sound("sounds/background.wav", 0.15)
     

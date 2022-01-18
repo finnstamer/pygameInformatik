@@ -3,6 +3,7 @@ from typing import Any, Dict, List
 
 from pygame.constants import KEYDOWN, KEYUP, MOUSEBUTTONUP
 from base.core.Dependencies.Debugger import Debugger
+from base.core.Dependencies.PerformantRendering import PerformantRendering
 
 from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -44,6 +45,7 @@ class Game():
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")
 
+            # PerformantRendering.render()
             screen.fill(pygame.Color(0, 0, 0));
             Game.level().draw()
             

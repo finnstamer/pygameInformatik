@@ -34,11 +34,11 @@ class SoundsManager:
     def onSoundFinished(sound):
         SoundsManager.stop(sound)
         Events.dispatch(f"sounds.{sound.id}.finished")
-        Wait.unqueueByName(f"sounds.{sound.id}.finished")
 
     def stop(sound: Sound):
         if sound.id in SoundsManager.playing:
             sound.stop()
+            Wait.unqueueByName(f"sounds.{sound.id}.finished")
             SoundsManager.playing.remove(sound.id)
 
     def isPlaying(sound: Sound):

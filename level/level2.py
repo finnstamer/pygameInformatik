@@ -22,7 +22,7 @@ class Level2(AbstractLevel):
     def __init__(self) -> None:
         super().__init__(2)
         Events.subscribe("game.tick", self.onTick)
-        Events.subscribe("Level.loaded", self.onLevelLoad)
+        Events.subscribe("level.loaded", self.onLevelLoad)
         self.startEktoplasma = -1
         self.highScore = 0
         self.backgroundSound = Sound("sounds/backgroun2.wav", 0.5)

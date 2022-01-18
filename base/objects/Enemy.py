@@ -31,7 +31,7 @@ class Enemy(GameObject):
         self.health = 100
 
         
-        self.subscribe("Level.loaded", self.onLoad)
+        self.subscribe("level.loaded", self.onLoad)
         self.subscribe(f"{player.id}.moved", self.onMovement)
         self.subscribe(f"{self.id}.moved", self.onMovement)
         self.subscribe("game.tick", self.onTick)

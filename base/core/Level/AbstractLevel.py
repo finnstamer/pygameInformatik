@@ -18,7 +18,7 @@ class AbstractLevel(Level):
     
     def load(self):
         self.make()
-        Events.dispatch(f"Level.loaded", self)
+        Events.dispatch(f"level.loaded", self)
     
     # Bindet ein Nicht-GameObject an das aktive Level. Und wird regulär wie .objects beim Levelwechsel/-restart entfernt 
     def bind(*objs):
