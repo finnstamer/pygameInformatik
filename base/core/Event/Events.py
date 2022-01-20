@@ -35,7 +35,6 @@ class Events():
         if wildcard != -1:
             if event[0] == "*":
                 event = ".\\" + event[1:]
-            print(event)
             if event not in Events.wildcards:
                 Events.wildcards[event] = [func]
             if func not in Events.wildcards[event]:

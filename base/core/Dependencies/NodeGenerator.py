@@ -5,6 +5,7 @@ from pygame import Vector2
 from base.core.Dependencies.Movement import Movement
 from base.core.Game import Game
 from base.core.Object.GameObject import GameObject
+from base.geometry.Rectangle import Rectangle
 from base.nodes.Node import Node
 from settings import screenRes
 
@@ -70,7 +71,7 @@ class NodeGenerator():
         skipped = semistatic[1]
 
         for solidObject in solids:
-            for i, c in enumerate(solidObject.cRect.corners):
+            for i, c in enumerate(Rectangle.getCorners(solidObject.rect)):
                 if i < 2: # Top Corners
                     xMovement = Movement.firstMove(obj, Vector2(0, c.y), solids, c)
                     nX = Node(xMovement)

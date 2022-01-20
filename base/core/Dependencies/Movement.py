@@ -7,7 +7,7 @@ from base.core.Game import Game
 class Movement:        
     # Given a list of solid, blocking objects, check if a position of a given object is allowed.
     def allowPosition(obj: object, pos: pygame.Vector2, objs: List = None) -> bool:
-        pyRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
+        pyRect = pygame.Rect(pos.x, pos.y, obj.width, obj.height)
         objects = Game.level().solids if objs is None else objs
         for solid in objects: 
             if solid != obj and solid.collidesWith(pyRect):
@@ -16,7 +16,7 @@ class Movement:
     
     def collidingObjects(obj: object, pos: pygame.Vector2, objs=None) -> List[object]:
         objects = []
-        pyRect = obj.cRect.get(pos, pygame.Vector2(pos.x + obj.cRect.width, pos.y + obj.cRect.height)).toPyRect()
+        pyRect = pygame.Rect(pos.x, pos.y, obj.width, obj.height)
         solids = Game.level().solids if objs is None else objs
 
         for solid in solids:

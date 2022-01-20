@@ -63,7 +63,6 @@ class Group():
     def colliding(self, rect: Rectangle) -> List[GameObject]:
         colliding = []
         for i in self.objects:
-            # collided = Rectangle.byRect(i.rect.clip(rect))
             collided = i.collidesWith(rect)
             if collided:
                 colliding.append(i)

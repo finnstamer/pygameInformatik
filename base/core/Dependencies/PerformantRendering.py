@@ -1,8 +1,10 @@
 from multiprocessing import Event
 import pygame
-from typing import List, Tuple
-from base.core.Event.Events import Events
+from typing import List
 
+from base.core.Event.Events import Events
+# TODO
+# - Redraw all by rect
 class PerformantRendering():
     drawQueue: List[object] = []
     changes: List[pygame.Rect] = []
@@ -26,12 +28,11 @@ class PerformantRendering():
         PerformantRendering.drawQueue = []
 
     def render():
-        print(len(PerformantRendering.changes))
         pygame.display.update(PerformantRendering.changes)
         for obj in PerformantRendering.drawQueue:
             obj.draw()   
         PerformantRendering.resetChanges()
-    
+
 collectDraw = [
     "*.moved",
     "*.active",

@@ -75,7 +75,6 @@ class GameObject():
     @rect.setter
     def rect(self, rect: pygame.Rect):
         self._rect = rect
-        self.cRect = Rectangle.byRect(rect)
 
     # Ermöglicht die Verwendung eines Bildes. Das .rect wird nicht überschrieben
     # image argument soll aus root Sicht      
@@ -108,7 +107,7 @@ class GameObject():
     # Überschreibende Funktion zur Bildung einer Darstellungsvariante (hier pygame.Rect)
     def buildRect(self):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.width, self.height)
-        self.cRect = Rectangle().byRect(self.rect)
+        # self.cRect = Rectangle().byRect(self.rect)
         return self.rect
 
     # Distanz des Objektes zu einem anderen Objekt nach ihren oberen linken Ecken
@@ -118,9 +117,10 @@ class GameObject():
     # Aktualsiert die Position und aktualisiert die Darstellung
     # Gibt "id.moved" Event aus
     def updatePos(self, pos: pygame.Vector2):
+        beforePos = pygame.Vector2(list(pos))
         self._pos = pos
         self.updateRect()
-        Events.dispatch(f"{self.id}.moved", self)
+        Events.dispatch(f"{self.id}.moved", (self, beforePos))
         return self
     
     def hiddenPosUpdate(self, pos: pygame.Vector2):
@@ -141,7 +141,8 @@ class GameObject():
     
     # Gibt zurück, ob dieses Objekt mit einem pygame.Rect kollidiert.
     def collidesWith(self, rect: pygame.Rect) -> bool:
-        return Rectangle.byRect(self.rect.clip(rect)).area > 0
+        colRect = self.rect.clip(rect)
+        return colRect.width != 0 and colRect.height != 0
     
     # Fügt diesem Objekt schaden zu, wenn das .health nicht -1 ist.
     # Fällt .health unter 0 wird das Objekt deaktiviert und "id.died" Event ausgegeben

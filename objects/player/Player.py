@@ -37,8 +37,9 @@ class Player(GameObject):
 
         clicked, pos = Controls.clicks["l"] 
         if clicked:
-            Factory.get("weapon").shoot(pygame.Vector2(pos))
+            # Factory.get("weapon").shoot(pygame.Vector2(pos))
             # print(pos)
+            pass
         
         if Controls.released["space"]:
             # Factory.get("Enemy").damage(100)
@@ -65,7 +66,6 @@ class Player(GameObject):
         
     def oldMovement(self):
         keys = Controls.keys
-        print("MOvement Evaluation")
         if keys["w"]:
             self.move(pygame.Vector2(self.pos.x, self.pos.y - self.speed))
         if keys["d"]:

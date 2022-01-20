@@ -12,10 +12,8 @@ from level.level3 import Level3
 from level.level4 import Level4
 from objects.collectables.Ektoplasma import Ektoplasma
 import pygame
+
 Debugger.debug = True
-
-# print(re.fullmatch(".\\.moved", "5.moved"))
-
 
 pygame.init()
 Game.addLevel(Hub(), Level1(), Level2(), Level3(), Level4())

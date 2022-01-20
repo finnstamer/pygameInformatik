@@ -26,7 +26,7 @@ class CollisionWatcher():
 
     def receiveEvent(event: Event):
         if event.isOfType("moved"):
-            movedObj: GameObject = event.value
+            movedObj, before = event.value
             watchingObjects = CollisionWatcher.watchList[movedObj]
 
             for obj in watchingObjects:

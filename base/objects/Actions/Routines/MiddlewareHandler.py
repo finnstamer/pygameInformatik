@@ -6,6 +6,7 @@ from base.core.Object.Factory import Factory
 
 # Klasse zum Verwalten Aktion-bedingter Events, was äußeren Eingriff in komplexe Handlungen via einem spezifizierten Events (Events.py) basiertem System ermöglicht
 # ! Ist nur auf ~Aktionen ausgelegt. !
+# Im Gegensatz zu EventMiddleware ist dies für ein multi-level-component system ausgelegt.
 class MiddlewareHandler():
     def __init__(self, action) -> None:
         self.action = action

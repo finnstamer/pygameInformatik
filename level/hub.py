@@ -17,7 +17,7 @@ class Hub(AbstractLevel):
     Fonts.load("start", "assets/font.ttf", 25)
     
     button = Button(Vector2(), 200, 200)
-    button.onClickMethod = lambda: Game.setLevel(2)
+    button.onClickMethod = lambda: Game.setLevel(3)
     # button.color = (200, 200, 200)
     button.setImage("images/start.png")
     mB.placeInCenter(button)

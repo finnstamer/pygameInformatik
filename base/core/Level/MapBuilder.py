@@ -3,6 +3,7 @@ from base.core.Dependencies.Controls import Controls
 from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Object.Factory import Factory
+from base.geometry.Rectangle import Rectangle
 from objects.collectables.Ektoplasma import Ektoplasma
 from settings import screenRes
 from typing import List
@@ -37,8 +38,10 @@ class MapBuilder():
     # Beispiel: Will man ein Objekt exakt rechts neben ein ReferenzObjekt platzieren und sich die obere Rechte mit der oberen Linken berühren soll: nextTo(ref, obj, 1, 0)
     # margin(X/Y) ermöglicht noch einen zusätlichen Abstand
     def nextTo(self, reference: GameObject, obj: GameObject, refC=0, objC=0, marginX: int = 0, marginY: int = 0):
-        refCorner = reference.cRect.corners[refC]
-        objCorner = obj.cRect.corners[objC]
+        refCorners = Rectangle.getCorners(reference.rect)
+        objCorners = Rectangle.getCorners(obj.rect)
+        refCorner = refCorners[refC]
+        objCorner = objCorners[objC]
         diffX = objCorner.x - refCorner.x 
         diffY = objCorner.y - refCorner.y 
         obj.updatePos(Vector2(obj.pos.x - diffX + marginX, obj.pos.y - diffY + marginY))
