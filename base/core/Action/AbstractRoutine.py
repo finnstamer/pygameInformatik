@@ -14,7 +14,7 @@ class AbstractRoutine(AbstractAction):
         self.actions: List[AbstractAction] = []
         self.pendingAction = None
 
-        # Aktionen werden nach Beendigugn automatisch entfernt
+        # Aktionen werden nach Beendigung automatisch entfernt
         self.autoDelete = True
 
         self.middlewareHandler.on("set", self.createActions)

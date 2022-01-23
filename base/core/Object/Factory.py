@@ -66,4 +66,5 @@ class Factory():
         if hasattr(obj, "id"):
             Factory.removeAlias(obj)
             Factory.removeId(obj)
+        Events.dispatch(f"factory.unbind.{id(obj)}", obj)
         Events.unsubscribeMethodsOnObject(obj)

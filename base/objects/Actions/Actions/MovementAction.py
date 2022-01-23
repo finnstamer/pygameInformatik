@@ -1,4 +1,5 @@
 from base.core.Action.AbstractAction import AbstractAction
+from base.core.Dependencies.Movement import Movement
 from base.core.Event.Events import Events
 from base.core.Object.GameObject import GameObject
 from pygame import Vector2
@@ -26,8 +27,10 @@ class MovementAction(AbstractAction):
                
         distance = xDiff if xMovement else yDiff
         speed = distance
-        if abs(distance) > self.object.speed:
-            speed = self.object.speed * distance / abs(distance)
+        sanitizedObjectSpeed = Movement.sanitizeSpeed(self.object.speed)
+        # Ist Distanz größer als mögliche Bewegung in diesem Tick => Verwende die Objekt Geschwindigkeit
+        if abs(distance) > sanitizedObjectSpeed:
+            speed = sanitizedObjectSpeed * distance / abs(distance)
 
         segmentPos = Vector2(self.object.pos.x + speed if xMovement else self.object.pos.x, self.object.pos.y + speed if not xMovement else self.object.pos.y)
         segmentPos = self.middlewareHandler.openConnection("segmentPos", segmentPos)

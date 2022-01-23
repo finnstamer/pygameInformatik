@@ -2,11 +2,13 @@ from typing import Tuple
 from pygame import Vector2
 from base.core.Action.MovementRoutine import MovementRoutine
 from base.core.Dependencies.CollisionWatcher import CollisionWatcher
+from base.core.Dependencies.Rendering.Layer import Layer
 from base.core.Game import Game
 from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 from random import randrange
+from pygame import Rect
 
 from base.objects.Actions.Routines.FollowObjectRoutine import FollowObjectRoutine
 
@@ -15,9 +17,10 @@ class Enemy(GameObject):
         super().__init__(pos=pos, width=width, height=height, color=(255, 153, 211))
         self.alertedRadius = Vector2(300, 300)
         self.sleepRadius = Vector2(450, 450)
-        self.alertedRadiusObject = GameObject(self.pos, self.alertedRadius.x, self.alertedRadius.y)
-        self.sleepRadiusObject = GameObject(self.pos, self.sleepRadius.x, self.sleepRadius.y)
-        AbstractLevel.bind(self.alertedRadiusObject, self.sleepRadiusObject)
+        
+        self.alertedRadiusRect = Rect(self.pos.x, self.pos.y, self.alertedRadius.x, self.alertedRadius.y)
+        self.sleepRadiusRect = Rect(self.pos.x, self.pos.y, self.sleepRadius.x, self.sleepRadius.y)
+        
         self.pathPool = [] 
         self.alerted = False
 
@@ -25,9 +28,9 @@ class Enemy(GameObject):
         
         self.solid = True
         self.fluid = True
-        self.sleepSpeed = 3
-        self.alertSpeed = 6
-        self.speed = 3
+        self.sleepSpeed = 200
+        self.alertSpeed = 275
+        self.speed = 0
         self.health = 100
 
         
@@ -51,15 +54,16 @@ class Enemy(GameObject):
 
 
     def onMovement(self, event):
-        if Factory.get("player").collidesWith(self.alertedRadiusObject.rect):
+        if Factory.get("player").collidesWith(self.alertedRadiusRect):
             self.alerted = True
-        if not Factory.get("player").collidesWith(self.sleepRadiusObject.rect):
+        if not Factory.get("player").collidesWith(self.sleepRadiusRect):
             self.alerted = False
             
     def onTick(self, event):
         # Adjust Event Zones
-        self.alertedRadiusObject.updatePos(Vector2(self.pos.x - self.alertedRadius.x / 2, self.pos.y - self.alertedRadius.y / 2))
-        self.sleepRadiusObject.updatePos(Vector2(self.pos.x - self.sleepRadius.x / 2, self.pos.y - self.sleepRadius.y / 2))
+        self.alertedRadiusRect.update(self.pos.x - self.alertedRadius.x / 2, self.pos.y - self.alertedRadius.y / 2, self.alertedRadius.x, self.alertedRadius.y)
+        self.sleepRadiusRect.update(self.pos.x - self.sleepRadius.x / 2, self.pos.y - self.sleepRadius.y / 2, self.sleepRadius.x, self.sleepRadius.y)
+        # self.sleepRadiusRect.move_ip(Vector2(self.pos.x - self.sleepRadius.x / 2, self.pos.y - self.sleepRadius.y / 2))
 
         # Über die Movements wird überprüft ob das nächste Movement in einer Aktion zu einer Kollision führt
         if self.health == 0:

@@ -117,7 +117,7 @@ class GameObject():
     # Aktualsiert die Position und aktualisiert die Darstellung
     # Gibt "id.moved" Event aus
     def updatePos(self, pos: pygame.Vector2):
-        beforePos = pygame.Vector2(list(pos))
+        beforePos = pygame.Vector2(list(self.pos))
         self._pos = pos
         self.updateRect()
         Events.dispatch(f"{self.id}.moved", (self, beforePos))
@@ -143,6 +143,13 @@ class GameObject():
     def collidesWith(self, rect: pygame.Rect) -> bool:
         colRect = self.rect.clip(rect)
         return colRect.width != 0 and colRect.height != 0
+
+    def drawSpecific(self, rect: pygame.Rect):
+        if self.active and not self.transparent:
+            if self.image is None:
+                pygame.draw.rect(screen, self.color, rect)
+                return
+            screen.blit(self.image, rect)
     
     # Fügt diesem Objekt schaden zu, wenn das .health nicht -1 ist.
     # Fällt .health unter 0 wird das Objekt deaktiviert und "id.died" Event ausgegeben

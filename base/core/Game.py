@@ -1,9 +1,10 @@
+from this import d
 import pygame
 from typing import Any, Dict, List
 
 from pygame.constants import KEYDOWN, KEYUP, MOUSEBUTTONUP
 from base.core.Dependencies.Debugger import Debugger
-from base.core.Dependencies.PerformantRendering import PerformantRendering
+from base.core.Dependencies.Rendering.Rendering import Rendering
 
 from base.core.Event.Events import Events
 from base.core.Level.AbstractLevel import AbstractLevel
@@ -16,6 +17,8 @@ class Game():
     dependencies: List[Any] = []
     currentLevel: int = -1
     levels: Dict[int, AbstractLevel] = {0: Level(0)}
+    deltaTime = 0
+    frameRate = 60
 
     # Funktion zur 
     def use(*dependencies: object):
@@ -41,8 +44,8 @@ class Game():
         Events.dispatch("game.start")
         Game.isStarted = True
         while Game.active:  
-            clock.tick(60)
-            # PerformantRendering.render()
+            Game.deltaTime = clock.tick(Game.frameRate)
+            # Rendering.render()
             
             Events.dispatch("game.dependency.tick")
             Events.dispatch("game.tick")

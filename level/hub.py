@@ -1,4 +1,5 @@
 from base.core.Dependencies.Fonts import Fonts
+from base.core.Dependencies.Rendering.Layer import Layer
 from base.core.Dependencies.Wait import Wait
 from base.core.Event.Events import Events
 from base.core.Game import Game
@@ -21,4 +22,5 @@ class Hub(AbstractLevel):
     # button.color = (200, 200, 200)
     button.setImage("images/start.png")
     mB.placeInCenter(button)
+    Layer.get(0).add(button)
     self.add(*mB.objects)

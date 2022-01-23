@@ -4,7 +4,11 @@ from typing import List, Tuple
 from base.core.Game import Game
 
 # Klasse zur Verarbeitung von Positionen und Berechnungen von Bewegungen
-class Movement:        
+class Movement: 
+    
+    def sanitizeSpeed(speed: int):
+        return speed * (Game.deltaTime / 1000)
+    
     # Given a list of solid, blocking objects, check if a position of a given object is allowed.
     def allowPosition(obj: object, pos: pygame.Vector2, objs: List = None) -> bool:
         pyRect = pygame.Rect(pos.x, pos.y, obj.width, obj.height)

@@ -1,4 +1,5 @@
 from base.core.Dependencies.Fonts import Fonts
+from base.core.Dependencies.Rendering.Layer import Layer
 from base.core.Dependencies.Sounds.Sound import Sound
 from base.core.Event.Events import Events
 from base.core.Game import Game
@@ -50,15 +51,14 @@ class Level3(AbstractLevel):
         player = Player().updatePos(Vector2(520, 300))
         projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
         projectile.color = (114, 114, 114)
-        weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
-        weapon.color = (29, 191, 172)
-        weapon.height = 0
-        weapon.width = 0
-        weapon.setImage("images/pump.png")
-        weapon.setAlias("weapon")
-
-        objects = [
-            player, weapon,
+        # weapon = Weapon(player, Vector2(-10, 10), projectile, cooldown=100, munition=50000)
+        # weapon.color = (29, 191, 172)
+        # weapon.height = 0
+        # weapon.width = 0
+        # weapon.setImage("images/pump.png")
+        # weapon.setAlias("weapon")
+        self.add(player)
+        walls = [
           # Mittlerer Block
           Wall(Vector2(500,330), width=80, height=70), 
           # Oben rechts und links länglich
@@ -133,7 +133,7 @@ class Level3(AbstractLevel):
         Teleporter(tp8, player, Vector2(310, 26))
 
         self.add(tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8)
-        self.add(*objects)
+        self.add(*walls)
 
         Fonts.load("font", "assets/font.ttf", 35)
         Fonts.load("font", "assets/font.ttf", 10)
@@ -154,13 +154,7 @@ class Level3(AbstractLevel):
         BackgroundMusic(self.backgroundMusic, False).play()
         self.add(text, highscore)
 
-        paths = [Vector2(530, 40), Vector2(1000, 350), Vector2(530, 650), Vector2(40, 352)]
-        for p in paths:
-            enemy = Enemy(p, 25, 25)
-            enemy.pathPool = paths
-            enemy.alertSpeed = 10
-            enemy.sleepSpeed = 5
-            self.add(enemy)
+
 
         ektoplasma = [Ektoplasma().hiddenPosUpdate(Vector2([65, 65])),
 Ektoplasma().hiddenPosUpdate(Vector2([80, 65])),
@@ -680,3 +674,18 @@ Ektoplasma().hiddenPosUpdate(Vector2([660, 598])),
 Ektoplasma().hiddenPosUpdate(Vector2([660, 613])),
 ]
         self.add(*ektoplasma)
+        paths = [Vector2(530, 40), Vector2(1000, 350), Vector2(530, 650), Vector2(40, 352)]
+        enemies = []
+        # paths = []
+        for p in paths:
+            enemy = Enemy(p, 25, 25)
+            enemy.pathPool = paths
+            enemy.alertSpeed = 350
+            enemy.sleepSpeed = 275
+            self.add(enemy)
+            enemies.append(enemy)
+        
+        # layer0 = [tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8] + walls + ektoplasma
+        # layer1 = [player] + enemies
+        # layer2 = [text, highscore]
+        # Layer.addToMultiple(0, 3, [layer0, layer1, layer2])

@@ -34,7 +34,7 @@ class Events():
         wildcard = event.rfind("*")
         if wildcard != -1:
             if event[0] == "*":
-                event = ".\\" + event[1:]
+                event = ".*\\" + event[1:]
             if event not in Events.wildcards:
                 Events.wildcards[event] = [func]
             if func not in Events.wildcards[event]:
