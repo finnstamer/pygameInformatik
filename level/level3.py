@@ -9,6 +9,7 @@ from pygame import Vector2
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
 from base.objects.BackgroundMusic import BackgroundMusic
+from base.objects.Background import Background
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
 from base.objects.TextObject import TextObject
@@ -48,6 +49,8 @@ class Level3(AbstractLevel):
                 Game.setLevel(4)
 
     def make(self):
+        bg = Background("images/background.gif")
+        self.add(bg)
         player = Player().updatePos(Vector2(520, 300))
         projectile = Projectile(range=500, damage=10, speed=20, width=5, height=5, relativePosition=Vector2(75, 3))
         projectile.color = (114, 114, 114)
@@ -57,6 +60,7 @@ class Level3(AbstractLevel):
         # weapon.width = 0
         # weapon.setImage("images/pump.png")
         # weapon.setAlias("weapon")
+
         self.add(player)
         walls = [
           # Mittlerer Block
@@ -104,32 +108,32 @@ class Level3(AbstractLevel):
            
         ]
         # -- X-Axis Down
-        tp1 = GameObject(Vector2(1060, 490), 20, 78)
+        tp1 = GameObject(Vector2(1060, 490), 20, 78).setTransparent()
         Teleporter(tp1, player, Vector2(21, 490))
         
-        tp2 = GameObject(Vector2(0, 490), 20, 78)
+        tp2 = GameObject(Vector2(0, 490), 20, 78).setTransparent()
         Teleporter(tp2, player, Vector2(1035, 490))
 
         # -- X-Axis Up
-        tp3 = GameObject(Vector2(1060, 160), 20, 78)
+        tp3 = GameObject(Vector2(1060, 160), 20, 78).setTransparent()
         Teleporter(tp3, player, Vector2(21, 160))
         
-        tp4 = GameObject(Vector2(0, 160), 20, 78)
+        tp4 = GameObject(Vector2(0, 160), 20, 78).setTransparent()
         Teleporter(tp4, player, Vector2(1035, 160))
 
         # -- Y-Axis Right
-        tp5 = GameObject(Vector2(720, 0), 80, 20)
+        tp5 = GameObject(Vector2(720, 0), 80, 20).setTransparent()
         Teleporter(tp5, player, Vector2(750, 674))
 
         
-        tp7 = GameObject(Vector2(720, 700), 80, 20)
+        tp7 = GameObject(Vector2(720, 700), 80, 20).setTransparent()
         Teleporter(tp7, player, Vector2(750, 26))
 
         # -- Y-Axis Left
-        tp6 = GameObject(Vector2(280, 0), 80, 20)
+        tp6 = GameObject(Vector2(280, 0), 80, 20).setTransparent()
         Teleporter(tp6, player, Vector2(310, 674))
 
-        tp8 = GameObject(Vector2(280, 700), 80, 20)
+        tp8 = GameObject(Vector2(280, 700), 80, 20).setTransparent()
         Teleporter(tp8, player, Vector2(310, 26))
 
         self.add(tp1, tp2, tp3, tp4, tp5, tp6, tp7, tp8)
@@ -151,7 +155,8 @@ class Level3(AbstractLevel):
         highscore.backgroundColor = (250, 250, 250)
 
         Skins.apply()
-        BackgroundMusic(self.backgroundMusic, False).play()
+        # BackgroundMusic(self.backgroundMusic, False).play()
+
         self.add(text, highscore)
 
 

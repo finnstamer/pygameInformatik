@@ -8,7 +8,6 @@ from level.level1 import Level1
 from level.level2 import Level2
 from level.level3 import Level3
 from button import Button
-
 #musik ins hauptverzeichnis und dann den namen hier der liste hinzufügen damit es im spiel eine option wird
 music_list=["sounds/background.wav","sounds/backgroun2.wav"]
 cpt_music=0
@@ -24,7 +23,7 @@ thresh_hold_skin=skin_list.__len__()
 pygame.init()
 
 music_global=True
-SCREEN = pygame.display.set_mode((1280, 720))
+SCREEN = pygame.display.set_mode((1080, 720))
 pygame.display.set_caption("Menu")
 
 BG = pygame.image.load("images/background.png")
@@ -32,10 +31,10 @@ BG = pygame.image.load("images/background.png")
 def get_font(size): # Ergibt den Press-Start-2P font in der gewünschten größe
     return pygame.font.Font("assets/font.ttf", size)
 
-def play(param):
+def play():
         Skins.setCurrentSkin(cpt_skin)
-        Game.addLevel(Hub(), Level1(param), Level2(), Level3())
-        Game.setLevel(0)
+        Game.addLevel(Level1(), Level2(), Level3())
+        Game.setLevel(2)
         Game.start()    
         
 def selectSkin():
@@ -43,29 +42,28 @@ def selectSkin():
     while True:
         OPTIONS_MOUSE_POS = pygame.mouse.get_pos()
         SCREEN.blit(BG, (0, 0))
-        SKIN_TEXT = get_font(45).render("Choose the best Skin for you.", True, "Black")
-        SKIN_RECT = SKIN_TEXT.get_rect(center=(640, 60))
+        SKIN_TEXT = get_font(30).render("Choose the best Skin for you.", True, "Black")
+        SKIN_RECT = SKIN_TEXT.get_rect(center=(540, 60))
         SCREEN.blit(SKIN_TEXT,SKIN_RECT)
         
-        print(path_skin+skin_list[cpt_skin])
-        image = pygame.image.load(path_skin+skin_list[cpt_skin])
-        SCREEN.blit(image, (500, 200))
-        # button.color = (200, 200, 200)0
+        image = pygame.image.load(path_skin+skin_list[cpt_skin]).convert_alpha(SCREEN)
+        SCREEN.blit(image, pygame.Rect(350, 175, 100, 100))
+        # button.color = (200, 200,200)0
         
-        SKIN_START = Button(image=None, pos=(640, 540), 
-                            text_input="START", font=get_font(75), base_color="Black", hovering_color="Green")
+        SKIN_START = Button(image=None, pos=(540, 540), 
+                            text_input="START", font=get_font(60), base_color="Black", hovering_color="Green")
 
         SKIN_START.changeColor(OPTIONS_MOUSE_POS)
         SKIN_START.update(SCREEN)
 
-        SKIN_Next = Button(image=None, pos=(1040,400 ), 
-                            text_input="NEXT", font=get_font(75), base_color="Black", hovering_color="Red")
+        SKIN_Next = Button(image=None, pos=(940,400 ), 
+                            text_input="NEXT", font=get_font(60), base_color="Black", hovering_color="Red")
 
         SKIN_Next.changeColor(OPTIONS_MOUSE_POS)
         SKIN_Next.update(SCREEN)
 
-        SKIN_Prec = Button(image=None, pos=(240,400 ), 
-                            text_input="PREC", font=get_font(75), base_color="Black", hovering_color="Red")
+        SKIN_Prec = Button(image=None, pos=(140,400 ), 
+                            text_input="PREC", font=get_font(60), base_color="Black", hovering_color="Red")
 
         SKIN_Prec.changeColor(OPTIONS_MOUSE_POS)
         SKIN_Prec.update(SCREEN)
@@ -76,7 +74,7 @@ def selectSkin():
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                   if SKIN_START.checkForInput(OPTIONS_MOUSE_POS):
-                    play(skin_list_prime[cpt_skin])
+                    play()
                   
                   if SKIN_Next.checkForInput(OPTIONS_MOUSE_POS):
                     cpt_skin = cpt_skin+1
@@ -100,36 +98,36 @@ def options():
 
         
         SCREEN.blit(BG, (0, 0))
-        OPTIONS_TEXT = get_font(45).render("This is the OPTIONS screen.", True, "Black")
-        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(640, 60))
+        OPTIONS_TEXT = get_font(30).render("This is the OPTIONS screen.", True, "Black")
+        OPTIONS_RECT = OPTIONS_TEXT.get_rect(center=(540, 60))
         SCREEN.blit(OPTIONS_TEXT, OPTIONS_RECT)
 
-        OPTIONS_Pause = Button(image=None, pos=(640, 260), 
-                            text_input="PAUSE", font=get_font(75), base_color="Black", hovering_color="Green")
+        OPTIONS_Pause = Button(image=None, pos=(540, 260), 
+                            text_input="PAUSE", font=get_font(60), base_color="Black", hovering_color="Green")
 
         OPTIONS_Pause.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_Pause.update(SCREEN)
 
-        OPTIONS_Play = Button(image=None, pos=(640,400 ), 
-                            text_input="PLAY", font=get_font(75), base_color="Black", hovering_color="Green")
+        OPTIONS_Play = Button(image=None, pos=(540,400 ), 
+                            text_input="PLAY", font=get_font(60), base_color="Black", hovering_color="Green")
 
         OPTIONS_Play.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_Play.update(SCREEN)
 
-        OPTIONS_Back = Button(image=None, pos=(640, 540), 
-                            text_input="Back", font=get_font(75), base_color="Black", hovering_color="Green")
+        OPTIONS_Back = Button(image=None, pos=(540, 540), 
+                            text_input="Back", font=get_font(60), base_color="Black", hovering_color="Green")
 
         OPTIONS_Back.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_Back.update(SCREEN)
 
-        OPTIONS_Next = Button(image=None, pos=(1040,400 ), 
-                            text_input="NEXT", font=get_font(75), base_color="Black", hovering_color="Red")
+        OPTIONS_Next = Button(image=None, pos=(940,400 ), 
+                            text_input="NEXT", font=get_font(60), base_color="Black", hovering_color="Red")
 
         OPTIONS_Next.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_Next.update(SCREEN)
 
-        OPTIONS_Prec = Button(image=None, pos=(240,400 ), 
-                            text_input="PREC", font=get_font(75), base_color="Black", hovering_color="Red")
+        OPTIONS_Prec = Button(image=None, pos=(140,400 ), 
+                            text_input="PREC", font=get_font(60), base_color="Black", hovering_color="Red")
 
         OPTIONS_Prec.changeColor(OPTIONS_MOUSE_POS)
         OPTIONS_Prec.update(SCREEN)
@@ -181,13 +179,13 @@ def main_menu():
         MENU_MOUSE_POS = pygame.mouse.get_pos()
 
         MENU_TEXT = get_font(100).render("MAIN MENU", True, "#b68f40")
-        MENU_RECT = MENU_TEXT.get_rect(center=(640, 100))
+        MENU_RECT = MENU_TEXT.get_rect(center=(540, 100))
 
-        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(640, 250), 
+        PLAY_BUTTON = Button(image=pygame.image.load("assets/Play Rect.png"), pos=(540, 250), 
                             text_input="PLAY", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(640, 400), 
+        OPTIONS_BUTTON = Button(image=pygame.image.load("assets/Options Rect.png"), pos=(540, 400), 
                             text_input="OPTIONS", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
-        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(640, 550), 
+        QUIT_BUTTON = Button(image=pygame.image.load("assets/Quit Rect.png"), pos=(540, 550), 
                             text_input="QUIT", font=get_font(75), base_color="#d7fcd4", hovering_color="White")
 
         SCREEN.blit(MENU_TEXT, MENU_RECT)

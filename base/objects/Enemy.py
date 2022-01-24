@@ -40,7 +40,7 @@ class Enemy(GameObject):
         self.subscribe("game.tick", self.onTick)
         self.subscribe(f"{self.id}.died", self.onDied)       
 
-        collisionWithPlayerEvent, _ = CollisionWatcher.watch(self, player)
+        collisionWithPlayerEvent = CollisionWatcher.watch(self, player)
         self.subscribe(collisionWithPlayerEvent, self.onPlayerCollision)
 
     # Lade Routinen, wenn alle nonFluidSolids geladen sind
@@ -56,6 +56,7 @@ class Enemy(GameObject):
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusRect):
             self.alerted = True
+            return
         if not Factory.get("player").collidesWith(self.sleepRadiusRect):
             self.alerted = False
             

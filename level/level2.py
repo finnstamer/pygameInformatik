@@ -12,7 +12,7 @@ from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
 from base.objects.TextObject import TextObject
 from base.objects.Weapon import Weapon
-from base.objects.Backround import Backround
+from base.objects.Background import Background
 from objects.Teleporter import Teleporter
 from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
@@ -92,7 +92,7 @@ class Level2(AbstractLevel):
         highscore.setFont("font", 15)
         highscore.setAlias("Level2.highscore")
 
-        bg = Backround("images/background.gif")
+        bg = Background("images/background.gif")
 
         Skins.setCurrentSkin(1)
         Skins.apply()

@@ -1,5 +1,5 @@
 from base.core.Level.AbstractLevel import AbstractLevel
-from base.objects.Backround import Backround
+from base.objects.Background import Background
 
 
 class Loading(AbstractLevel):
@@ -7,5 +7,5 @@ class Loading(AbstractLevel):
         super().__init__(999)
     
     def make(self):
-        bg = Backround("images/Dschungel.png")
+        bg = Background("images/Dschungel.png")
         self.objects.append(bg)
