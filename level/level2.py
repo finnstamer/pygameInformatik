@@ -7,9 +7,11 @@ from base.core.Level.MapBuilder import MapBuilder
 from pygame import Vector2
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
+from base.objects.Actions.Actions.FadeAction import FadeAction
 from base.objects.BackgroundMusic import BackgroundMusic
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
+from base.objects.RGBAObject import RGBAObject
 from base.objects.TextObject import TextObject
 from base.objects.Weapon import Weapon
 from base.objects.Background import Background
@@ -18,6 +20,7 @@ from objects.collectables.Ektoplasma import Ektoplasma
 from objects.player.Player import Player
 from objects.player.Skins import Skins
 from objects.wall import Wall
+from settings import screenRes
 class Level2(AbstractLevel):
     def __init__(self) -> None:
         super().__init__(2)
@@ -93,6 +96,7 @@ class Level2(AbstractLevel):
         highscore.setAlias("Level2.highscore")
 
         bg = Background("images/background.gif")
+        
 
         Skins.setCurrentSkin(1)
         Skins.apply()

@@ -685,8 +685,8 @@ Ektoplasma().hiddenPosUpdate(Vector2([660, 613])),
         for p in paths:
             enemy = Enemy(p, 25, 25)
             enemy.pathPool = paths
-            enemy.alertSpeed = 350
-            enemy.sleepSpeed = 275
+            enemy.alertSpeed = 400
+            enemy.sleepSpeed = 300
             self.add(enemy)
             enemies.append(enemy)
         

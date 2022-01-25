@@ -1,3 +1,4 @@
+from level.level4 import Level4
 from objects.player.Skins import Skins
 import pygame, sys
 import pygame
@@ -33,7 +34,7 @@ def get_font(size): # Ergibt den Press-Start-2P font in der gewünschten größe
 
 def play():
         Skins.setCurrentSkin(cpt_skin)
-        Game.addLevel(Level1(), Level2(), Level3())
+        Game.addLevel(Level1(), Level2(), Level3(), Level4())
         Game.setLevel(2)
         Game.start()    
         

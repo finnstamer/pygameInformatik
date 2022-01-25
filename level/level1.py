@@ -4,6 +4,7 @@ from base.core.Level.AbstractLevel import AbstractLevel
 from base.core.Level.MapBuilder import MapBuilder
 from base.objects.Enemy import Enemy
 from base.objects.Projectile import Projectile
+from base.objects.RGBAObject import RGBAObject
 from base.objects.TextObject import TextObject
 from base.objects.Weapon import Weapon
 from objects.collectables.Ektoplasma import Ektoplasma
@@ -26,6 +27,11 @@ class Level1(AbstractLevel):
     # mB.pointMirror(MapBuilder.centerVec(), mirrorObjects)
     
     player = Player().hiddenPosUpdate(Vector2(200, 200))
+    
+    test = RGBAObject(MapBuilder.centerVec(), 50, 50, (100, 50, 10))
+    test.setAlpha(150)
+    
+    
     # enemy = Enemy(Vector2(300, 300), 50, 50, (250, 0, 0))
     # enemy.pathPool = [Vector2(400, 400), Vector2(500, 100), Vector2(200, 500)]
 
@@ -44,3 +50,4 @@ class Level1(AbstractLevel):
     mB.addObject(*mirrorObjects)
     Layer.addToMultiple(0, 3, [mirrorObjects, [ektoplasma], [player]])
     self.add(*mB.objects)
+    self.add(test)

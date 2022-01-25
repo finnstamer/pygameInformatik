@@ -7,7 +7,9 @@ from base.core.Event.Events import Events
 from base.core.Game import Game
 from base.core.Object.Factory import Factory
 from base.core.Object.GameObject import GameObject
-
+from base.objects.Actions.Actions.FadeAction import FadeAction
+from base.objects.RGBAObject import RGBAObject
+from settings import screenRes
 class Player(GameObject):
     def __init__(self) -> None:
         super().__init__()
@@ -25,7 +27,6 @@ class Player(GameObject):
         self.speed = 300
         self.direction = 1 # Right
         self.allowMovements = True
-
         Game.use(Controls)
         self.subscribe("game.tick", self.onTick)        
 

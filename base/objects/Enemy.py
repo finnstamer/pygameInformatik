@@ -52,7 +52,6 @@ class Enemy(GameObject):
         Game.setLevel(Game.currentLevel)
         pass
 
-
     def onMovement(self, event):
         if Factory.get("player").collidesWith(self.alertedRadiusRect):
             self.alerted = True
